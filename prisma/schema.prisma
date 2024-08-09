@@ -27,7 +27,7 @@ model Budget {
     userId           String           @db.Uuid
     user             User             @relation(fields: [userId], references: [id])
     budgetCategories BudgetCategory[]
-    Account          Account[]
+    accounts         Account[]
 }
 
 model BudgetCategory {
