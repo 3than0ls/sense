@@ -1,8 +1,8 @@
-import React, { useContext, createContext, useState, useEffect } from 'react'
-import { SupabaseClient, User } from '@supabase/supabase-js'
+import React, { useContext, createContext, useState } from 'react'
+import { SupabaseClient } from '@supabase/supabase-js'
 import createClient from '~/supabase/client'
 
-type SupabaseProviderProps = {
+export type SupabaseProviderProps = {
     env: {
         SUPABASE_URL: string
         SUPABASE_ANON_KEY: string
@@ -37,7 +37,3 @@ export const useSupabase = (): SupabaseClient => {
 }
 
 export default SupabaseProvider
-
-// learned from: https://www.youtube.com/watch?v=05ZM4ymK9Nc
-// and https://www.youtube.com/watch?v=hn-c0u2mDIQ
-// and then of course, from supabase for the onSupabaseStateChange part
