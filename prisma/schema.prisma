@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Account {
-    id           String        @id @unique @db.Uuid
+    id           String        @id @unique @default(uuid()) @db.Uuid
     createdAt    DateTime      @default(now())
     name         String
     balance      Float
@@ -20,7 +20,7 @@ model Account {
 }
 
 model Budget {
-    id               String           @id @unique @db.Uuid
+    id               String           @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime         @default(now())
     name             String
     description      String
@@ -31,7 +31,7 @@ model Budget {
 }
 
 model BudgetCategory {
-    id          String       @id @unique @db.Uuid
+    id          String       @id @unique @default(uuid()) @db.Uuid
     createdAt   DateTime     @default(now())
     name        String
     budgetItems BudgetItem[]
@@ -40,7 +40,7 @@ model BudgetCategory {
 }
 
 model BudgetItem {
-    id               String         @id @unique @db.Uuid
+    id               String         @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime       @default(now())
     name             String
     target           Float
@@ -52,7 +52,7 @@ model BudgetItem {
 }
 
 model Transaction {
-    id           String     @id @unique @db.Uuid
+    id           String     @id @unique @default(uuid()) @db.Uuid
     createdAt    DateTime   @default(now())
     description  String?
     amount       Float

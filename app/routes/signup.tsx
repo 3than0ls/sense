@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { Form, json, redirect, useActionData } from '@remix-run/react'
+import prisma from '~/prisma/client'
 import { protectRouteAgainstAuthUsers } from '~/supabase/routeProtect'
 import { createClient } from '~/supabase/server'
 
@@ -12,18 +13,28 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const { supabase, headers } = await createClient(request)
 
-    const { error } = await supabase.auth.signUp({
+    const {
+        data: { user },
+        error,
+    } = await supabase.auth.signUp({
         email: signUpData.get('email') as string,
         password: signUpData.get('password') as string,
     })
 
     console.assert(!error, error)
-
-    if (error) {
+    if (error || !user) {
         return json({ error })
-    } else {
-        return redirect('/', { headers })
     }
+
+    await prisma.user.create({
+        data: {
+            username:
+                (signUpData.get('username') as string) ?? 'NEED TO IMPLEMENT',
+            id: user.id,
+        },
+    })
+
+    return redirect('/', { headers })
 }
 
 export default function SignUp() {
