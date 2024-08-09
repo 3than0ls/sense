@@ -1,64 +1,63 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { Form, json, redirect, useActionData } from '@remix-run/react'
+import type { LoaderFunctionArgs } from '@remix-run/node'
+import { useRevalidator } from '@remix-run/react'
+import { useForm } from 'react-hook-form'
+import { useSupabase } from '~/context/SupabaseContext'
 import { protectRouteAgainstAuthUsers } from '~/supabase/routeProtect'
-import { createClient } from '~/supabase/server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return await protectRouteAgainstAuthUsers(request)
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-    const signInData = await request.formData()
-    const { supabase, headers } = await createClient(request)
-
-    const { error } = await supabase.auth.signInWithPassword({
-        email: signInData.get('email') as string,
-        password: signInData.get('password') as string,
-    })
-
-    console.assert(!error, error)
-
-    if (error) {
-        return json({ error })
-    } else {
-        return redirect('/', { headers })
-    }
+type SignInFormData = {
+    email: string
+    password: string
 }
 
-export default function SignUp() {
-    const response = useActionData<typeof action>()
+// https://www.freecodecamp.org/news/react-form-validation-zod-react-hook-form/ look into zod later
+export default function SignIn() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm<SignInFormData>()
+    const revalidator = useRevalidator()
+    const supabase = useSupabase()
 
-    const status = () => {
-        if (response === undefined) {
-            return '?'
-        }
-        if (response.error) {
-            console.log(response.error)
-            return 'bad signin'
-        }
+    const signIn = async (data: SignInFormData) => {
+        const { error } = await supabase.auth.signInWithPassword(data)
+        // TODO: server error handling
+        revalidator.revalidate()
     }
 
     return (
         <div>
-            <Form method="post">
-                {status()}
+            <form onSubmit={handleSubmit(async (d) => await signIn(d))}>
                 <p>
                     <label>
                         Email
-                        <input aria-label="Email" name="email" type="text" />
+                        <input
+                            {...register('email')}
+                            aria-label="Email"
+                            name="email"
+                            type="email"
+                            required
+                        />
                     </label>
 
                     <label>
                         Password
                         <input
+                            {...register('password')}
                             aria-label="Password"
                             name="password"
                             type="password"
+                            required
                         />
                     </label>
                 </p>
                 <button type="submit">Sign In</button>
-            </Form>
+            </form>
         </div>
     )
 }

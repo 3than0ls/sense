@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Theme" AS ENUM ('DARK', 'LIGHT');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" UUID NOT NULL,
@@ -59,6 +62,7 @@ CREATE TABLE "Transaction" (
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "theme" "Theme" NOT NULL DEFAULT 'DARK',
     "username" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")

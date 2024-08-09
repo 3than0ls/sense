@@ -1,5 +1,13 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { json, useFetcher, useLoaderData } from '@remix-run/react'
+import {
+    json,
+    useFetcher,
+    useLoaderData,
+    useRevalidator,
+} from '@remix-run/react'
+import { useEffect } from 'react'
+import { useAuth } from '~/context/AuthContext'
+import { useSupabase } from '~/context/SupabaseContext'
 import { createClient } from '~/supabase/server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -14,14 +22,20 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
     const { user } = useLoaderData<typeof loader>()
-    const fetcher = useFetcher()
+    const revalidator = useRevalidator()
+
+    const supabase = useSupabase()
+    const signOut = async () => {
+        await supabase.auth.signOut()
+        revalidator.revalidate()
+    }
 
     return (
         <div className="">
             default page {user?.email}
-            <fetcher.Form action="/signout">
-                <button type="submit">Sign out</button>
-            </fetcher.Form>
+            <button className="m-4" onClick={signOut}>
+                Sign out
+            </button>
         </div>
     )
 }

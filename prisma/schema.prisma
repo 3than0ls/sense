@@ -65,7 +65,13 @@ model Transaction {
 model User {
     id        String    @id @unique @db.Uuid
     createdAt DateTime  @default(now())
+    theme     Theme     @default(DARK)
     username  String
     budgets   Budget[]
     accounts  Account[]
+}
+
+enum Theme {
+    DARK
+    LIGHT
 }
