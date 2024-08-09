@@ -1,0 +1,71 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DB_SESSION_URL")
+}
+
+model Account {
+    id           String        @id @unique @db.Uuid
+    createdAt    DateTime      @default(now())
+    name         String
+    balance      Float
+    userId       String        @db.Uuid
+    user         User          @relation(fields: [userId], references: [id])
+    budgetId     String        @db.Uuid
+    budget       Budget        @relation(fields: [budgetId], references: [id])
+    transactions Transaction[]
+}
+
+model Budget {
+    id               String           @id @unique @db.Uuid
+    createdAt        DateTime         @default(now())
+    name             String
+    description      String
+    userId           String           @db.Uuid
+    user             User             @relation(fields: [userId], references: [id])
+    budgetCategories BudgetCategory[]
+    Account          Account[]
+}
+
+model BudgetCategory {
+    id          String       @id @unique @db.Uuid
+    createdAt   DateTime     @default(now())
+    name        String
+    budgetItems BudgetItem[]
+    budgetId    String       @db.Uuid
+    Budget      Budget       @relation(fields: [budgetId], references: [id])
+}
+
+model BudgetItem {
+    id               String         @id @unique @db.Uuid
+    createdAt        DateTime       @default(now())
+    name             String
+    target           Float
+    balance          Float
+    // spent            Float
+    budgetCategoryId String         @db.Uuid
+    BudgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+    transactions     Transaction[]
+}
+
+model Transaction {
+    id           String     @id @unique @db.Uuid
+    createdAt    DateTime   @default(now())
+    description  String?
+    amount       Float
+    accountId    String     @db.Uuid
+    account      Account    @relation(fields: [accountId], references: [id])
+    budgetItemId String     @db.Uuid
+    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
+}
+
+model User {
+    id        String    @id @unique @db.Uuid
+    createdAt DateTime  @default(now())
+    username  String
+    budgets   Budget[]
+    accounts  Account[]
+}
