@@ -8,6 +8,7 @@ export default {
                 primary: '#f7843c',
                 good: '#e62b25',
                 bad: '#49cf06',
+                error: '#ff3333',
                 'text-light': '#0f0f0f',
                 'text-dark': '#0f0f0f',
                 'bg-light': '#edeae6',
