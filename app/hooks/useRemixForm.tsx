@@ -10,10 +10,7 @@ import {
 import { z } from 'zod'
 
 /**
- *
- *
  * useRemixForm is a hook that uses react-hook-form's `FormProvider` and Remix's `fetcher.Form`,
- * validating the form's data with the provided `zodSchema` parameter.
  *
  * This allows you to reap the benefits of (not in order):
  *
@@ -24,18 +21,25 @@ import { z } from 'zod'
  *  (3) Remix's `useFetcher()`'s `Form`: `POST` to action, assuming client side validation passed with no errors.
  *
  *
- * Could turn this into a package, would need to allow any type of schema, not just zod, and handle an onSubmitError from react-hook-forms thing
+ * remix-hook-form was broken, inadequate, and far differed from react-hook-form.
+ * react-hook-form alone did not suffice, since it prevented default, thus preventing POST to action.
+ * Using Remix's clientAction for client side schema validation/parsing with zod seemed unecessary since I was already doing it with react-hook-form useForm's resolver.
  *
  * @example
+ * // outside of component
  * const schema = z.object({ ... })
  * type FormValues = z.infer<typeof schema>
+ *
+ * ...
+ * // in component
  * const { methods, RemixForm } = useRemixForm<FormValues>(schema)
  * const onSubmit = (data: FormValues) => {
  *      console.log(data)
- *      // will prevent fetcher from POSTING to the action
+ *      // will prevent fetcher from POSTING to the action, something you COULD do but better off doing in schema
  *      methods.setError('field', { type: 'custom', message: 'Invalid field' })
  * }
  * ...
+ * // JSX for component
  * <RemixForm onSubmit={onSubmit}>
  *  {various input elements within context}
  * </RemixForm>
@@ -48,16 +52,18 @@ export default function useRemixForm<FormDataType extends FieldValues>(
     const methods = useForm<FormDataType>({
         resolver: zodResolver(zodSchema),
     })
+
     const fetcher = useFetcher<FormDataType>()
 
-    const _handleSubmit = (onSubmit: SubmitHandler<FormDataType>) => {
+    const _handleSubmit = (
+        onSubmit: SubmitHandler<FormDataType> = () => {}
+    ) => {
         return async (
             e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
         ) => {
-            e.preventDefault()
-            await methods.handleSubmit(onSubmit)()
-            const noErrors = Object.keys(methods.formState.errors).length === 0
-            if (noErrors) {
+            // if we don't provide e to method.handleSubmit(onSubmit)(e), it will not prevent default, submitting regardless
+            await methods.handleSubmit(onSubmit)(e)
+            if (Object.keys(methods.formState.errors).length === 0) {
                 fetcher.submit(methods.getValues(), { method: 'POST' })
             }
         }
@@ -68,9 +74,9 @@ export default function useRemixForm<FormDataType extends FieldValues>(
         className,
         onSubmit,
     }: {
-        children: React.ReactNode
-        className: string
-        onSubmit: SubmitHandler<FormDataType>
+        children?: React.ReactNode
+        className?: string
+        onSubmit?: SubmitHandler<FormDataType>
     }) => {
         return (
             <FormProvider {...methods}>
