@@ -1,7 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { useRevalidator } from '@remix-run/react'
-import { Form, FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import Input from '~/components/form/Input'
 import RemixForm from '~/components/RemixForm'
