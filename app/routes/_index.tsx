@@ -3,7 +3,7 @@ import type {
     LoaderFunctionArgs,
     ActionFunctionArgs,
 } from '@remix-run/node'
-import { json, useLoaderData, useRevalidator } from '@remix-run/react'
+import { json, Link, useLoaderData, useRevalidator } from '@remix-run/react'
 import { z } from 'zod'
 import Input from '~/components/form/Input'
 import RemixForm from '~/components/RemixForm'
@@ -45,19 +45,32 @@ export default function Index() {
         revalidator.revalidate()
     }
 
-    const { methods, fetcher } = useRemixForm<FormValues>(schema)
-    return (
-        <div className="">
-            default page {user?.email}
+    const userOptions = user ? (
+        <>
+            <span>Welcome user {user.email}</span>
             <button className="m-4" onClick={signOut}>
                 Sign out
             </button>
+        </>
+    ) : (
+        <>
+            <Link to="/signin">Sign in</Link>
+            <Link to="/signup">Sign up</Link>
+        </>
+    )
+
+    const { methods, fetcher } = useRemixForm<FormValues>(schema)
+    return (
+        <div className="">
+            <div className="flex gap-6 border-black border-4 p-2">
+                {userOptions}
+            </div>
             <RemixForm
                 methods={methods}
                 fetcher={fetcher}
                 className="w-80 bg-gray-400"
             >
-                <Input name="test" />
+                <Input name="test your api endpoint" />
                 <button type="submit">submit</button>
             </RemixForm>
         </div>

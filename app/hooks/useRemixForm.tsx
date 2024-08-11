@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useFetcher } from '@remix-run/react'
+import { useActionData, useFetcher } from '@remix-run/react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -57,3 +57,5 @@ export default function useRemixForm<FormValues extends FieldValues>(
         fetcher,
     }
 }
+
+export type ActionReturnType<Action> = ReturnType<typeof useActionData<Action>>
