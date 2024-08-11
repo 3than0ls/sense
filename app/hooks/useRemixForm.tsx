@@ -1,16 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFetcher } from '@remix-run/react'
-import React from 'react'
-import {
-    FieldValues,
-    FormProvider,
-    useForm,
-    SubmitHandler,
-} from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 /**
- * useRemixForm is a hook that uses react-hook-form's `FormProvider` and Remix's `fetcher.Form`,
+ * useRemixForm is a hook that uses react-hook-form's `FormProvider` and Remix's `fetcher.Form`, used in conjunction with RemixForm.tsx,
  *
  * This allows you to reap the benefits of (not in order):
  *
@@ -27,12 +21,15 @@ import { z } from 'zod'
  *
  * @example
  * // outside of component
+ * import useRemixForm from ...
+ * import RemixForm from ...
+ *
  * const schema = z.object({ ... })
  * type FormValues = z.infer<typeof schema>
  *
  * ...
  * // in component
- * const { methods, RemixForm } = useRemixForm<FormValues>(schema)
+ * const { methods, fetcher } = useRemixForm<FormValues>(schema)
  * const onSubmit = (data: FormValues) => {
  *      console.log(data)
  *      // will prevent fetcher from POSTING to the action, something you COULD do but better off doing in schema
@@ -40,60 +37,23 @@ import { z } from 'zod'
  * }
  * ...
  * // JSX for component
- * <RemixForm onSubmit={onSubmit}>
+ * <RemixForm methods={methods} fetcher={fetcher} onSubmit={onSubmit}>
  *  {various input elements within context}
  * </RemixForm>
  *
  *
  */
-export default function useRemixForm<FormDataType extends FieldValues>(
+export default function useRemixForm<FormValues extends FieldValues>(
     zodSchema: z.AnyZodObject
 ) {
-    const methods = useForm<FormDataType>({
+    const methods = useForm<FormValues>({
         resolver: zodResolver(zodSchema),
     })
 
-    const fetcher = useFetcher<FormDataType>()
-
-    const _handleSubmit = (
-        onSubmit: SubmitHandler<FormDataType> = () => {}
-    ) => {
-        return async (
-            e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
-        ) => {
-            // if we don't provide e to method.handleSubmit(onSubmit)(e), it will not prevent default, submitting regardless
-            await methods.handleSubmit(onSubmit)(e)
-            if (Object.keys(methods.formState.errors).length === 0) {
-                fetcher.submit(methods.getValues(), { method: 'POST' })
-            }
-        }
-    }
-
-    const RemixForm = ({
-        children,
-        className,
-        onSubmit,
-    }: {
-        children?: React.ReactNode
-        className?: string
-        onSubmit?: SubmitHandler<FormDataType>
-    }) => {
-        return (
-            <FormProvider {...methods}>
-                <fetcher.Form
-                    method="POST"
-                    onSubmit={_handleSubmit(onSubmit)}
-                    className={className}
-                >
-                    {children}
-                </fetcher.Form>
-            </FormProvider>
-        )
-    }
+    const fetcher = useFetcher<FormValues>()
 
     return {
         methods,
         fetcher,
-        RemixForm,
     }
 }

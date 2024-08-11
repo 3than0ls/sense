@@ -1,63 +1,57 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { useRevalidator } from '@remix-run/react'
-import { useForm } from 'react-hook-form'
+import { Form, FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import Input from '~/components/form/Input'
+import RemixForm from '~/components/RemixForm'
 import { useSupabase } from '~/context/SupabaseContext'
+import useRemixForm from '~/hooks/useRemixForm'
 import { protectRouteAgainstAuthUsers } from '~/supabase/routeProtect'
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return await protectRouteAgainstAuthUsers(request)
 }
 
-type SignInFormData = {
-    email: string
-    password: string
-}
+const schema = z.object({
+    email: z.string().email(),
+    password: z.string(),
+})
+type SignInFormData = z.infer<typeof schema>
 
-// https://www.freecodecamp.org/news/react-form-validation-zod-react-hook-form/ look into zod later
 export default function SignIn() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setError,
-    } = useForm<SignInFormData>()
     const revalidator = useRevalidator()
-    const supabase = useSupabase()
 
+    const { fetcher, methods } = useRemixForm<SignInFormData>(schema)
+
+    // const methods = useForm({
+    //     resolver: zodResolver(schema),
+    // })
+
+    const supabase = useSupabase()
     const signIn = async (data: SignInFormData) => {
         const { error } = await supabase.auth.signInWithPassword(data)
-        // TODO: server error handling
-        revalidator.revalidate()
+        if (error) {
+            methods.setError('email', { message: error.message })
+            methods.setError('password', { message: error.message })
+        } else {
+            revalidator.revalidate()
+        }
     }
-
+    console.log('rerender')
     return (
-        <div>
-            <form onSubmit={handleSubmit(async (d) => await signIn(d))}>
-                <p>
-                    <label>
-                        Email
-                        <input
-                            {...register('email')}
-                            aria-label="Email"
-                            name="email"
-                            type="email"
-                            required
-                        />
-                    </label>
-
-                    <label>
-                        Password
-                        <input
-                            {...register('password')}
-                            aria-label="Password"
-                            name="password"
-                            type="password"
-                            required
-                        />
-                    </label>
-                </p>
-                <button type="submit">Sign In</button>
-            </form>
-        </div>
+        <RemixForm
+            className="w-80 bg-gray-500"
+            fetcher={fetcher}
+            methods={methods}
+            onSubmit={signIn}
+            noAction
+        >
+            <div>
+                <Input name="email" type="email" />
+                <Input name="password" type="password" />
+            </div>
+            <button type="submit">Sign In</button>
+        </RemixForm>
     )
 }

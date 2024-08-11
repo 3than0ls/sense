@@ -1,7 +1,12 @@
-import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
+import type {
+    MetaFunction,
+    LoaderFunctionArgs,
+    ActionFunctionArgs,
+} from '@remix-run/node'
 import { json, useLoaderData, useRevalidator } from '@remix-run/react'
 import { z } from 'zod'
 import Input from '~/components/form/Input'
+import RemixForm from '~/components/RemixForm'
 import { useSupabase } from '~/context/SupabaseContext'
 import useRemixForm from '~/hooks/useRemixForm'
 import { createClient } from '~/supabase/server'
@@ -17,10 +22,14 @@ const schema = z.object({
 })
 type FormValues = z.infer<typeof schema>
 
-export async function action() {
-    console.log('received on server')
+export async function action({ request }: ActionFunctionArgs) {
+    const data = await request.formData()
+    console.log('received on server', data)
     return {}
 }
+
+// must also validate schema on server side
+// https://www.npmjs.com/package/zod-prisma-types may help
 
 export const meta: MetaFunction = () => {
     return [{ title: 'Dollars' }, { name: 'description', content: 'Homepage' }]
@@ -36,15 +45,18 @@ export default function Index() {
         revalidator.revalidate()
     }
 
-    const { RemixForm } = useRemixForm<FormValues>(schema)
-
+    const { methods, fetcher } = useRemixForm<FormValues>(schema)
     return (
         <div className="">
             default page {user?.email}
             <button className="m-4" onClick={signOut}>
                 Sign out
             </button>
-            <RemixForm className="w-80 bg-gray-400">
+            <RemixForm
+                methods={methods}
+                fetcher={fetcher}
+                className="w-80 bg-gray-400"
+            >
                 <Input name="test" />
                 <button type="submit">submit</button>
             </RemixForm>

@@ -26,7 +26,9 @@ const Input = ({
     const error = errors[name] as FieldError | undefined
 
     return (
-        <div className={`rounded-xl flex flex-col gap-1 p-3 ${className}`}>
+        <div
+            className={`rounded-xl flex flex-col gap-1 px-3 py-2 ${className}`}
+        >
             <label htmlFor={name} className="text-2xl">
                 {label}
             </label>
@@ -42,7 +44,13 @@ const Input = ({
                         : 'focus:outline-black focus:outline-[3px]')
                 }
             />
-            {error && <p className="text-error">{error.message}</p>}
+            {error ? (
+                <p className="text-error transition-all duration-100 animate-fade-in">
+                    {error.message}
+                </p>
+            ) : (
+                <p>&nbsp;</p>
+            )}
         </div>
     )
 }
