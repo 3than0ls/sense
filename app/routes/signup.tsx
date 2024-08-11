@@ -1,10 +1,11 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { Form, json, redirect, useActionData } from '@remix-run/react'
-import { AuthError } from '@supabase/supabase-js'
+import { json, redirect } from '@remix-run/react'
+import { AuthApiError } from '@supabase/supabase-js'
 import { useEffect } from 'react'
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 import Input from '~/components/form/Input'
 import RemixForm from '~/components/RemixForm'
+import { ActionErrorType } from '~/error'
 import useRemixForm, { ActionReturnType } from '~/hooks/useRemixForm'
 import prisma from '~/prisma/client'
 import { protectRouteAgainstAuthUsers } from '~/supabase/routeProtect'
@@ -24,42 +25,52 @@ type SignUpFormData = z.infer<typeof schema>
 
 // Sign up, as opposed to sign in, requires an action because prisma needs to create a User model along with the supabase auth user being created
 export async function action({ request }: ActionFunctionArgs) {
-    const formData = await request.formData()
-    // must always convert FormData to object for zod schema parsing
-    const data = Object.fromEntries(formData)
-    const parsed = schema.safeParse(data)
-    if (parsed.error) {
-        return json(
-            { message: 'Invalid form data.', code: 'zod_parse_fail' },
-            { status: 400 }
-        )
-    }
+    try {
+        const formData = await request.formData()
+        // must always convert FormData to object for zod schema parsing
+        const data = Object.fromEntries(formData)
+        const parsed = schema.parse(data)
 
-    const { supabase, headers } = await createClient(request)
-    const {
-        data: { user },
-        error,
-    } = await supabase.auth.signUp({
-        email: parsed.data.email,
-        password: parsed.data.password,
-    }) // MAY cause issues, as this does not trigger an auth state change. maybe not tho!
-    if (error) {
-        return json(
-            {
-                message: error.message ?? 'Authorization Error',
-                code: error.code,
+        const { supabase, headers } = await createClient(request)
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.signUp({
+            email: parsed.email,
+            password: parsed.password,
+        })
+        if (error) {
+            throw error
+        }
+
+        await prisma.user.create({
+            data: {
+                username: parsed.email + '_username_to_be_implenteed',
+                id: user!.id,
             },
-            { status: error.status ?? 422 }
-        )
+        })
+        return redirect('/', { headers })
+    } catch (e) {
+        let returnError: ActionErrorType
+        if (e instanceof ZodError) {
+            // frankly- the only people who have gotten to this error point don't deserve a descriptive nor graceful error handling
+            returnError = {
+                message: e.errors[0].message,
+                code: 'zod_parse_error',
+                status: 400,
+            }
+        } else if (e instanceof AuthApiError) {
+            returnError = {
+                message: e.message,
+                code: e.code ?? 'unknown_supabase_auth_api_error',
+                status: 422,
+            }
+        } else {
+            console.log('Unexpected server error:')
+            throw e
+        }
+        return json(returnError, { status: returnError.status })
     }
-
-    await prisma.user.create({
-        data: {
-            username: parsed.data.email + '_username_to_be_implenteed',
-            id: user!.id,
-        },
-    })
-    return redirect('/', { headers })
 }
 
 export default function SignUp() {
@@ -79,9 +90,6 @@ export default function SignUp() {
             }
         }
     }, [fetcher.data, methods])
-    // if (serverError.) {
-
-    // }
 
     return (
         <RemixForm
