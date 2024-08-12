@@ -106,14 +106,14 @@ export default function SignUp() {
     return (
         <Background>
             <RemixForm
-                className="px-20 py-10 h-full flex flex-col gap-5 relative"
+                className="px-8 lg:px-20 py-10  h-full flex flex-col gap-5 relative"
                 fetcher={fetcher}
                 methods={methods}
             >
                 <h1 className="text-6xl font-work-black w-[450px]">
                     Stack money today.
                 </h1>
-                <div>
+                <div className="w-full max-h-[500px] flex-grow flex flex-col justify-center">
                     <Input label="First Name" name="firstName" type="text" />
                     <Input label="Last Name" name="lastName" type="text" />
                     <Input label="Email Address" name="email" type="email" />

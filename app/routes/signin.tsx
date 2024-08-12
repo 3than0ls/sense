@@ -1,7 +1,9 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { useRevalidator } from '@remix-run/react'
+import { Link, useRevalidator } from '@remix-run/react'
 import { z } from 'zod'
+import Background from '~/components/Background'
 import Input from '~/components/form/Input'
+import Submit from '~/components/form/Submit'
 import RemixForm from '~/components/RemixForm'
 import { useSupabase } from '~/context/SupabaseContext'
 import useRemixForm from '~/hooks/useRemixForm'
@@ -36,20 +38,37 @@ export default function SignIn() {
             revalidator.revalidate()
         }
     }
+
     console.log('rerender')
     return (
-        <RemixForm
-            className="w-80 bg-gray-500"
-            fetcher={fetcher}
-            methods={methods}
-            onSubmit={signIn}
-            noAction
-        >
-            <div>
-                <Input name="email" type="email" />
-                <Input name="password" type="password" />
-            </div>
-            <button type="submit">Sign In</button>
-        </RemixForm>
+        <Background>
+            <RemixForm
+                className="px-8 lg:px-20 py-10  h-full flex flex-col gap-5 relative"
+                fetcher={fetcher}
+                methods={methods}
+                onSubmit={signIn}
+                noAction
+            >
+                <h1 className="text-6xl font-work-black w-[450px]">
+                    Good to see you again.
+                </h1>
+                <div className="w-full max-h-[500px] flex-grow flex flex-col justify-center">
+                    <Input label="Email Address" name="email" type="email" />
+                    <Input label="Password" name="password" type="password" />
+                    <div className="flex justify-center mt-4">
+                        <Submit text="Sign in" />
+                    </div>
+                </div>
+                <div className="absolute bottom-0 mb-2 w-full px-20 self-center flex flex-col justify-center gap-2">
+                    <hr className="h-[2px] bg-black" />
+                    <span className="text-subtle text-center">
+                        Don&apos;t have an account?{' '}
+                        <Link to="/signup" className="underline">
+                            Sign up.
+                        </Link>
+                    </span>
+                </div>
+            </RemixForm>
+        </Background>
     )
 }
