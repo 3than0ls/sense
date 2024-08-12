@@ -63,7 +63,9 @@ CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "theme" "Theme" NOT NULL DEFAULT 'DARK',
-    "username" TEXT NOT NULL,
+    "firstName" VARCHAR(25) NOT NULL,
+    "lastName" VARCHAR(25) NOT NULL,
+    "email" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

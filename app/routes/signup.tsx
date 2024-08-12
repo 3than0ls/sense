@@ -18,8 +18,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 const schema = z.object({
-    firstName: z.string().min(1, { message: 'First name is required' }),
-    lastName: z.string().min(1, { message: 'Last name is required' }),
+    firstName: z
+        .string()
+        .min(1, { message: 'First name is required' })
+        .max(25, { message: 'First name must be less than 25 characters' }),
+    lastName: z
+        .string()
+        .min(1, { message: 'Last name is required' })
+        .max(25, { message: 'Last name must be less than 25 characters' }),
     email: z.string().email().min(1, { message: 'Last name is required' }),
     password: z
         .string()
@@ -46,10 +52,12 @@ export async function action({ request }: ActionFunctionArgs) {
         if (error) {
             throw error
         }
-
+        // if prisma user creation errors (usually due to unsynced schemas), the auth user is created but not the public
         await prisma.user.create({
             data: {
-                username: parsed.email + '_username_to_be_implenteed',
+                email: parsed.email,
+                firstName: parsed.firstName,
+                lastName: parsed.lastName,
                 id: user!.id,
             },
         })
