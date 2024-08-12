@@ -20,7 +20,7 @@ export async function loader({ request }: ActionFunctionArgs) {
     } = await supabase.auth.getUser()
 
     // TODO: store theme in local storage for users that don't have an account, but still change theme
-    let initialTheme: Theme = Theme.DARK
+    let initialTheme: Theme = Theme.LIGHT
     if (user) {
         const userData = await prisma.user.findFirst({
             where: { id: user.id },
@@ -52,6 +52,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         theme: { initialTheme },
     } = useLoaderData<typeof loader>()
 
+    const basicTheme =
+        initialTheme === 'LIGHT' ? 'bg-light text-light' : 'bg-dark text-dark'
+
     return (
         <html lang="en">
             <head>
@@ -63,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body>
+            <body className={basicTheme}>
                 <ContextsProvider
                     supabase={{ env }}
                     auth={{ initialUser }}

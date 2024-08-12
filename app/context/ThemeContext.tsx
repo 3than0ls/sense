@@ -28,8 +28,23 @@ const ThemeProvider = ({ initialTheme, children }: ThemeProviderProps) => {
     )
 }
 
+/**
+ * @returns {ThemeContextType} theme and setTheme
+ */
 export const useTheme = (): ThemeContextType => {
     return useContext(ThemeContext)
+}
+
+/**
+ * @returns TailwindCSS class names for basic styles pertaining to the theme (based on light or dark)
+ */
+export const useThemeClass = () => {
+    const { theme } = useTheme()
+    if (theme === 'LIGHT') {
+        return 'bg-light text-light'
+    } else {
+        return 'bg-dark text-dark'
+    }
 }
 
 export default ThemeProvider

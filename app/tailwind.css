@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Work-Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/font/WorkSans-Regular.ttf')
+    }
+    @font-face {
+        font-family: 'Work-Sans-Bold';
+        font-style: bold;
+        font-weight: 700;
+        font-display: swap;
+        src: url('/font/WorkSans-Bold.ttf')
+    }
+    @font-face {
+        font-family: 'Work-Sans-Black';
+        font-style: black;
+        font-weight: 900;
+        font-display: swap;
+        src: url('/font/WorkSans-Black.ttf')
+    }
+
+    html {
+        font-family: 'Work-Sans', sans-serif
+    }
+}

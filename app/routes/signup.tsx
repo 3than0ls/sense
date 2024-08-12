@@ -1,9 +1,11 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { json, redirect } from '@remix-run/react'
+import { json, Link, redirect } from '@remix-run/react'
 import { AuthApiError } from '@supabase/supabase-js'
 import { useEffect } from 'react'
 import { z, ZodError } from 'zod'
+import Background from '~/components/Background'
 import Input from '~/components/form/Input'
+import Submit from '~/components/form/Submit'
 import RemixForm from '~/components/RemixForm'
 import { ActionErrorType } from '~/error'
 import useRemixForm, { ActionReturnType } from '~/hooks/useRemixForm'
@@ -16,7 +18,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 const schema = z.object({
-    email: z.string().email(),
+    firstName: z.string().min(1, { message: 'First name is required' }),
+    lastName: z.string().min(1, { message: 'Last name is required' }),
+    email: z.string().email().min(1, { message: 'Last name is required' }),
     password: z
         .string()
         .min(6, { message: 'Password must be at least 6 characters' }),
@@ -92,16 +96,34 @@ export default function SignUp() {
     }, [fetcher.data, methods])
 
     return (
-        <RemixForm
-            className="w-80 bg-blue-500"
-            fetcher={fetcher}
-            methods={methods}
-        >
-            <div>
-                <Input name="email" type="email" />
-                <Input name="password" type="password" />
-            </div>
-            <button type="submit">Sign Up</button>
-        </RemixForm>
+        <Background>
+            <RemixForm
+                className="px-20 py-10 h-full flex flex-col gap-5 relative"
+                fetcher={fetcher}
+                methods={methods}
+            >
+                <h1 className="text-6xl font-work-black w-[450px]">
+                    Stack money today.
+                </h1>
+                <div>
+                    <Input label="First Name" name="firstName" type="text" />
+                    <Input label="Last Name" name="lastName" type="text" />
+                    <Input label="Email Address" name="email" type="email" />
+                    <Input label="Password" name="password" type="password" />
+                    <div className="flex justify-center mt-4">
+                        <Submit text="Sign up" />
+                    </div>
+                </div>
+                <div className="absolute bottom-0 mb-2 w-full px-20 self-center flex flex-col justify-center gap-2">
+                    <hr className="h-[2px] bg-black" />
+                    <span className="text-subtle text-center">
+                        Already have an account?{' '}
+                        <Link to="/signin" className="underline">
+                            Log in.
+                        </Link>
+                    </span>
+                </div>
+            </RemixForm>
+        </Background>
     )
 }
