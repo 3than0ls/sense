@@ -20,8 +20,8 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
 
     return (
         <div>
-            <tr className="flex flex-row items-center gap-4 min-h-10 px-4">
-                <td className="text-lg leading-snug w-56">
+            <div className="flex flex-row items-center gap-4 min-h-10 px-4">
+                <div className="text-lg leading-snug w-56">
                     <button
                         className={`flex items-center text- gap-2`}
                         onClick={() => setExpanded(!expanded)}
@@ -32,25 +32,19 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                         />
                         {name}
                     </button>
-                </td>
-                <td className="flex-grow">
+                </div>
+                <div className="flex-grow">
                     <BudgetItemBar
                         expanded={expanded}
                         balance={balance}
                         target={target}
                         assigned={assigned}
                     />
-                </td>
-                <td className="w-32 text-right">
-                    <span>${balance.toFixed(2)}</span>
-                </td>
-                <td className="w-32 text-right">
-                    <span>${assigned.toFixed(2)}</span>
-                </td>
-                <td className="w-32 text-right">
-                    <span>${target.toFixed(2)}</span>
-                </td>
-            </tr>
+                </div>
+                <span className="w-32 text-right">${balance.toFixed(2)}</span>
+                <span className="w-32 text-right">${assigned.toFixed(2)}</span>
+                <span className="w-32 text-right">${target.toFixed(2)}</span>
+            </div>
             {expanded && <BudgetItemExpanded budgetItem={budgetItem} />}
         </div>
     )

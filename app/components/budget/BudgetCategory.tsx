@@ -20,11 +20,11 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
 
     return (
         <>
-            <tr className="px-4 flex items-center min-h-10 border-collapse">
+            <div className="px-4 flex items-center min-h-10 border-collapse">
                 <span className="font-work-bold text-xl">
                     {budgetCategory.name}
                 </span>
-            </tr>
+            </div>
             {/* <hr className={`border-none h-[4px] ${themeStyle} mb-2`} /> */}
             {...budgetItemComponents}
         </>
