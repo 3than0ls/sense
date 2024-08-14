@@ -1,5 +1,4 @@
 import { BudgetItem } from '@prisma/client'
-import React from 'react'
 import BudgetItemBarExpanded from './BudgetItemBarExpanded'
 
 type BudgetItemExpandedProps = {

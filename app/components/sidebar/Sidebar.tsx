@@ -1,6 +1,4 @@
-import React, { useRef, useState } from 'react'
-import { BudgetFullType } from '~/context/BudgetContext'
-import Icon from '../icons/Icon'
+import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'

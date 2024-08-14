@@ -1,15 +1,3 @@
-import React from 'react'
-import Icon from '../icons/Icon'
-import ChevronUp from '../icons/ChveronUp'
-import { useTheme } from '~/context/ThemeContext'
-
-type IndicatorProps = {
-    label: string
-    amount: number
-    translation: number
-    direction: 'up' | 'down'
-}
-
 const bindNumber = (num: number, min: number, max: number) => {
     if (min > max || max < min) {
         throw new Error('Binding number parameters min and max are invalid.')

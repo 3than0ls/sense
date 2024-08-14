@@ -1,7 +1,5 @@
-import React from 'react'
 import { BudgetCategoryFullType } from '~/context/BudgetContext'
 import BudgetItem from './BudgetItem'
-import { useTheme, useThemeClass } from '~/context/ThemeContext'
 
 type BudgetCategoryProps = {
     budgetCategory: BudgetCategoryFullType
@@ -14,9 +12,6 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
             return <BudgetItem budgetItem={budgetItem} key={budgetItem.id} />
         }
     )
-
-    const { theme } = useTheme()
-    const themeStyle = theme === 'LIGHT' ? 'bg-dark' : 'bg-light'
 
     return (
         <>

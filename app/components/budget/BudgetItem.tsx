@@ -1,5 +1,5 @@
 import { BudgetItem as BudgetItemModel } from '@prisma/client'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'

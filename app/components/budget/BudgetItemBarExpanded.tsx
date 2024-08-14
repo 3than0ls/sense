@@ -1,6 +1,3 @@
-import React from 'react'
-import Icon from '../icons/Icon'
-import ChevronUp from '../icons/ChveronUp'
 import { useTheme } from '~/context/ThemeContext'
 
 type IndicatorProps = {
