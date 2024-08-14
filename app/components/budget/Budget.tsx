@@ -40,18 +40,22 @@ const Budget = ({ budgetData }: BudgetProps) => {
                     <Icon type="edit" interactive />
                 </div>
                 <div className="flex flex-grow overflow-auto">
-                    <div
-                        className={`flex flex-col divide-y ${themeStyles} flex-grow overflow-y-auto`}
-                    >
-                        <div className="flex flex-row justify-end gap-4 px-4 text-right">
-                            <span className="w-56 flex-grow text-left">
-                                {name}
-                            </span>
-                            <span className="w-32">Assigned</span>
-                            <span className="w-32">Balance</span>
-                            <span className="w-32">Target</span>
+                    <div className="relative flex-grow flex flex-col">
+                        <div
+                            className={`relative flex flex-col divide-y ${themeStyles} flex-grow overflow-y-auto`}
+                        >
+                            {...budgetCategoryComponents}
+                            <div
+                                className={`sticky bottom-0 mt-auto flex w-full justify-end gap-4 text-right px-4 ${themeStyles}`}
+                            >
+                                <span className="w-56 text-left flex-grow font-work-bold">
+                                    {name}
+                                </span>
+                                <span className="w-32">Assigned</span>
+                                <span className="w-32">Balance</span>
+                                <span className="w-32">Target</span>
+                            </div>
                         </div>
-                        {...budgetCategoryComponents}
                     </div>
                     <div className="w-1/4">some other menuthing her</div>
                 </div>
