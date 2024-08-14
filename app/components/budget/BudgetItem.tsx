@@ -3,6 +3,7 @@ import { useState } from 'react'
 import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
+import { useTheme } from '~/context/ThemeContext'
 
 type BudgetItemProps = {
     budgetItem: BudgetItemModel
@@ -15,17 +16,22 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
 
+    const { theme } = useTheme()
+
     return (
         <div>
             <div className="flex flex-row items-center gap-4 min-h-10 px-4">
                 <div className="text-lg leading-snug w-56">
                     <button
-                        className={`flex items-center text-left gap-2`}
+                        className={`flex items-center text-left gap-2 hover:opacity-85 transition`}
                         onClick={() => setExpanded(!expanded)}
                     >
                         <Icon
-                            type={expanded ? 'chevron-up' : 'chevron-down'}
-                            className="size-[18px]"
+                            type="chevron-down"
+                            // type={expanded ? 'chevron-up' : 'chevron-down'}
+                            className={`size-[18px] transform ${
+                                expanded && '-rotate-180'
+                            } transition`}
                         />
                         {name}
                     </button>
