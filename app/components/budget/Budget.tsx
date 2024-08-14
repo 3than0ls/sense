@@ -31,7 +31,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     return (
         <BudgetProvider budgetData={budgetData}>
-            <div className="h-full flex flex-col overflow-hidden">
+            <div className="h-full flex flex-col flex-grow overflow-hidden">
                 <div className={`flex h-auto gap-6 p-4 items-center`}>
                     <div className="flex flex-col w-full">
                         <span className="text-4xl font-work-black">{name}</span>

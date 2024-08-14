@@ -4,10 +4,9 @@ import type {
     BudgetItem,
 } from '@prisma/client'
 import { LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
 import Budget from '~/components/budget/Budget'
+import Sidebar from '~/components/sidebar/Sidebar'
 import { BudgetFullType } from '~/context/BudgetContext'
-import prisma from '~/prisma/client'
 
 export async function loader(request: LoaderFunctionArgs) {
     const budget: BudgetT = {
@@ -213,5 +212,12 @@ export default function View() {
         budgetCategories,
     }
 
-    return <Budget budgetData={data as unknown as BudgetFullType} />
+    // definitely going to have to use outlet?
+    return (
+        <div className="flex h-full">
+            <Sidebar />
+
+            <Budget budgetData={data as unknown as BudgetFullType} />
+        </div>
+    )
 }

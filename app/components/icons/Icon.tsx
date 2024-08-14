@@ -3,10 +3,17 @@ import { useTheme } from '~/context/ThemeContext'
 import Edit from './Edit'
 import ChevronDown from './ChevronDown'
 import ChevronUp from './ChveronUp'
+import ChevronLeft from './ChevronLeft'
+import ChevronRight from './ChevronRight'
 
 type IconProps = {
     color?: string
-    type: 'edit' | 'chevron-down' | 'chevron-up'
+    type:
+        | 'edit'
+        | 'chevron-down'
+        | 'chevron-up'
+        | 'chevron-left'
+        | 'chevron-right'
     className?: string
     interactive?: boolean
 }
@@ -33,8 +40,12 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
         case 'chevron-up':
             icon = <ChevronUp className={className} />
             break
-        default:
-            icon = <Edit className={className} />
+        case 'chevron-left':
+            icon = <ChevronLeft className={className} />
+            break
+        case 'chevron-right':
+            icon = <ChevronRight className={className} />
+            break
     }
 
     return (
