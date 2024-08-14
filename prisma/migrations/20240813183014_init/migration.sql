@@ -41,6 +41,7 @@ CREATE TABLE "BudgetItem" (
     "name" TEXT NOT NULL,
     "target" DOUBLE PRECISION NOT NULL,
     "balance" DOUBLE PRECISION NOT NULL,
+    "assigned" DOUBLE PRECISION NOT NULL,
     "budgetCategoryId" UUID NOT NULL,
 
     CONSTRAINT "BudgetItem_pkey" PRIMARY KEY ("id")

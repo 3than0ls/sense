@@ -45,7 +45,7 @@ model BudgetItem {
     name             String
     target           Float
     balance          Float
-    // spent            Float
+    assigned         Float
     budgetCategoryId String         @db.Uuid
     BudgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
     transactions     Transaction[]

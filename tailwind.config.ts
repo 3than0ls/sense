@@ -11,13 +11,18 @@ export default {
             textColor: {
                 light: '#0f0f0f',
                 dark: '#fefefe',
-                subtle: '#999999',
             },
             colors: {
                 primary: '#f7843c',
-                good: '#e62b25',
-                bad: '#49cf06',
+                bad: '#e62b25',
+                good: '#49cf06',
                 error: '#ff3333',
+                balance: '#5adf17',
+                target: '#f7e92d',
+                assigned: '#357015',
+                light: '#edeae6',
+                dark: '#262625',
+                subtle: '#999999',
             },
             fontFamily: {
                 'work-black': ['Work-Sans-Black', 'sans-serif'],

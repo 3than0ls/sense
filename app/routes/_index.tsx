@@ -73,6 +73,9 @@ export default function Index() {
                 <Input name="test your api endpoint" />
                 <button type="submit">submit</button>
             </RemixForm>
+            <Link to="/smt" className="bg-gray-300">
+                preview budget skeleton
+            </Link>
         </div>
     )
 }

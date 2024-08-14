@@ -1,14 +1,17 @@
 import React from 'react'
 import { useTheme } from '~/context/ThemeContext'
 import Edit from './Edit'
+import ChevronDown from './ChevronDown'
+import ChevronUp from './ChveronUp'
 
 type IconProps = {
     color?: string
-    type: 'edit'
+    type: 'edit' | 'chevron-down' | 'chevron-up'
     className?: string
+    interactive?: boolean
 }
 
-const Icon = ({ color, type, className }: IconProps) => {
+const Icon = ({ color, type, className, interactive = false }: IconProps) => {
     const { theme } = useTheme()
 
     if (!color) {
@@ -24,11 +27,21 @@ const Icon = ({ color, type, className }: IconProps) => {
         case 'edit':
             icon = <Edit className={className} />
             break
+        case 'chevron-down':
+            icon = <ChevronDown className={className} />
+            break
+        case 'chevron-up':
+            icon = <ChevronUp className={className} />
+            break
         default:
             icon = <Edit className={className} />
     }
 
-    return <span className="hover:cursor-pointer">{icon}</span>
+    return (
+        <span className={interactive ? 'hover:cursor-pointer' : ''}>
+            {icon}
+        </span>
+    )
 }
 
 export default Icon

@@ -7,11 +7,13 @@ import {
     useLoaderData,
 } from '@remix-run/react'
 import type { ActionFunctionArgs } from '@remix-run/node'
-import './tailwind.css'
+import stylesheet from '~/tailwind.css?url'
 import { createClient } from './supabase/server'
 import { Theme } from '@prisma/client'
 import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
+
+export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
 
 export async function loader({ request }: ActionFunctionArgs) {
     const { supabase } = await createClient(request)
@@ -66,7 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className={basicTheme}>
+            <body className={`h-screen ${basicTheme}`}>
                 <ContextsProvider
                     supabase={{ env }}
                     auth={{ initialUser }}
