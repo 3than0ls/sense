@@ -32,10 +32,14 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
         >
             <div
                 className={`absolute ${
-                    direction === 'up' ? '-top-[28px]' : '-top-[60px] '
+                    direction === 'up' ? '-top-[60px]' : '-top-[60px] '
                 } flex flex-col items-center`}
             >
-                <div className={`w-[4px] h-[70px] ${themeStyle}`}></div>
+                <div
+                    className={`w-[4px] ${
+                        direction === 'up' ? 'h-[105px]' : 'h-[70px]'
+                    }  ${themeStyle}`}
+                ></div>
                 <span className={`${themeStyle} px-3 py-1 rounded-full`}>
                     {label}: ${amount}
                 </span>

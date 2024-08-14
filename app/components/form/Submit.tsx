@@ -14,7 +14,7 @@ const Submit = ({ text, className }: SubmitProps) => {
 
     return (
         <button
-            className={`py-3 px-12 rounded-2xl bg-opacity-100 hover:bg-opacity-[85%] shadow-sm hover:shadow-md transition-all duration-300 ease-in-out ${style} ${className}`}
+            className={`py-3 px-12 rounded-2xl bg-opacity-100 hover:bg-opacity-[85%] shadow-sm hover:shadow-md transition-all duration-400 ease-in-out ${style} ${className}`}
             type="submit"
         >
             <span className="">{text}</span>

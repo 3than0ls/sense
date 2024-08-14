@@ -1,34 +1,33 @@
 import React from 'react'
 import Icon from '../icons/Icon'
+import { useTheme } from '~/context/ThemeContext'
 
 type SidebarCloseButtonProps = {
     closed: boolean
+    width: number
     setWidth: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SidebarCloseButton = ({ closed, setWidth }: SidebarCloseButtonProps) => {
+const SidebarCloseButton = ({
+    closed,
+    width,
+    setWidth,
+}: SidebarCloseButtonProps) => {
+    const { theme } = useTheme()
+    const themeStyle =
+        theme === 'LIGHT' ? 'hover:stroke-light' : 'hover:stroke-dark'
+
     return (
-        <div className={`mt-auto ${closed ? 'mr-auto' : 'ml-auto'}`}>
-            {closed ? (
-                <button onClick={() => setWidth(400)}>
-                    <Icon
-                        type="chevron-right"
-                        interactive
-                        className="hover:stroke-white size-6 transition duration-200 ease-in-out"
-                    />
-                </button>
-            ) : (
-                <button
-                    onClick={() => setWidth(0)}
-                    className="hover:stroke-white"
-                >
-                    <Icon
-                        type="chevron-left"
-                        interactive
-                        className="hover:stroke-white size-6 transition duration-200 ease-in-out"
-                    />
-                </button>
-            )}
+        <div className={`mt-auto ml-auto mr-3`}>
+            <button onClick={() => setWidth(closed ? 250 : 0)}>
+                <Icon
+                    type="chevron-left"
+                    interactive
+                    className={`${themeStyle} transform ${
+                        width === 0 && 'rotate-180'
+                    } size-6 transition duration-400`}
+                />
+            </button>
         </div>
     )
 }
