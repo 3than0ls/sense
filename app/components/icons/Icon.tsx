@@ -5,6 +5,8 @@ import ChevronDown from './ChevronDown'
 import ChevronUp from './ChveronUp'
 import ChevronLeft from './ChevronLeft'
 import ChevronRight from './ChevronRight'
+import CurrencyDollar from './CurrencyDollar'
+import PlusCircle from './PlusCircle'
 
 type IconProps = {
     color?: string
@@ -14,10 +16,17 @@ type IconProps = {
         | 'chevron-up'
         | 'chevron-left'
         | 'chevron-right'
+        | 'currency-dollar'
+        | 'plus-circle'
     className?: string
     interactive?: boolean
 }
 
+/**
+ * All icons from https://heroicons.com/
+ *
+ * @returns Icon component
+ */
 const Icon = ({ color, type, className, interactive = false }: IconProps) => {
     const { theme } = useTheme()
 
@@ -45,6 +54,12 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'chevron-right':
             icon = <ChevronRight className={className} />
+            break
+        case 'currency-dollar':
+            icon = <CurrencyDollar className={className} />
+            break
+        case 'plus-circle':
+            icon = <PlusCircle className={className} />
             break
     }
 

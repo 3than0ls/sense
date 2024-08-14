@@ -2,6 +2,7 @@ import BudgetProvider, { BudgetFullType } from '~/context/BudgetContext'
 import BudgetCategory from './BudgetCategory'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
+import BudgetMenu from './BudgetMenu'
 
 type BudgetProps = {
     budgetData: BudgetFullType
@@ -57,7 +58,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-1/4">some other menuthing her</div>
+                    <BudgetMenu budgetData={budgetData} />
                 </div>
             </div>
         </BudgetProvider>

@@ -7,13 +7,14 @@ import {
     useLoaderData,
 } from '@remix-run/react'
 import type { ActionFunctionArgs } from '@remix-run/node'
-import stylesheet from '~/tailwind.css?url'
+// import stylesheet from '~/tailwind.css?url'
+import '~/tailwind.css'
 import { createClient } from './supabase/server'
 import { Theme } from '@prisma/client'
 import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
 
-export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
+// export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
 
 export async function loader({ request }: ActionFunctionArgs) {
     const { supabase } = await createClient(request)
