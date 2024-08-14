@@ -1,15 +1,7 @@
-import type {
-    Budget as BudgetT,
-    BudgetCategory,
-    BudgetItem,
-} from '@prisma/client'
-import { LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import Budget from '~/components/budget/Budget'
-import Sidebar from '~/components/sidebar/Sidebar'
+import { BudgetCategory, BudgetItem, Budget as BudgetT } from '@prisma/client'
 import { BudgetFullType } from '~/context/BudgetContext'
 
-export async function loader(request: LoaderFunctionArgs) {
+export default function fakeData() {
     const budget: BudgetT = {
         createdAt: new Date(),
         description: 'a budget to save money',
@@ -17,7 +9,6 @@ export async function loader(request: LoaderFunctionArgs) {
         name: 'money saving budget',
         userId: 'some user',
     }
-
     const cats: BudgetCategory[] = [
         {
             budgetId: 'abcdef',
@@ -110,17 +101,4 @@ export async function loader(request: LoaderFunctionArgs) {
     }
 
     return returnType
-}
-
-export default function View() {
-    const data = useLoaderData<typeof loader>()
-
-    // definitely going to have to use outlet?
-    return (
-        <div className="flex h-full">
-            <Sidebar />
-
-            <Budget budgetData={data as unknown as BudgetFullType} />
-        </div>
-    )
 }

@@ -8,7 +8,7 @@ type SidebarProps = {}
 const Sidebar = (SidebarProps: SidebarProps) => {
     // make length adjustable, make it able to close
 
-    const [width, setWidth] = useState(250)
+    const [width, setWidth] = useState(600)
     const sidebarRef = useRef<HTMLDivElement | null>(null)
     const [closed, setClosed] = useState(false)
     const themeStyle = useThemeClass()
@@ -26,22 +26,22 @@ const Sidebar = (SidebarProps: SidebarProps) => {
             ref={sidebarRef}
         >
             <SidebarLink
-                href="/a"
+                href="/"
                 closed={width === 0 && closed}
-                openChildren={() => 'A Link'}
-                closedChildren={() => 'A'}
+                openChildren={() => 'Home'}
+                closedChildren={() => 'H'}
             />
             <SidebarLink
-                href="/a"
+                href="bogusbudgetID"
                 closed={width === 0 && closed}
-                openChildren={() => 'B Link'}
+                openChildren={() => 'Budget A'}
                 closedChildren={() => 'B'}
             />
             <SidebarLink
-                href="/a"
+                href="idkwhatthiswilldo"
                 closed={width === 0 && closed}
-                openChildren={() => 'ignore the terrible color :('}
-                closedChildren={() => 'C'}
+                openChildren={() => 'ignore the bad color :('}
+                closedChildren={() => 'N'}
             />
             <SidebarCloseButton
                 width={width}

@@ -19,7 +19,7 @@ const SidebarCloseButton = ({
 
     return (
         <div className={`mt-auto ml-auto mr-3`}>
-            <button onClick={() => setWidth(closed ? 250 : 0)}>
+            <button onClick={() => setWidth(closed ? 600 : 0)}>
                 <Icon
                     type="chevron-left"
                     interactive
