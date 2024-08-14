@@ -31,17 +31,17 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     return (
         <BudgetProvider budgetData={budgetData}>
-            <div className="h-full flex flex-col flex-grow overflow-hidden">
-                <div className={`flex h-auto gap-6 p-4 items-center`}>
+            <div className="w-full min-w-[600px] flex flex-col">
+                <div className={`flex gap-6 p-4 items-center`}>
                     <div className="flex flex-col w-full">
                         <span className="text-4xl font-work-black">{name}</span>
                         <span>{description}</span>
                     </div>
                     <Icon type="edit" interactive />
                 </div>
-                <div className="flex h-full">
+                <div className="flex flex-grow overflow-auto">
                     <div
-                        className={`flex flex-col divide-y ${themeStyles} flex-grow overflow-auto`}
+                        className={`flex flex-col divide-y ${themeStyles} flex-grow overflow-y-auto`}
                     >
                         <div className="flex flex-row justify-end gap-4 px-4 text-right">
                             <span className="w-56 flex-grow text-left">

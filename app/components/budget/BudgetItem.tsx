@@ -12,9 +12,6 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     const { name, balance, target, assigned } = budgetItem
     const [expanded, setExpanded] = useState(false)
 
-    const balanceTranslation = -(100 - (balance / target) * 100)
-    const assignedTranslation = -(100 - 70)
-
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
 
@@ -23,7 +20,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
             <div className="flex flex-row items-center gap-4 min-h-10 px-4">
                 <div className="text-lg leading-snug w-56">
                     <button
-                        className={`flex items-center text- gap-2`}
+                        className={`flex items-center text-left gap-2`}
                         onClick={() => setExpanded(!expanded)}
                     >
                         <Icon
@@ -33,14 +30,17 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                         {name}
                     </button>
                 </div>
-                <div className="flex-grow">
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="flex-grow"
+                >
                     <BudgetItemBar
                         expanded={expanded}
                         balance={balance}
                         target={target}
                         assigned={assigned}
                     />
-                </div>
+                </button>
                 <span className="w-32 text-right">${balance.toFixed(2)}</span>
                 <span className="w-32 text-right">${assigned.toFixed(2)}</span>
                 <span className="w-32 text-right">${target.toFixed(2)}</span>
