@@ -13,7 +13,7 @@ const Submit = ({ className, disabled, children }: SubmitProps) => {
 
     return (
         <button
-            className={`py-3 px-12 rounded-2xl ${
+            className={`${
                 disabled
                     ? 'bg-opacity-50 hover:cursor-not-allowed'
                     : 'bg-opacity-100 hover:bg-opacity-[85%]'

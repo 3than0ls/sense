@@ -89,7 +89,7 @@ const BudgetMenuForm = ({
                     }}
                 />
                 <Submit
-                    className="text-sm px-0 py-0 flex justify-center items-center rounded-lg w-auto h-full aspect-square"
+                    className="text-sm flex justify-center items-center rounded-lg h-full aspect-square"
                     disabled={(!changed || error) as boolean}
                 >
                     <Icon type="edit" className="size-5" />
