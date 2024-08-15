@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { FieldError, Form, useForm, useFormContext } from 'react-hook-form'
+import { useState } from 'react'
+import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Submit from '../form/Submit'
 import Icon from '../icons/Icon'
-import useRemixForm from '~/hooks/useRemixForm'
 import { z } from 'zod'
-import RemixForm from '../RemixForm'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFetcher, useRevalidator } from '@remix-run/react'
 
@@ -24,6 +22,12 @@ const BudgetMenuForm = ({
     defaultValue,
     schema,
 }: BudgetMenuProps) => {
+    // this component is an abomination
+    // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
+    // unfortunately, it's not an ideal world. In fact it's a cruel one.
+    // I wasn't even able to use useRemixForm hook
+    // Instead, a bunch of manual settings from scratch had to be created
+    // I hate forms.
     const {
         register,
         getValues,

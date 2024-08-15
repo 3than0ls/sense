@@ -3,9 +3,7 @@ import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
 
-type SidebarProps = {}
-
-const Sidebar = (SidebarProps: SidebarProps) => {
+const Sidebar = () => {
     // make length adjustable, make it able to close
 
     const [width, setWidth] = useState(600)

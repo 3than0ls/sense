@@ -3,7 +3,6 @@ import { useState } from 'react'
 import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
-import { useTheme } from '~/context/ThemeContext'
 
 type BudgetItemProps = {
     budgetItem: BudgetItemModel
@@ -15,8 +14,6 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
 
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
-
-    const { theme } = useTheme()
 
     return (
         <div>
