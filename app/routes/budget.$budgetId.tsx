@@ -5,7 +5,7 @@ import { BudgetFullType } from '~/context/BudgetContext'
 import fakeData from '~/utils/fakeData'
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    console.log(params.budgetId)
+    console.log('LOADING BUDGET ID', params.budgetId)
     // fetch budget from database using budgetId
     // get user from supabase auth getUser
     // ensure userId from budget and user.id from supabase auth match

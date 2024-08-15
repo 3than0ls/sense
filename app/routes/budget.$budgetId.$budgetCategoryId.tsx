@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { json, Link, useActionData, useLoaderData } from '@remix-run/react'
+import { Form, Link, useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
@@ -7,7 +7,7 @@ import { useTheme } from '~/context/ThemeContext'
 import fakeData from '~/utils/fakeData'
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    console.log(params.budgetId, params.budgetCategoryId)
+    console.log('LOADING BUDGET CATEGORY ID', params.budgetCategoryId)
 
     // split between just using outlet context to cut out another fetching step,
     // but will likely do a refetch so revalidating is easy
@@ -81,9 +81,15 @@ export default function BudgetCategoryEditRoute() {
             <div className="w-full flex flex-col gap-1">
                 <span className="text-lg ml-2">Items in Category</span>
                 <div className="flex flex-col gap-2">{...budgetItems}</div>
-                <Link to="" className="text-lg">
-                    Create new
-                </Link>
+                <Form action="new" method="POST">
+                    <button
+                        type="submit"
+                        className="bg-primary w-full mt-1 flex justify-center items-center gap-2 rounded-xl hover:bg-opacity-80 transition px-4 py-2"
+                    >
+                        Create New
+                        <Icon type="plus-circle" className="size-5" />
+                    </button>
+                </Form>
             </div>
         </div>
     )
