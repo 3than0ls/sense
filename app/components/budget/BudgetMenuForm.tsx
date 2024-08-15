@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { FieldError, useForm } from 'react-hook-form'
+import { useRef, useState } from 'react'
+import { FieldError, FormSubmitHandler, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Submit from '../form/Submit'
 import Icon from '../icons/Icon'
@@ -13,6 +13,7 @@ type BudgetMenuProps = {
     name: string
     defaultValue: string
     schema: z.AnyZodObject
+    action?: string
 }
 
 const BudgetMenuForm = ({
@@ -21,6 +22,7 @@ const BudgetMenuForm = ({
     className,
     defaultValue,
     schema,
+    action,
 }: BudgetMenuProps) => {
     // this component is an abomination
     // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
@@ -32,20 +34,21 @@ const BudgetMenuForm = ({
         register,
         getValues,
         reset,
+        watch,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(schema),
         reValidateMode: 'onChange',
         mode: 'onChange',
-        // defaultValues: {
-        //      [name]: defaultValue,
-        // },
         resetOptions: {
             keepErrors: false,
         },
     })
+    const { ref, ...rest } = register(name)
+    const inputRef = useRef<HTMLInputElement | null>(null)
+
     const error = errors[name] as FieldError | undefined
-    const [changed, setChanged] = useState(false)
+    const inputValue = watch(name)
 
     const fetcher = useFetcher()
     const validator = useRevalidator()
@@ -56,14 +59,34 @@ const BudgetMenuForm = ({
     const focusThemeStyles =
         theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
+    const submit = () => {
+        // due to skeleton and nothing in the backend happening, defaultValue never changes
+        // thus, currently it seems like it's constantly being submitted if you blur (various focus events)
+        // even though the value hasn't changed
+        // will fix itself once defaultValue is updated and this component is rerendered
+        if (
+            inputValue &&
+            inputValue !== defaultValue &&
+            inputValue !==
+                (fetcher.data as unknown as { TEMP_DELETE_CAT_NAME?: string })
+                    ?.TEMP_DELETE_CAT_NAME // shut up typescript i know it's temporary and will be deleted
+        ) {
+            fetcher.submit(
+                { [name]: getValues(name) },
+                { method: 'PATCH', action }
+            )
+            validator.revalidate()
+            inputRef.current?.blur()
+        }
+    }
+
+    // we don't use fetcher.Form because we mainly use fetcher for fetcher.submit
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault()
-                fetcher.submit({ [name]: getValues(name) }, { method: 'PATCH' })
-                validator.revalidate()
+                submit()
             }}
-            onChange={() => setChanged(getValues('name') !== defaultValue)}
             className={`flex flex-col gap-1 text-md w-full ${className}`}
         >
             <label htmlFor={name} className={`ml-1 text-lg`}>
@@ -80,20 +103,25 @@ const BudgetMenuForm = ({
                     }
                     autoComplete="off"
                     defaultValue={defaultValue}
-                    {...register(name)}
+                    ref={(e) => {
+                        ref(e)
+                        inputRef.current = e
+                    }}
+                    {...rest}
                     onBlur={() => {
                         if (error) {
                             reset()
-                            setChanged(false)
+                        } else {
+                            submit()
                         }
                     }}
                 />
-                <Submit
-                    className="text-sm flex justify-center items-center rounded-lg h-full aspect-square"
-                    disabled={(!changed || error) as boolean}
+                <button
+                    onClick={() => inputRef.current?.focus()}
+                    className="flex justify-center items-center bg-opacity-100 hover:bg-opacity-[85%] bg-primary transition aspect-square h-full rounded-lg"
                 >
                     <Icon type="edit" className="size-5" />
-                </Submit>
+                </button>
             </div>
             {error && (
                 <p className="text-error transition-all duration-100 animate-fade-in">

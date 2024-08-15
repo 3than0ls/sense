@@ -9,7 +9,6 @@ type BudgetProps = {
 }
 
 const Budget = ({ budgetData }: BudgetProps) => {
-    // console.log(budgetData)
     const { createdAt, description, name, budgetCategories } = budgetData
 
     const budgetCategoryComponents = Array.from(

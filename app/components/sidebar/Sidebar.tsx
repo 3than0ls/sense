@@ -15,7 +15,6 @@ const Sidebar = () => {
         <div
             onTransitionEnd={(e) => {
                 if (e.target === sidebarRef.current) {
-                    console.log('correct transition ended')
                     setClosed(!closed)
                 }
             }}

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { json, Link, useActionData, useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
@@ -36,15 +36,17 @@ const schema = z.object({
 
 export async function action({ request }: ActionFunctionArgs) {
     const data = await request.formData()
+    const parsed = schema.parse(Object.fromEntries(data))
     // TODO
 
-    console.log('updating category name ', data)
-    return {}
+    console.log('updating category name ', parsed)
+    return {
+        TEMP_DELETE_CAT_NAME: parsed.name,
+    }
 }
 
 export default function BudgetCategoryEditRoute() {
     const { budgetCategory } = useLoaderData<typeof loader>()
-    console.log(budgetCategory.name)
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
@@ -79,7 +81,9 @@ export default function BudgetCategoryEditRoute() {
             <div className="w-full flex flex-col gap-1">
                 <span className="text-lg ml-2">Items in Category</span>
                 <div className="flex flex-col gap-2">{...budgetItems}</div>
-                {/* <Link className="text-lg">Create new</Link> */}
+                <Link to="" className="text-lg">
+                    Create new
+                </Link>
             </div>
         </div>
     )
