@@ -52,8 +52,8 @@ const Budget = ({ budgetData }: BudgetProps) => {
                                 <span className="w-56 text-left flex-grow font-work-bold">
                                     {name}
                                 </span>
-                                <span className="w-32">Assigned</span>
                                 <span className="w-32">Balance</span>
+                                <span className="w-32">Assigned</span>
                                 <span className="w-32">Target</span>
                             </div>
                         </div>

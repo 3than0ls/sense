@@ -56,7 +56,7 @@ export default function SignIn() {
                     <Input label="Email Address" name="email" type="email" />
                     <Input label="Password" name="password" type="password" />
                     <div className="flex justify-center mt-4">
-                        <Submit text="Sign in" />
+                        <Submit>Sign in</Submit>
                     </div>
                 </div>
                 <div className="absolute bottom-0 mb-2 w-full px-20 self-center flex flex-col justify-center gap-2">

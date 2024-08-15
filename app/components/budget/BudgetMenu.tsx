@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link, Outlet } from '@remix-run/react'
 import { BudgetFullType } from '~/context/BudgetContext'
 import Icon from '../icons/Icon'
 
@@ -24,7 +24,7 @@ const BudgetMenuLink = ({
 }) => {
     return (
         <Link
-            className="w-full bg-primary bg-opacity-80 hover:bg-opacity-60 transition-all duration-400 ease-in-out rounded-lg font-work-bold p-3 flex justify-center items-center"
+            className="w-full bg-primary hover:bg-opacity-60 transition-all duration-400 ease-in-out rounded-lg font-work-bold p-3 flex justify-center items-center"
             to={href}
         >
             {children}
@@ -52,6 +52,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                     <span>Assign free cash</span>
                 </BudgetMenuLink> */}
             </div>
+            <Outlet />
         </div>
     )
 }

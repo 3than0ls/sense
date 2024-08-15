@@ -2,6 +2,7 @@ import { BudgetCategoryFullType } from '~/context/BudgetContext'
 import BudgetItem from './BudgetItem'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
+import { Link } from '@remix-run/react'
 
 type BudgetCategoryProps = {
     budgetCategory: BudgetCategoryFullType
@@ -25,9 +26,12 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     return (
         <>
             <div className="px-4 flex justify-end items-center min-h-10 border-collapse group overflow-y-hidden">
-                <span className="font-work-bold text-xl mr-auto hover:cursor-pointer">
+                <Link
+                    to={budgetCategory.id}
+                    className="font-work-bold text-xl mr-auto hover:cursor-pointer"
+                >
                     {budgetCategory.name}
-                </span>
+                </Link>
                 <button onClick={onAddClick}>
                     <Icon
                         type="plus-circle"

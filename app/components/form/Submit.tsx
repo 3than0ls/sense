@@ -1,22 +1,26 @@
 import { useTheme } from '~/context/ThemeContext'
 
 type SubmitProps = {
-    text?: string
+    children?: React.ReactNode
     className?: string
+    disabled?: boolean
 }
 
-const Submit = ({ text, className }: SubmitProps) => {
+const Submit = ({ className, disabled, children }: SubmitProps) => {
     const { theme } = useTheme()
 
-    const style =
-        theme === 'LIGHT' ? 'bg-black text-white' : 'bg-white text-black'
+    const style = theme === 'DARK' ? 'text-white' : 'text-black'
 
     return (
         <button
-            className={`py-3 px-12 rounded-2xl bg-opacity-100 hover:bg-opacity-[85%] shadow-sm hover:shadow-md transition-all duration-400 ease-in-out ${style} ${className}`}
+            className={`py-3 px-12 rounded-2xl ${
+                disabled
+                    ? 'bg-opacity-50 hover:cursor-not-allowed'
+                    : 'bg-opacity-100 hover:bg-opacity-[85%]'
+            } bg-primary shadow-sm hover:shadow-md transition ease-in-out ${style} ${className}`}
             type="submit"
         >
-            <span className="">{text}</span>
+            {children}
         </button>
         // <button
         //     className={`relative group bg-black rounded-xl text-white py-3 px-10 overflow-hidden ${style}`}

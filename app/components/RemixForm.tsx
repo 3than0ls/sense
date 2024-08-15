@@ -9,8 +9,8 @@ import {
 } from 'react-hook-form'
 
 type RemixFormProps<FormValues extends FieldValues> = {
-    methods?: UseFormReturn<FormValues, unknown, undefined>
-    fetcher?: FetcherWithComponents<unknown>
+    methods: UseFormReturn<FormValues, unknown, undefined>
+    fetcher: FetcherWithComponents<unknown>
     onSubmit?: SubmitHandler<FormValues>
     className?: string
     noAction?: boolean
@@ -33,13 +33,6 @@ export default function RemixForm<FormValues extends FieldValues>({
     noAction = false,
     children,
 }: RemixFormProps<FormValues>) {
-    // if no useForm or useFetcher was provided, it probably means that we didn't need control of them, and so we can generate it ourselves
-    // more likely that not, however, it will be provided
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    methods = methods ?? useForm<FormValues>()
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    fetcher = fetcher ?? useFetcher<FormValues>()
-
     const _handleSubmit = async (
         e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
     ) => {
