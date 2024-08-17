@@ -71,6 +71,7 @@ export default function BudgetCategoryEditRoute() {
         >
             <div className="flex flex-col w-full justify-center items-center">
                 <BudgetMenuForm
+                    key={budgetCategory.name}
                     defaultValue={budgetCategory.name}
                     label="Name"
                     name="name"
