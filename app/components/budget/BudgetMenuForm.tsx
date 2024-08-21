@@ -35,6 +35,7 @@ const BudgetMenuForm = ({
         reset,
         watch,
         formState: { errors },
+        handleSubmit,
     } = useForm({
         resolver: zodResolver(schema),
         reValidateMode: 'onChange',
@@ -68,7 +69,7 @@ const BudgetMenuForm = ({
             inputValue !== defaultValue &&
             inputValue !==
                 (fetcher.data as unknown as { TEMP_DELETE_CAT_NAME?: string })
-                    ?.TEMP_DELETE_CAT_NAME // shut up typescript i know it's temporary and will be deleted
+                    ?.TEMP_DELETE_CAT_NAME // shut up typescript i know it's temporary and will be deleted, in fact it MUST be deleted later
         ) {
             fetcher.submit(
                 { [name]: getValues(name) },
@@ -82,10 +83,10 @@ const BudgetMenuForm = ({
     // we don't use fetcher.Form because we mainly use fetcher for fetcher.submit
     return (
         <form
-            onSubmit={(e) => {
+            onSubmit={handleSubmit((e) => {
                 e.preventDefault()
                 submit()
-            }}
+            })}
             className={`flex flex-col gap-1 text-md w-full ${className}`}
         >
             <label htmlFor={name} className={`ml-1 text-lg`}>

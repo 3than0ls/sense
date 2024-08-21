@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { Form, Link, useLoaderData } from '@remix-run/react'
+import { Form, Link, Outlet, useLoaderData, useMatches } from '@remix-run/react'
 import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
@@ -64,6 +64,17 @@ export default function BudgetCategoryEditRoute() {
             </Link>
         )
     })
+
+    // if further route matching, only render that
+    const matches = useMatches()
+    const hasFurtherRoute = matches.some(
+        (match) =>
+            match.id ===
+            'routes/budget.$budgetId.$budgetCategoryId.$budgetItemId'
+    )
+    if (hasFurtherRoute) {
+        return <Outlet />
+    }
 
     return (
         <div

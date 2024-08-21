@@ -47,7 +47,6 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                     />
                 </button>
             </div>
-            {/* <hr className={`border-none h-[4px] ${themeStyle} mb-2`} /> */}
             {...budgetItemComponents}
         </>
     )
