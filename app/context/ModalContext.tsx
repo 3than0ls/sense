@@ -16,7 +16,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     // it should only be set once, on load, from useLoaderData
 
     const [modalChildren, setModalChildren] = useState<React.ReactNode>()
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState(false)
 
     const themeClass = useThemeClass()
     const themeStyle =
