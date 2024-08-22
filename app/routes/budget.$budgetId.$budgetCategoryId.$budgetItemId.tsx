@@ -1,8 +1,11 @@
+import { BudgetItem } from '@prisma/client'
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, useMatches } from '@remix-run/react'
 import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
+import BudgetMenuItemAssignMoney from '~/components/budget/BudgetMenuItemAssignMoney'
 import Icon from '~/components/icons/Icon'
+import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import fakeData from '~/utils/fakeData'
 
@@ -74,11 +77,25 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function BudgetItemEditRoute() {
-    const { budgetItem } = useLoaderData<typeof loader>()
+    const { data, budgetItem } = useLoaderData<typeof loader>()
+    const allBudgetItems = [
+        ...data.budgetCategories.map((bCat) => bCat.budgetItems).flat(),
+    ] as unknown as BudgetItem[]
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
+
+    const { setActive, setModalChildren } = useModal()
+    const onAssignMoneyClick = () => {
+        setModalChildren(
+            <BudgetMenuItemAssignMoney
+                budgetItems={allBudgetItems}
+                target={budgetItem as unknown as BudgetItem}
+            />
+        )
+        setActive(true)
+    }
 
     return (
         <div
@@ -108,6 +125,7 @@ export default function BudgetItemEditRoute() {
                 </div>
                 <button
                     className={`${altThemeStyle} rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
+                    onClick={onAssignMoneyClick}
                 >
                     <span>Assign Money</span>
                     <Icon type="plus-circle" />

@@ -3,7 +3,6 @@ import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import Icon from './icons/Icon'
 
 type DropdownItem = {
-    label: string
     name: string
     id: string
 }
