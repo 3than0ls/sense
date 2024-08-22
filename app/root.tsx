@@ -13,6 +13,7 @@ import { createClient } from './supabase/server'
 import { Theme } from '@prisma/client'
 import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
+import ModalProvider from './context/ModalContext'
 
 // export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
 
@@ -69,13 +70,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className={`h-screen ${basicTheme}`}>
+            <body className={`h-screen flex flex-col ${basicTheme}`}>
                 <ContextsProvider
                     supabase={{ env }}
                     auth={{ initialUser }}
                     theme={{ initialTheme }}
                 >
-                    {children}
+                    <div className="h-10 bg-yellow-300">
+                        some sort of universal navbar here
+                    </div>
+                    <div className="relative h-full">
+                        <ModalProvider>{children}</ModalProvider>
+                    </div>
                 </ContextsProvider>
                 <ScrollRestoration />
                 <Scripts />

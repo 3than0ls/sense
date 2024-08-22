@@ -7,6 +7,7 @@ import ChevronLeft from './ChevronLeft'
 import ChevronRight from './ChevronRight'
 import CurrencyDollar from './CurrencyDollar'
 import PlusCircle from './PlusCircle'
+import XCircle from './XCircle'
 
 type IconProps = {
     color?: string
@@ -18,6 +19,7 @@ type IconProps = {
         | 'chevron-right'
         | 'currency-dollar'
         | 'plus-circle'
+        | 'x-circle'
     className?: string
     interactive?: boolean
 }
@@ -38,6 +40,7 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
         }
     }
 
+    // I'm starting to see how this has become un-ideal
     let icon: React.ReactNode
     switch (type) {
         case 'edit':
@@ -60,6 +63,9 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'plus-circle':
             icon = <PlusCircle className={className} />
+            break
+        case 'x-circle':
+            icon = <XCircle className={className} />
             break
     }
 

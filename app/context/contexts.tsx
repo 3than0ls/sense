@@ -4,6 +4,7 @@ import SupabaseProvider from './SupabaseContext'
 import ThemeProvider from './ThemeContext'
 import { User } from '@supabase/supabase-js'
 import { Theme } from '@prisma/client'
+import ModalProvider from './ModalContext'
 
 export type ContextsProviderProps = {
     supabase: {

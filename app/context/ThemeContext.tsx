@@ -1,5 +1,3 @@
-'use client'
-
 import { Theme } from '@prisma/client'
 import React, { useContext, createContext, useState } from 'react'
 

@@ -21,6 +21,5 @@ Text color change based on budget states (namely red on negative)
 --- Misc. ---
 A name for the project
 
-Plan (for assigning money UI)
-Create a modal for it
-Modal context perhaps
+
+NEXT: ASsigning money UI

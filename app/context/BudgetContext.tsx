@@ -1,5 +1,3 @@
-'use client'
-
 import { Budget, BudgetCategory, BudgetItem } from '@prisma/client'
 import React, { useContext, createContext } from 'react'
 
