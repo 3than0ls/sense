@@ -88,8 +88,11 @@ export default function BudgetItemEditRoute() {
 
     const { setActive, setModalChildren } = useModal()
     const onAssignMoneyClick = () => {
+        // quirk in which if you set a value, but then don't change it but exit modal, state is retained
+        // only if key is same
         setModalChildren(
             <BudgetMenuItemAssignMoney
+                key={budgetItem.id}
                 budgetItems={allBudgetItems}
                 target={budgetItem as unknown as BudgetItem}
             />

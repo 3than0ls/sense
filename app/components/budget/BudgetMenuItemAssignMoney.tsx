@@ -55,6 +55,7 @@ const BudgetMenuItemAssignMoney = ({
     ]
 
     const [from, setFrom] = useState(dropdownItems[0])
+    const [rawAmount, setRawAmount] = useState('0.00')
     const [amount, setAmount] = useState(0)
     const [error, setError] = useState('')
 
@@ -64,9 +65,22 @@ const BudgetMenuItemAssignMoney = ({
     const themeStyle =
         theme === 'DARK' ? 'bg-light text-light' : 'bg-dark text-dark'
 
-    const handleSubmit = () => {
-        console.log(`submit data with amount ${amount} and from ${from.name}`)
-        // fetcher.submit('assign')
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault()
+        const fromFreeCash = from.name === 'Free Cash'
+        fetcher.formAction = '/assign'
+        fetcher.submit(
+            {
+                targetBudgetItemId: target.id,
+                fromFreeCash,
+                fromBudgetItemId: fromFreeCash ? '' : from.id,
+                amount,
+            },
+            {
+                method: 'POST',
+                action: '/assign',
+            }
+        )
     }
 
     return (
@@ -88,21 +102,35 @@ const BudgetMenuItemAssignMoney = ({
             </div>
             <div className="flex flex-col">
                 <span>Amount:</span>
-                <input
-                    onChange={(e) => {
-                        const out = valueSchema.safeParse(e.target.value)
-                        if (out.success) {
-                            setAmount(out.data)
+                <div className="flex gap-2">
+                    <input
+                        onChange={(e) => {
+                            setRawAmount(e.target.value)
+                            const out = valueSchema.safeParse(e.target.value)
+                            if (out.success) {
+                                setAmount(out.data)
+                                setError('')
+                            } else {
+                                setError(out.error.errors[0].message)
+                            }
+                        }}
+                        value={rawAmount}
+                        type="text"
+                        className={`${themeStyle} w-full p-2 text-left rounded-lg hover:bg-opacity-85 transition flex justify-between items-center`}
+                    />
+                    <button
+                        onClick={() => {
+                            const amt = target.target - target.assigned
+                            setRawAmount(amt.toFixed(2))
+                            setAmount(amt)
                             setError('')
-                        } else {
-                            console.log(out.error.errors[0].message)
-                            setError(out.error.errors[0].message)
-                        }
-                    }}
-                    defaultValue="0.00"
-                    type="text"
-                    className={`${themeStyle} w-full p-2 text-left rounded-lg hover:bg-opacity-85 transition flex justify-between items-center`}
-                />
+                        }}
+                        type="button"
+                        className="bg-primary rounded-lg py-2 px-3 text-sm text-nowrap hover:bg-opacity-85 transition"
+                    >
+                        Reach Target
+                    </button>
+                </div>
                 {error && <span className="text-error">{error}</span>}
             </div>
             <button
