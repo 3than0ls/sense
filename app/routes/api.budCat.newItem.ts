@@ -14,5 +14,5 @@ export async function action({ request }: ActionFunctionArgs) {
         'received request to create new budget item in category',
         data.get('budgetCategoryId') as string
     )
-    return {}
+    return { x: 'bunga' }
 }

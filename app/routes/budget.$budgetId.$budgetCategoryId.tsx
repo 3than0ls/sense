@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@remix-run/node'
 import {
     Link,
     Outlet,
@@ -7,11 +7,12 @@ import {
     useMatches,
     useNavigate,
 } from '@remix-run/react'
-import { z } from 'zod'
+import { useEffect } from 'react'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
 import fakeData from '~/utils/fakeData'
+import categoryNameSchema from '~/zodSchemas/budgetCategory'
 
 export async function loader({ params }: LoaderFunctionArgs) {
     console.log('LOADING BUDGET CATEGORY ID', params.budgetCategoryId)
@@ -37,21 +38,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
     return { data, budgetCategory }
 }
 
-const schema = z.object({
-    name: z.string().min(1, 'Category name cannot be empty.'),
-})
-
-export async function action({ request }: ActionFunctionArgs) {
-    const data = await request.formData()
-    const parsed = schema.parse(Object.fromEntries(data))
-    // TODO
-
-    console.log('updating category name ', parsed)
-    return {
-        TEMP_DELETE_CAT_NAME: parsed.name,
-    }
-}
-
 export default function BudgetCategoryEditRoute() {
     const { budgetCategory } = useLoaderData<typeof loader>()
 
@@ -61,17 +47,6 @@ export default function BudgetCategoryEditRoute() {
 
     const fetcher = useFetcher()
     const navigate = useNavigate()
-
-    // if further route matching, only render that
-    const matches = useMatches()
-    const hasFurtherRoute = matches.some(
-        (match) =>
-            match.id ===
-            'routes/budget.$budgetId.$budgetCategoryId.$budgetItemId'
-    )
-    if (hasFurtherRoute) {
-        return <Outlet />
-    }
 
     const budgetItems = Array.from(budgetCategory.budgetItems, (budgetItem) => {
         return (
@@ -86,7 +61,7 @@ export default function BudgetCategoryEditRoute() {
         )
     })
 
-    const createNewBudgetItem: React.FormEventHandler<HTMLFormElement> = (
+    const createNewBudgetItem: React.FormEventHandler<HTMLFormElement> = async (
         e
     ) => {
         e.preventDefault()
@@ -94,11 +69,27 @@ export default function BudgetCategoryEditRoute() {
             {
                 budgetCategoryId: budgetCategory.id,
             },
-            { action: '/newBudgetItem', method: 'POST' }
+            { action: '/api/budCat/newItem', method: 'POST' }
         )
-        const budgetItem = fetcher.data
-        console.log('NAVIGATE TO BUDGET ITEM', budgetItem)
-        // navigate(budgetItem.id)
+    }
+
+    useEffect(() => {
+        if (fetcher.data) {
+            const budgetItem = fetcher.data
+            console.log('NAVIGATE TO BUDGET ITEM', budgetItem)
+            // navigate(budgetItem.id)
+        }
+    }, [fetcher.data])
+
+    // if further route matching, only render that
+    const matches = useMatches()
+    const hasFurtherRoute = matches.some(
+        (match) =>
+            match.id ===
+            'routes/budget.$budgetId.$budgetCategoryId.$budgetItemId'
+    )
+    if (hasFurtherRoute) {
+        return <Outlet />
     }
 
     // ideally should be moved to it's own component
@@ -112,7 +103,8 @@ export default function BudgetCategoryEditRoute() {
                     defaultValue={budgetCategory.name}
                     label="Name"
                     name="name"
-                    schema={schema}
+                    schema={categoryNameSchema}
+                    action="/api/budCat/rename"
                 />
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />

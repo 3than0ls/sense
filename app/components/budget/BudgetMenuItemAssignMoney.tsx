@@ -78,7 +78,7 @@ const BudgetMenuItemAssignMoney = ({
             },
             {
                 method: 'POST',
-                action: '/assign',
+                action: '/api/budItem/assign',
             }
         )
     }
