@@ -22,6 +22,7 @@ model Account {
 model Budget {
     id               String           @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime         @default(now())
+    balance          Float            @default(0)
     name             String
     description      String
     userId           String           @db.Uuid
@@ -37,6 +38,8 @@ model BudgetCategory {
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
     Budget      Budget       @relation(fields: [budgetId], references: [id])
+    userId      String       @db.Uuid
+    user        User         @relation(fields: [userId], references: [id])
 }
 
 model BudgetItem {
@@ -49,6 +52,8 @@ model BudgetItem {
     budgetCategoryId String         @db.Uuid
     BudgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
     transactions     Transaction[]
+    userId           String         @db.Uuid
+    user             User           @relation(fields: [userId], references: [id])
 }
 
 model Transaction {
@@ -60,17 +65,24 @@ model Transaction {
     account      Account    @relation(fields: [accountId], references: [id])
     budgetItemId String     @db.Uuid
     budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
+    userId       String     @db.Uuid
+    user         User       @relation(fields: [userId], references: [id])
 }
 
+// Is it best practice to just link everything associated with the user to it? God knows I don't know
+// maybe create a UserOwns model that manages it, and only have User for User-pertinent data
 model User {
-    id        String    @id @unique @db.Uuid
-    createdAt DateTime  @default(now())
-    theme     Theme     @default(DARK)
-    firstName String    @db.VarChar(25)
-    lastName  String    @db.VarChar(25)
-    email     String
-    budgets   Budget[]
-    accounts  Account[]
+    id               String           @id @unique @db.Uuid
+    createdAt        DateTime         @default(now())
+    theme            Theme            @default(DARK)
+    firstName        String           @db.VarChar(25)
+    lastName         String           @db.VarChar(25)
+    email            String
+    budgets          Budget[]
+    accounts         Account[]
+    budgetCategories BudgetCategory[]
+    budgetItems      BudgetItem[]
+    transactions     Transaction[]
 }
 
 enum Theme {
