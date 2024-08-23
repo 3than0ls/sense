@@ -115,16 +115,22 @@ export default function BudgetItemEditRoute() {
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
             <div className="flex flex-col w-full gap-1">
-                <div className="mx-1 flex justify-between text-lg text-balance">
+                <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Balance</span>
-                    <span>${budgetItem.balance.toFixed(2)}</span>
+                    <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
+                    <span className="ml-auto">
+                        ${budgetItem.balance.toFixed(2)}
+                    </span>
                 </div>
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
             <div className="flex flex-col w-full gap-1">
-                <div className="mx-1 flex justify-between text-lg text-assigned">
+                <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
-                    <span>${budgetItem.assigned.toFixed(2)}</span>
+                    <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
+                    <span className="ml-auto">
+                        ${budgetItem.assigned.toFixed(2)}
+                    </span>
                 </div>
                 <button
                     className={`${altThemeStyle} rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
@@ -135,7 +141,11 @@ export default function BudgetItemEditRoute() {
                 </button>
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
-            <div className="flex flex-col w-full justify-center items-center text-target">
+            <div className="flex flex-col w-full justify-center items-center relative">
+                <div className="absolute mx-1 inset-0 flex text-lg w-fit h-fit gap-3 items-center">
+                    <span className="text-transparent">Target</span>
+                    <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
+                </div>
                 <BudgetMenuForm
                     key={budgetItem.target}
                     defaultValue={budgetItem.target.toFixed(2).toString()}
