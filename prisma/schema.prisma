@@ -22,7 +22,8 @@ model Account {
 model Budget {
     id               String           @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime         @default(now())
-    balance          Float            @default(0)
+    freeCash         Float            @default(0)
+    totalCash        Float            @default(0)
     name             String
     description      String
     userId           String           @db.Uuid

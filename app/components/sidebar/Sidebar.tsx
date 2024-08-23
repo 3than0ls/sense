@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
+import { useFetcher, useNavigate } from '@remix-run/react'
 
 const Sidebar = () => {
     // make length adjustable, make it able to close
@@ -10,6 +11,8 @@ const Sidebar = () => {
     const sidebarRef = useRef<HTMLDivElement | null>(null)
     const [closed, setClosed] = useState(false)
     const themeStyle = useThemeClass()
+
+    const TEMPFETCHER = useFetcher()
 
     return (
         <div
@@ -40,6 +43,14 @@ const Sidebar = () => {
                 openChildren={() => 'ignore the bad color :('}
                 closedChildren={() => 'N'}
             />
+            <TEMPFETCHER.Form action="/api/bud/create" method="POST">
+                <button
+                    type="submit"
+                    className="bg-primary text-white border-2 border-black rounded-2xl"
+                >
+                    create a budget!
+                </button>
+            </TEMPFETCHER.Form>
             <SidebarCloseButton
                 width={width}
                 closed={closed}
