@@ -6,11 +6,13 @@ export async function loader({ request }: ActionFunctionArgs) {
     return {}
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
+    const data = await request.formData()
+    // parse
     // TODO
     console.log(
         'received request to create new budget item in category',
-        params.budgetCategoryId
+        data.get('budgetCategoryId') as string
     )
     return {}
 }
