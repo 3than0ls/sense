@@ -1,10 +1,12 @@
 import {
+    isRouteErrorResponse,
     Links,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
     useLoaderData,
+    useRouteError,
 } from '@remix-run/react'
 import type { ActionFunctionArgs } from '@remix-run/node'
 // import stylesheet from '~/tailwind.css?url'
@@ -50,15 +52,6 @@ export async function loader({ request }: ActionFunctionArgs) {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-    const {
-        supabase: { env },
-        auth: { initialUser },
-        theme: { initialTheme },
-    } = useLoaderData<typeof loader>()
-
-    const basicTheme =
-        initialTheme === 'LIGHT' ? 'bg-light text-light' : 'bg-dark text-dark'
-
     return (
         <html lang="en">
             <head>
@@ -70,19 +63,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className={`h-screen flex flex-col ${basicTheme}`}>
-                <ContextsProvider
-                    supabase={{ env }}
-                    auth={{ initialUser }}
-                    theme={{ initialTheme }}
-                >
-                    <div className="h-10 bg-yellow-300">
-                        some sort of universal navbar here
-                    </div>
-                    <div className="relative h-full">
-                        <ModalProvider>{children}</ModalProvider>
-                    </div>
-                </ContextsProvider>
+            <body className="h-screen">
+                <div className="h-10 bg-yellow-300">
+                    some sort of universal navbar here
+                </div>
+                {children}
                 <ScrollRestoration />
                 <Scripts />
             </body>
@@ -90,6 +75,44 @@ export function Layout({ children }: { children: React.ReactNode }) {
     )
 }
 
+export function ErrorBoundary() {
+    const error = useRouteError()
+    if (isRouteErrorResponse(error)) {
+        console.log(error.data)
+    } else {
+        console.log('Non-route error occured:')
+        console.log(error)
+    }
+
+    return (
+        <div>
+            An error occured: see console. In future, this will never be seen,
+            as an outlet will always be represented over it
+        </div>
+    )
+}
+
 export default function App() {
-    return <Outlet />
+    const {
+        supabase: { env },
+        auth: { initialUser },
+        theme: { initialTheme },
+    } = useLoaderData<typeof loader>()
+
+    const basicTheme =
+        initialTheme === 'LIGHT' ? 'bg-light text-light' : 'bg-dark text-dark'
+
+    return (
+        <ContextsProvider
+            supabase={{ env }}
+            auth={{ initialUser }}
+            theme={{ initialTheme }}
+        >
+            <div className={`relative h-full ${basicTheme}`}>
+                <ModalProvider>
+                    <Outlet />
+                </ModalProvider>
+            </div>
+        </ContextsProvider>
+    )
 }

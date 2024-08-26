@@ -1,15 +1,38 @@
 /********************************************************
  *
  * When errors occur on the server, we need a consistent way of returning those errors to the client to be gracefully displayed.
- * Return errors using this type so all client received errors can use this data to ideally display good data.
- * See `signup.tsx`'s action for an example on how it is used. *
+ * Use the syntax `throw new ServerErrorResponse({})` to do this, and a Remix error boundary will catch it
  *
  ********************************************************/
 
-export type ActionErrorType = {
-    message: string // custom written or from external api, able to be shown to user, ex: "Parsing data error."
-    code: string // usually comes from an external api, ex: "supabase's user_already_exist"
-    status: number // http status code, ex: 400
-}
+export default class ServerErrorResponse extends Response {
+    // constructor({
+    //     message = 'Unexpected server error.',
+    //     status = 500,
+    //     code = 'unknown_server_error'
+    // }:
+    // {
+    //     message?: string
+    //     status?: number
+    //     code?: string
+    // }) {
+    //     const formData = new FormData()
+    //     formData.append('message', message)
+    //     formData.append('code', code)
+    //     super(message, {
+    //         status,
+    //     })
+    // }
 
-// TODO: create a type for loader error type
+    constructor({
+        message = 'Unexpected server error.',
+        status = 500,
+    }: {
+        message?: string
+        status?: number
+    }) {
+        super(message, {
+            status,
+        })
+    }
+}

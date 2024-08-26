@@ -1,36 +1,45 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
 import { BudgetFullType } from '~/context/BudgetContext'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import fakeData from '~/utils/fakeData'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-    console.log('LOADING BUDGET ID', params.budgetId)
-    // fetch budget from database using budgetId
-    // get user from supabase auth getUser
-    // ensure userId from budget and user.id from supabase auth match
-    // if not, redirect to home
-    // if yes, return budget data
+    // THE PERFECT LOADER SAMPLE
+    try {
+        const { user } = await authenticateUser(request)
 
-    const { user } = await authenticateUser(request)
-
-    const budget = await prisma.budget.findFirst({
-        where: {
-            id: params.budgetId,
-            userId: user.id,
-        },
-        include: {
-            budgetCategories: {
-                include: {
-                    budgetItems: true,
+        const budget = await prisma.budget.findFirst({
+            where: {
+                id: params.budgetId,
+                userId: user.id,
+            },
+            include: {
+                budgetCategories: {
+                    include: {
+                        budgetItems: true,
+                    },
                 },
             },
-        },
-    })
+        })
+        if (budget === null) {
+            throw new Error()
+        }
 
-    return budget
+        return json(budget)
+    } catch (e) {
+        if (isAuthApiError(e)) {
+            throw new ServerErrorResponse(e)
+        } else {
+            throw new ServerErrorResponse({
+                message: 'Budget not found.',
+                status: 404,
+            })
+        }
+    }
 }
 
 export default function BudgetRoute() {

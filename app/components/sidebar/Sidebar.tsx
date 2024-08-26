@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'

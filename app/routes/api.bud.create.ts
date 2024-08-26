@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
+import ServerError from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 
@@ -8,8 +9,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const budget = await prisma.budget.create({
             data: {
-                name: 'My Budget',
-                description: 'A budget to save money.',
+                name: 'My Budget', // maybe a name based on username
+                description: 'A budget to save money.', // maybe a description based on the time/month
                 userId: user.id,
                 freeCash: 100,
                 totalCash: 100,
@@ -17,9 +18,10 @@ export async function action({ request }: ActionFunctionArgs) {
         })
         return redirect(`/budget/${budget.id}`)
     } catch (e) {
-        console.log(e)
+        // regardless of if it's an auth api error or not found error, just say bad request!
+        throw new ServerError({
+            message: 'Budget not able to be created.',
+            status: 404,
+        })
     }
-    const data = await request.formData()
-    // parse
-    return { x: 'bunga' }
 }

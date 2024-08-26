@@ -7,7 +7,6 @@ import Background from '~/components/Background'
 import Input from '~/components/form/Input'
 import Submit from '~/components/form/Submit'
 import RemixForm from '~/components/RemixForm'
-import { ActionErrorType } from '~/error'
 import useRemixForm, { ActionReturnType } from '~/hooks/useRemixForm'
 import prisma from '~/prisma/client'
 import { protectRouteAgainstAuthUsers } from '~/supabase/routeProtect'
@@ -63,7 +62,8 @@ export async function action({ request }: ActionFunctionArgs) {
         })
         return redirect('/', { headers })
     } catch (e) {
-        let returnError: ActionErrorType
+        // this error handling was extremely poorly written but not worth trying to repair- DO NOT USE AS A EXAMPLE
+        let returnError
         if (e instanceof ZodError) {
             // frankly- the only people who have gotten to this error point don't deserve a descriptive nor graceful error handling
             returnError = {
