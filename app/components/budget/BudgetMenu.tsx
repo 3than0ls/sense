@@ -33,10 +33,7 @@ const BudgetMenuLink = ({
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    // calculate from the sum of accounts
-    const totalCash = 1000
-    // calculate from totalCash - budget items
-    const freeCash = 500
+    const { freeCash, totalCash } = budgetData
 
     return (
         <div className="w-1/4 flex flex-col gap-6 p-4">

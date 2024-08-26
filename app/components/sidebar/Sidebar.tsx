@@ -32,9 +32,9 @@ const Sidebar = () => {
                 closedChildren={() => 'H'}
             />
             <SidebarLink
-                href="bogusbudgetID"
+                href="c859c0a7-e5b9-40e4-ad93-bc045b0459d3"
                 closed={width === 0 && closed}
-                openChildren={() => 'Budget A'}
+                openChildren={() => 'Budget 1'}
                 closedChildren={() => 'B'}
             />
             <SidebarLink
