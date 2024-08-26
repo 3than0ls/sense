@@ -1,49 +1,67 @@
 import { BudgetItem } from '@prisma/client'
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { isAuthApiError } from '@supabase/supabase-js'
 import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import BudgetMenuItemAssignMoney from '~/components/budget/BudgetMenuItemAssignMoney'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
-import fakeData from '~/utils/fakeData'
+import ServerErrorResponse from '~/error'
+import prisma from '~/prisma/client'
+import authenticateUser from '~/utils/authenticateUser'
 import itemNameSchema from '~/zodSchemas/budgetItem'
 import numberSchema from '~/zodSchemas/number'
 
-export async function loader({ params }: LoaderFunctionArgs) {
-    console.log('LOADING BUDGET ITEM ID', params.budgetItemId)
-
+export async function loader({ params, request }: LoaderFunctionArgs) {
     // split between just using outlet context to cut out another fetching step,
     // but will likely do a refetch so revalidating is easy
 
-    // fetch budget from database using budgetId
-    // get user from supabase auth getUser
-    // ensure userId from budget and user.id from supabase auth match
-    // if not, redirect to home
-    // if yes, return budget data
+    // a concern is that fetching all budget items here is any unecessary step (that may? significantly increase loading time)
+    // allBudgetItem data is only used when assigning money for the assign money modal
+    // and could technically just be fetched only for that step
+    // an improvement would be to do that, but this suffices.
 
-    // in the meantime, here's some fake data
-    const data = fakeData()
+    try {
+        const { user } = await authenticateUser(request)
 
-    const budgetItem = data.budgetCategories
-        .find(
-            (budgetCategory) => budgetCategory.id === params.budgetCategoryId
-        )!
-        .budgetItems.find(
-            (budgetItem) => budgetItem.id === params.budgetItemId
-        )!
+        const allBudgetItems = await prisma.budgetItem.findMany({
+            where: {
+                BudgetCategory: {
+                    budgetId: params.budgetId,
+                },
+                userId: user.id,
+            },
+            include: {
+                BudgetCategory: true,
+            },
+        })
+        console.log(allBudgetItems)
+        const budgetItem = allBudgetItems.find(
+            (bItem) => bItem.id === params.budgetItemId
+        )
+        console.log(budgetItem)
+        if (allBudgetItems === null || budgetItem === undefined) {
+            throw new Error()
+        }
 
-    // THROW ERROR IF BUDGETCATEGORY SOMEHOW NOT FOUND (someone manually type invalid request/params) and return error to client
-
-    return { data, budgetItem }
+        return json({ allBudgetItems, budgetItem })
+    } catch (e) {
+        if (isAuthApiError(e)) {
+            throw new ServerErrorResponse(e)
+        } else {
+            return redirect(`/budget/${params.budgetId}`)
+            // throw new ServerErrorResponse({
+            //     message: 'Budget Item not found.',
+            //     status: 404,
+            // })
+        }
+    }
 }
 
 export default function BudgetItemEditRoute() {
-    const { data, budgetItem } = useLoaderData<typeof loader>()
-    const allBudgetItems = [
-        ...data.budgetCategories.map((bCat) => bCat.budgetItems).flat(),
-    ] as unknown as BudgetItem[]
+    const { budgetItem, allBudgetItems } = useLoaderData<typeof loader>()
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
@@ -56,7 +74,7 @@ export default function BudgetItemEditRoute() {
         setModalChildren(
             <BudgetMenuItemAssignMoney
                 key={budgetItem.id}
-                budgetItems={allBudgetItems}
+                budgetItems={allBudgetItems as unknown as BudgetItem[]}
                 target={budgetItem as unknown as BudgetItem}
             />
         )

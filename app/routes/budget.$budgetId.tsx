@@ -8,7 +8,8 @@ import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-    // THE PERFECT LOADER SAMPLE
+    // THE PERFECT LOADER SAMPLE:
+    // do literally every route loader now.
     try {
         const { user } = await authenticateUser(request)
 

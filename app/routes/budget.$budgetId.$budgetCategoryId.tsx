@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import {
     Link,
     Outlet,
@@ -7,39 +7,51 @@ import {
     useMatches,
     useNavigate,
 } from '@remix-run/react'
+import { isAuthApiError } from '@supabase/supabase-js'
 import { useEffect } from 'react'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
-import fakeData from '~/utils/fakeData'
+import ServerErrorResponse from '~/error'
+import prisma from '~/prisma/client'
+import authenticateUser from '~/utils/authenticateUser'
 import categoryNameSchema from '~/zodSchemas/budgetCategory'
 
-export async function loader({ params }: LoaderFunctionArgs) {
-    console.log('LOADING BUDGET CATEGORY ID', params.budgetCategoryId)
+export async function loader({ request, params }: LoaderFunctionArgs) {
+    try {
+        const { user } = await authenticateUser(request)
 
-    // split between just using outlet context to cut out another fetching step,
-    // but will likely do a refetch so revalidating is easy
+        const budgetCategory = await prisma.budgetCategory.findFirst({
+            where: {
+                id: params.budgetCategoryId,
+                budgetId: params.budgetId,
+                userId: user.id,
+            },
+            include: {
+                budgetItems: true,
+            },
+        })
+        if (budgetCategory === null) {
+            // could just redirect here but... eh...
+            throw new Error()
+        }
 
-    // fetch budget from database using budgetId
-    // get user from supabase auth getUser
-    // ensure userId from budget and user.id from supabase auth match
-    // if not, redirect to home
-    // if yes, return budget data
-
-    // in the meantime, here's some fake data
-    const data = fakeData()
-
-    const budgetCategory = data.budgetCategories.find(
-        (budgetCategory) => budgetCategory.id === params.budgetCategoryId
-    )!
-
-    // THROW ERROR IF BUDGETCATEGORY SOMEHOW NOT FOUND (someone manually type invalid request/params) and return error to client
-
-    return { data, budgetCategory }
+        return json(budgetCategory)
+    } catch (e) {
+        if (isAuthApiError(e)) {
+            throw new ServerErrorResponse(e)
+        } else {
+            return redirect(`/budget/${params.budgetId}`)
+            // throw new ServerErrorResponse({
+            //     message: 'Budget Category not found.',
+            //     status: 404,
+            // })
+        }
+    }
 }
 
 export default function BudgetCategoryEditRoute() {
-    const { budgetCategory } = useLoaderData<typeof loader>()
+    const budgetCategory = useLoaderData<typeof loader>()
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
