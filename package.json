@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "build": "prisma generate && remix vite:build",
+        "db_reset_and_dev": "prisma migrate reset --force && prisma migrate dev --name init",
         "dev": "remix vite:dev",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "start": "remix-serve ./build/server/index.js",

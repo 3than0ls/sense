@@ -2,28 +2,25 @@
 CREATE TYPE "Theme" AS ENUM ('DARK', 'LIGHT');
 
 -- CreateTable
+CREATE TABLE "Budget" (
+    "id" UUID NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "userId" UUID NOT NULL,
+
+    CONSTRAINT "Budget_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Account" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "balance" DOUBLE PRECISION NOT NULL,
-    "userId" UUID NOT NULL,
+    "initialBalance" DOUBLE PRECISION NOT NULL,
     "budgetId" UUID NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Budget" (
-    "id" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "freeCash" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "totalCash" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
-
-    CONSTRAINT "Budget_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -32,7 +29,7 @@ CREATE TABLE "BudgetCategory" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "budgetId" UUID NOT NULL,
-    "userId" UUID NOT NULL,
+    "order" INTEGER NOT NULL,
 
     CONSTRAINT "BudgetCategory_pkey" PRIMARY KEY ("id")
 );
@@ -43,25 +40,22 @@ CREATE TABLE "BudgetItem" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "target" DOUBLE PRECISION NOT NULL,
-    "balance" DOUBLE PRECISION NOT NULL,
-    "assigned" DOUBLE PRECISION NOT NULL,
     "budgetCategoryId" UUID NOT NULL,
-    "userId" UUID NOT NULL,
+    "order" INTEGER NOT NULL,
+    "budgetId" UUID NOT NULL,
 
     CONSTRAINT "BudgetItem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Transaction" (
+CREATE TABLE "Assigment" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "description" TEXT,
-    "amount" DOUBLE PRECISION NOT NULL,
-    "accountId" UUID NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "budgetId" UUID NOT NULL,
     "budgetItemId" UUID NOT NULL,
-    "userId" UUID NOT NULL,
 
-    CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Assigment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -76,11 +70,23 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "Account_id_key" ON "Account"("id");
+-- CreateTable
+CREATE TABLE "Transaction" (
+    "id" UUID NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "description" TEXT,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "accountId" UUID NOT NULL,
+    "budgetItemId" UUID NOT NULL,
+
+    CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Budget_id_key" ON "Budget"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Account_id_key" ON "Account"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "BudgetCategory_id_key" ON "BudgetCategory"("id");
@@ -89,37 +95,37 @@ CREATE UNIQUE INDEX "BudgetCategory_id_key" ON "BudgetCategory"("id");
 CREATE UNIQUE INDEX "BudgetItem_id_key" ON "BudgetItem"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Transaction_id_key" ON "Transaction"("id");
+CREATE UNIQUE INDEX "Assigment_id_key" ON "Assigment"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
--- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "Transaction_id_key" ON "Transaction"("id");
 
 -- AddForeignKey
 ALTER TABLE "Budget" ADD CONSTRAINT "Budget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BudgetCategory" ADD CONSTRAINT "BudgetCategory_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Account" ADD CONSTRAINT "Account_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BudgetCategory" ADD CONSTRAINT "BudgetCategory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "BudgetCategory" ADD CONSTRAINT "BudgetCategory_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BudgetItem" ADD CONSTRAINT "BudgetItem_budgetCategoryId_fkey" FOREIGN KEY ("budgetCategoryId") REFERENCES "BudgetCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BudgetItem" ADD CONSTRAINT "BudgetItem_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "BudgetItem" ADD CONSTRAINT "BudgetItem_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Assigment" ADD CONSTRAINT "Assigment_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Assigment" ADD CONSTRAINT "Assigment_budgetItemId_fkey" FOREIGN KEY ("budgetItemId") REFERENCES "BudgetItem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_budgetItemId_fkey" FOREIGN KEY ("budgetItemId") REFERENCES "BudgetItem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

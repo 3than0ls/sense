@@ -7,31 +7,32 @@ datasource db {
     url      = env("DB_SESSION_URL")
 }
 
-model Account {
-    id           String        @id @unique @default(uuid()) @db.Uuid
-    createdAt    DateTime      @default(now())
-    name         String
-    balance      Float
-    userId       String        @db.Uuid
-    user         User          @relation(fields: [userId], references: [id])
-    budgetId     String        @db.Uuid
-    budget       Budget        @relation(fields: [budgetId], references: [id])
-    transactions Transaction[]
-}
+// THIRD NORMAL FORM
 
 model Budget {
     id               String           @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime         @default(now())
-    freeCash         Float            @default(0)
-    totalCash        Float            @default(0)
     name             String
-    description      String
+    description      String?
     userId           String           @db.Uuid
     user             User             @relation(fields: [userId], references: [id])
     budgetCategories BudgetCategory[]
+    budgetItems      BudgetItem[]
     accounts         Account[]
+    assignments      Assigment[]
 }
 
+model Account {
+    id             String        @id @unique @default(uuid()) @db.Uuid
+    createdAt      DateTime      @default(now())
+    name           String
+    initialBalance Float
+    budgetId       String        @db.Uuid
+    budget         Budget        @relation(fields: [budgetId], references: [id])
+    transactions   Transaction[]
+}
+
+// exists solely for visual and user sorting purposes
 model BudgetCategory {
     id          String       @id @unique @default(uuid()) @db.Uuid
     createdAt   DateTime     @default(now())
@@ -39,8 +40,7 @@ model BudgetCategory {
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
     Budget      Budget       @relation(fields: [budgetId], references: [id])
-    userId      String       @db.Uuid
-    user        User         @relation(fields: [userId], references: [id])
+    order       Int // the order in which this category appears in the budget
 }
 
 model BudgetItem {
@@ -48,45 +48,49 @@ model BudgetItem {
     createdAt        DateTime       @default(now())
     name             String
     target           Float
-    balance          Float
-    assigned         Float
+    // balance          Float  Would just be assigned - transactions
+    // assigned         Float  Would just be sum of assignments
     budgetCategoryId String         @db.Uuid
     BudgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+    order            Int // the order in which this item appears in the category
+    budgetId         String         @db.Uuid
+    budget           Budget         @relation(fields: [budgetId], references: [id])
     transactions     Transaction[]
-    userId           String         @db.Uuid
-    user             User           @relation(fields: [userId], references: [id])
+    assignments      Assigment[]
+}
+
+model Assigment {
+    id           String     @id @unique @default(uuid()) @db.Uuid
+    createdAt    DateTime   @default(now())
+    amount       Int
+    budgetId     String     @db.Uuid
+    budget       Budget     @relation(fields: [budgetId], references: [id])
+    budgetItemId String     @db.Uuid
+    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
+}
+
+model User {
+    id        String   @id @unique @db.Uuid
+    createdAt DateTime @default(now())
+    theme     Theme    @default(DARK)
+    firstName String   @db.VarChar(25)
+    lastName  String   @db.VarChar(25)
+    email     String
+    budgets   Budget[]
+}
+
+enum Theme {
+    DARK
+    LIGHT
 }
 
 model Transaction {
     id           String     @id @unique @default(uuid()) @db.Uuid
-    createdAt    DateTime   @default(now())
+    date         DateTime   @default(now())
     description  String?
     amount       Float
     accountId    String     @db.Uuid
     account      Account    @relation(fields: [accountId], references: [id])
     budgetItemId String     @db.Uuid
     budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
-    userId       String     @db.Uuid
-    user         User       @relation(fields: [userId], references: [id])
-}
-
-// Is it best practice to just link everything associated with the user to it? God knows I don't know
-// maybe create a UserOwns model that manages it, and only have User for User-pertinent data
-model User {
-    id               String           @id @unique @db.Uuid
-    createdAt        DateTime         @default(now())
-    theme            Theme            @default(DARK)
-    firstName        String           @db.VarChar(25)
-    lastName         String           @db.VarChar(25)
-    email            String
-    budgets          Budget[]
-    accounts         Account[]
-    budgetCategories BudgetCategory[]
-    budgetItems      BudgetItem[]
-    transactions     Transaction[]
-}
-
-enum Theme {
-    DARK
-    LIGHT
 }
