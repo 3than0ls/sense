@@ -8,7 +8,6 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
         const { target, id } = itemTargetSchema.parse(Object.fromEntries(data))
-        console.log(target, id)
 
         const { user } = await authenticateUser(request)
 

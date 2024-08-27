@@ -1,38 +1,17 @@
 import { BudgetItem } from '@prisma/client'
 import Dropdown from '../Dropdown'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFetcher } from '@remix-run/react'
 import { z } from 'zod'
 import { useTheme } from '~/context/ThemeContext'
+import numberSchema from '~/zodSchemas/number'
+import { action } from '~/routes/api.budItem.assign'
 
 type BudgetMenuItemAssignMoneyProps = {
     target: BudgetItem
     budgetItems: BudgetItem[]
     className?: string
 }
-
-const valueSchema = z
-    .string()
-    .min(1, 'Value cannot be empty')
-    // https://regex101.com/r/mZ1tX2/1
-    // https://stackoverflow.com/questions/2811031/decimal-or-numeric-values-in-regular-expression-validation "Fractional Numbers, Positive"
-    .regex(
-        new RegExp(/^(0|[1-9]\d*)?(\.\d+)?(?<=\d)$/),
-        'Value must be a non-negative number.'
-    )
-    .refine(
-        (value) => {
-            // I despise working with regex
-            const split = value.split('.')
-            return split.length === 1 || split[1].length <= 2
-        },
-        { message: 'Value can have at most 2 decimal points.' }
-    )
-
-    .transform((value) => {
-        const pFloat = +parseFloat(value).toFixed(2)
-        return pFloat
-    })
 
 const BudgetMenuItemAssignMoney = ({
     target,
@@ -59,7 +38,7 @@ const BudgetMenuItemAssignMoney = ({
     const [amount, setAmount] = useState(0)
     const [error, setError] = useState('')
 
-    const fetcher = useFetcher()
+    const fetcher = useFetcher<typeof action>()
 
     const { theme } = useTheme()
     const themeStyle =
@@ -82,6 +61,17 @@ const BudgetMenuItemAssignMoney = ({
             }
         )
     }
+
+    useEffect(() => {
+        if (fetcher.data) {
+            if (fetcher.data.success) {
+                // trigger a modal close or some shit. refresh page!
+            } else {
+                setError(fetcher.data.reason)
+            }
+            console.log('fetcher data changed', fetcher.data)
+        }
+    }, [fetcher.data])
 
     return (
         <fetcher.Form
@@ -106,7 +96,7 @@ const BudgetMenuItemAssignMoney = ({
                     <input
                         onChange={(e) => {
                             setRawAmount(e.target.value)
-                            const out = valueSchema.safeParse(e.target.value)
+                            const out = numberSchema.safeParse(e.target.value)
                             if (out.success) {
                                 setAmount(out.data)
                                 setError('')
