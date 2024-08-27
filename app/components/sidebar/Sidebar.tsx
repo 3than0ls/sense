@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
-import { useFetcher, useNavigate } from '@remix-run/react'
+import { useFetcher } from '@remix-run/react'
 
 const Sidebar = () => {
     // make length adjustable, make it able to close

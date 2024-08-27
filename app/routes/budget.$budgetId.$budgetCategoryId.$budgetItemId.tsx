@@ -2,7 +2,6 @@ import { BudgetItem } from '@prisma/client'
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
-import { z } from 'zod'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import BudgetMenuItemAssignMoney from '~/components/budget/BudgetMenuItemAssignMoney'
 import Icon from '~/components/icons/Icon'
@@ -12,7 +11,6 @@ import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
-import numberSchema from '~/zodSchemas/number'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     // split between just using outlet context to cut out another fetching step,
