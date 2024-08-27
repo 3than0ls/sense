@@ -9,11 +9,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const budget = await prisma.budget.create({
             data: {
-                name: 'My Budget', // maybe a name based on username
+                name: 'Budget for ' + user.email, // maybe a name based on username
                 description: 'A budget to save money.', // maybe a description based on the time/month
                 userId: user.id,
-                freeCash: 100,
-                totalCash: 100,
             },
         })
         return redirect(`/budget/${budget.id}`)

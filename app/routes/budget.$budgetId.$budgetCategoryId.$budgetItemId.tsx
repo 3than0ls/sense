@@ -19,30 +19,41 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     // a concern is that fetching all budget items here is any unecessary step (that may? significantly increase loading time)
     // allBudgetItem data is only used when assigning money for the assign money modal
     // and could technically just be fetched only for that step
-    // an improvement would be to do that, but this suffices.
+    // an improvement would be to do that, but this suffices. Messy but lazy.
 
     try {
         const { user } = await authenticateUser(request)
 
         const allBudgetItems = await prisma.budgetItem.findMany({
-            where: {
-                BudgetCategory: {
-                    budgetId: params.budgetId,
-                },
-                userId: user.id,
+            select: {
+                name: true,
+                id: true,
             },
-            include: {
-                BudgetCategory: true,
+            where: {
+                budgetId: params.budgetId,
+                budget: {
+                    userId: user.id,
+                },
             },
         })
-        const budgetItem = allBudgetItems.find(
-            (bItem) => bItem.id === params.budgetItemId
-        )
-        if (allBudgetItems === null || budgetItem === undefined) {
-            throw new Error()
-        }
 
-        return json({ allBudgetItems, budgetItem })
+        const budgetItem = await prisma.budgetItem.findFirstOrThrow({
+            where: {
+                budgetId: params.budgetId,
+                budget: {
+                    userId: user.id,
+                },
+            },
+            include: {
+                assignments: true,
+                transactions: true,
+            },
+        })
+
+        const assigned = 0 // a function of target and assignments
+        const balance = 0 // a function of assigned and transactions
+
+        return json({ allBudgetItems, budgetItem, assigned, balance })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -57,7 +68,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export default function BudgetItemEditRoute() {
-    const { budgetItem, allBudgetItems } = useLoaderData<typeof loader>()
+    const { budgetItem, balance, assigned, allBudgetItems } =
+        useLoaderData<typeof loader>()
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
@@ -97,9 +109,7 @@ export default function BudgetItemEditRoute() {
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Balance</span>
                     <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
-                    <span className="ml-auto">
-                        ${budgetItem.balance.toFixed(2)}
-                    </span>
+                    <span className="ml-auto">${balance.toFixed(2)}</span>
                 </div>
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
@@ -107,9 +117,7 @@ export default function BudgetItemEditRoute() {
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
                     <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
-                    <span className="ml-auto">
-                        ${budgetItem.assigned.toFixed(2)}
-                    </span>
+                    <span className="ml-auto">${assigned.toFixed(2)}</span>
                 </div>
                 <button
                     className={`${altThemeStyle} rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}

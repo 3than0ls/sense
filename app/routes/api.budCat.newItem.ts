@@ -30,29 +30,30 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const budgetCategory = await prisma.budgetCategory.findUniqueOrThrow({
             where: {
-                userId: user.id,
+                budget: {
+                    userId: user.id,
+                },
                 id: budCatId,
             },
             include: {
-                Budget: {
-                    select: { id: true },
-                },
+                budgetItems: true,
             },
         })
+
+        const position = budgetCategory.budgetItems.length + 1
 
         const budgetItem = await prisma.budgetItem.create({
             data: {
                 name: 'New Item',
-                assigned: 0,
-                balance: 0,
                 target: 0,
-                userId: user.id,
+                budgetId: budgetCategory.budgetId,
                 budgetCategoryId: budgetCategory.id,
+                order: position,
             },
         })
 
         return redirect(
-            `/budget/${budgetCategory.Budget.id}/${budgetCategory.id}/${budgetItem.id}`
+            `/budget/${budgetCategory.budgetId}/${budgetCategory.id}/${budgetItem.id}`
         )
     } catch (e) {
         throw new ServerErrorResponse()

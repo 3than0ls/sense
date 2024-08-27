@@ -2,6 +2,12 @@ import { ActionFunctionArgs } from '@remix-run/node'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
+import {
+    budgetItemTotalAssignments,
+    budgetItemTotalTransactions,
+    budgetTotalAccounts,
+    budgetTotalAssignments,
+} from '~/utils/budgetValues'
 import { itemAssignMoneySchema } from '~/zodSchemas/budgetItem'
 
 /*
@@ -24,72 +30,90 @@ export async function action({ request }: ActionFunctionArgs) {
             itemAssignMoneySchema.parse(Object.fromEntries(data))
         const { user } = await authenticateUser(request)
 
-        // https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions
-        await prisma.$transaction(async (tx) => {
-            const budgetItem = await tx.budgetItem.findFirstOrThrow({
-                where: {
+        const budgetItem = await prisma.budgetItem.findFirstOrThrow({
+            where: {
+                budget: {
                     userId: user.id,
-                    id: targetBudgetItemId,
+                },
+                id: targetBudgetItemId,
+            },
+        })
+        const budget = await prisma.budget.findFirstOrThrow({
+            where: {
+                userId: user.id,
+                budgetItems: {
+                    some: {
+                        id: targetBudgetItemId,
+                    },
+                },
+            },
+            include: {
+                // could just select amount here... but eh... optimize later...
+                accounts: true,
+                assignments: true,
+            },
+        })
+
+        if (fromFreeCash) {
+            const totalCash = budgetTotalAccounts(budget.accounts)
+            const assigned = budgetTotalAssignments(budget.assignments)
+            const freeCash = totalCash - assigned
+            if (freeCash < amount) {
+                throw new Error('Not enough free cash, amount is too high.')
+            }
+            await prisma.assignment.create({
+                data: {
+                    amount: amount,
+                    budgetId: budget.id,
+                    budgetItemId: budgetItem.id,
                 },
             })
-
-            if (fromFreeCash) {
-                const budget = await tx.budget.findFirstOrThrow({
-                    where: {
-                        userId: user.id,
-                        budgetCategories: {
-                            some: {
-                                budgetItems: {
-                                    some: {
-                                        id: targetBudgetItemId,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                })
-                if (budget.freeCash < amount) {
-                    throw new Error('Not enough free cash, amount is too high.')
-                }
-                await tx.budget.update({
-                    where: {
-                        id: budget.id,
-                        userId: user.id,
-                    },
-                    data: {
-                        freeCash: budget.freeCash - amount,
-                    },
-                })
-            } else {
+        } else {
+            // to take from another item, simply create a assignment taking away from the fromBudgetItem and another assignment for the budgetItem
+            // https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions
+            await prisma.$transaction(async (tx) => {
                 const fromBudgetItem = await tx.budgetItem.findFirstOrThrow({
                     where: {
                         id: fromBudgetItemId,
-                        userId: user.id,
+                        budget: {
+                            userId: user.id,
+                        },
+                    },
+                    include: {
+                        assignments: true,
+                        transactions: true,
                     },
                 })
+                const totalTransacs = budgetItemTotalTransactions(
+                    fromBudgetItem.transactions
+                )
+                const assigned = budgetItemTotalAssignments(
+                    fromBudgetItem.assignments
+                )
                 // assigned - balance = free cash to be able to be moved; assigned money doesn't always mean it can be moved
-                if (fromBudgetItem.assigned - fromBudgetItem.balance < amount) {
+                if (assigned - totalTransacs < amount) {
                     throw new Error('Not enough free cash, amount is too high.')
                 }
-                await tx.budgetItem.update({
-                    where: {
-                        id: fromBudgetItem.id,
-                    },
+
+                // take away from fromBudgetItem
+                await prisma.assignment.create({
                     data: {
-                        assigned: fromBudgetItem.assigned - amount,
+                        amount: -amount,
+                        budgetId: budget.id,
+                        budgetItemId: fromBudgetItem.id,
                     },
                 })
-            }
-            await tx.budgetItem.update({
-                where: {
-                    userId: user.id,
-                    id: targetBudgetItemId,
-                },
-                data: {
-                    assigned: budgetItem.assigned + amount,
-                },
+                // add to target budgetItem
+                await prisma.assignment.create({
+                    data: {
+                        amount: amount,
+                        budgetId: budget.id,
+                        budgetItemId: budgetItem.id,
+                    },
+                })
             })
-        })
+        }
+
         return {
             success: true,
             reason: '',

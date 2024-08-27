@@ -23,7 +23,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             where: {
                 id: params.budgetCategoryId,
                 budgetId: params.budgetId,
-                userId: user.id,
+                budget: {
+                    userId: user.id,
+                },
             },
             include: {
                 budgetItems: true,

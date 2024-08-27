@@ -19,7 +19,7 @@ model Budget {
     budgetCategories BudgetCategory[]
     budgetItems      BudgetItem[]
     accounts         Account[]
-    assignments      Assigment[]
+    assignments      Assignment[]
 }
 
 model Account {
@@ -39,7 +39,7 @@ model BudgetCategory {
     name        String
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
-    Budget      Budget       @relation(fields: [budgetId], references: [id])
+    budget      Budget       @relation(fields: [budgetId], references: [id])
     order       Int // the order in which this category appears in the budget
 }
 
@@ -51,15 +51,15 @@ model BudgetItem {
     // balance          Float  Would just be assigned - transactions
     // assigned         Float  Would just be sum of assignments
     budgetCategoryId String         @db.Uuid
-    BudgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+    budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
     order            Int // the order in which this item appears in the category
     budgetId         String         @db.Uuid
     budget           Budget         @relation(fields: [budgetId], references: [id])
     transactions     Transaction[]
-    assignments      Assigment[]
+    assignments      Assignment[]
 }
 
-model Assigment {
+model Assignment {
     id           String     @id @unique @default(uuid()) @db.Uuid
     createdAt    DateTime   @default(now())
     amount       Int

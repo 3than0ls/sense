@@ -48,14 +48,14 @@ CREATE TABLE "BudgetItem" (
 );
 
 -- CreateTable
-CREATE TABLE "Assigment" (
+CREATE TABLE "Assignment" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "amount" INTEGER NOT NULL,
     "budgetId" UUID NOT NULL,
     "budgetItemId" UUID NOT NULL,
 
-    CONSTRAINT "Assigment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Assignment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -95,7 +95,7 @@ CREATE UNIQUE INDEX "BudgetCategory_id_key" ON "BudgetCategory"("id");
 CREATE UNIQUE INDEX "BudgetItem_id_key" ON "BudgetItem"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Assigment_id_key" ON "Assigment"("id");
+CREATE UNIQUE INDEX "Assignment_id_key" ON "Assignment"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
@@ -119,10 +119,10 @@ ALTER TABLE "BudgetItem" ADD CONSTRAINT "BudgetItem_budgetCategoryId_fkey" FOREI
 ALTER TABLE "BudgetItem" ADD CONSTRAINT "BudgetItem_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Assigment" ADD CONSTRAINT "Assigment_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Assigment" ADD CONSTRAINT "Assigment_budgetItemId_fkey" FOREIGN KEY ("budgetItemId") REFERENCES "BudgetItem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_budgetItemId_fkey" FOREIGN KEY ("budgetItemId") REFERENCES "BudgetItem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

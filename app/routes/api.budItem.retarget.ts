@@ -14,7 +14,9 @@ export async function action({ request }: ActionFunctionArgs) {
         const updatedItem = await prisma.budgetItem.update({
             where: {
                 id: id,
-                userId: user.id,
+                budget: {
+                    userId: user.id,
+                },
             },
             data: {
                 target: target,
