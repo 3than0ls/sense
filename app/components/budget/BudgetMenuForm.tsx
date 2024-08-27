@@ -5,6 +5,7 @@ import Icon from '../icons/Icon'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFetcher, useRevalidator } from '@remix-run/react'
+import { BudgetCategory } from '@prisma/client'
 
 type BudgetMenuProps = {
     className?: string
@@ -13,6 +14,7 @@ type BudgetMenuProps = {
     defaultValue: string
     schema: z.AnyZodObject
     action?: string
+    itemUuid: string
 }
 
 const BudgetMenuForm = ({
@@ -22,6 +24,7 @@ const BudgetMenuForm = ({
     defaultValue,
     schema,
     action,
+    itemUuid,
 }: BudgetMenuProps) => {
     // this component is an abomination
     // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
@@ -67,12 +70,10 @@ const BudgetMenuForm = ({
         if (
             inputValue &&
             inputValue !== defaultValue &&
-            inputValue !==
-                (fetcher.data as unknown as { TEMP_DELETE_CAT_NAME?: string })
-                    ?.TEMP_DELETE_CAT_NAME // shut up typescript i know it's temporary and will be deleted, in fact it MUST be deleted later
+            inputValue !== (fetcher.data as BudgetCategory)?.name
         ) {
             fetcher.submit(
-                { [name]: getValues(name) },
+                { [name]: getValues(name), id: itemUuid },
                 { method: 'PATCH', action }
             )
             validator.revalidate()

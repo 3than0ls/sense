@@ -1,14 +1,28 @@
-import { ActionFunctionArgs } from '@remix-run/node'
+import { ActionFunctionArgs, json } from '@remix-run/node'
+import ServerErrorResponse from '~/error'
+import prisma from '~/prisma/client'
+import authenticateUser from '~/utils/authenticateUser'
+import { itemNameSchema } from '~/zodSchemas/budgetItem'
 
 export async function action({ request }: ActionFunctionArgs) {
-    const data = await request.formData()
-    console.log('received request to change budget item name', data)
-    // const parsed = schema.parse(Object.fromEntries(data))
-    // // TODO
+    try {
+        const data = await request.formData()
+        const { name, id } = itemNameSchema.parse(Object.fromEntries(data))
 
-    // console.log('updating budget item name ', parsed)
-    // return {
-    //     TEMP_DELETE_CAT_NAME: parsed.name,
-    // }
-    return null
+        const { user } = await authenticateUser(request)
+
+        const updatedItem = await prisma.budgetItem.update({
+            where: {
+                id: id,
+                userId: user.id,
+            },
+            data: {
+                name: name,
+            },
+        })
+
+        return json(updatedItem)
+    } catch (e) {
+        throw new ServerErrorResponse()
+    }
 }

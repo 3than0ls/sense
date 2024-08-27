@@ -1,7 +1,12 @@
 import { z } from 'zod'
+import numberSchema from './number'
 
-const itemNameSchema = z.object({
+export const itemNameSchema = z.object({
     name: z.string().min(1, 'Item name cannot be empty.'),
+    id: z.string().uuid(),
 })
 
-export default itemNameSchema
+export const itemTargetSchema = z.object({
+    target: numberSchema,
+    id: z.string().uuid(),
+})

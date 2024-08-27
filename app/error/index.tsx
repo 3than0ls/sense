@@ -24,13 +24,18 @@ export default class ServerErrorResponse extends Response {
     //     })
     // }
 
-    constructor({
-        message = 'Unexpected server error.',
-        status = 500,
-    }: {
-        message?: string
-        status?: number
-    }) {
+    constructor(
+        {
+            message = 'Unexpected server error.',
+            status = 500,
+        }: {
+            message?: string
+            status?: number
+        } = {
+            message: 'Unexpected server error.',
+            status: 500,
+        }
+    ) {
         super(message, {
             status,
         })

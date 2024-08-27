@@ -2,7 +2,7 @@ import { BudgetCategoryFullType } from '~/context/BudgetContext'
 import BudgetItem from './BudgetItem'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
-import { Link } from '@remix-run/react'
+import { Link, useFetcher, useNavigate } from '@remix-run/react'
 
 type BudgetCategoryProps = {
     budgetCategory: BudgetCategoryFullType
@@ -16,8 +16,18 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
         }
     )
 
-    const onAddClick = () => alert('adding item to ' + budgetCategory.name)
-    const onEditClick = () => alert('editing ' + budgetCategory.name)
+    const fetcher = useFetcher()
+    const navigate = useNavigate()
+
+    const onAddClick = () => {
+        fetcher.submit(
+            {
+                budgetCategoryId: budgetCategory.id,
+            },
+            { action: '/api/budCat/newItem', method: 'POST' }
+        )
+    }
+    const onEditClick = () => navigate(budgetCategory.id)
 
     const { theme } = useTheme()
     const themeStyle =

@@ -2,26 +2,27 @@ import { ActionFunctionArgs, json } from '@remix-run/node'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import categoryNameSchema from '~/zodSchemas/budgetCategory'
+import { itemTargetSchema } from '~/zodSchemas/budgetItem'
 
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
-        const { name, id } = categoryNameSchema.parse(Object.fromEntries(data))
+        const { target, id } = itemTargetSchema.parse(Object.fromEntries(data))
+        console.log(target, id)
 
         const { user } = await authenticateUser(request)
 
-        const updatedCategory = await prisma.budgetCategory.update({
+        const updatedItem = await prisma.budgetItem.update({
             where: {
                 id: id,
                 userId: user.id,
             },
             data: {
-                name: name,
+                target: target,
             },
         })
 
-        return json(updatedCategory)
+        return json(updatedItem)
     } catch (e) {
         throw new ServerErrorResponse()
     }

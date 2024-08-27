@@ -5,10 +5,8 @@ import {
     useFetcher,
     useLoaderData,
     useMatches,
-    useNavigate,
 } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
-import { useEffect } from 'react'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
@@ -58,7 +56,6 @@ export default function BudgetCategoryEditRoute() {
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
     const fetcher = useFetcher()
-    const navigate = useNavigate()
 
     const budgetItems = Array.from(budgetCategory.budgetItems, (budgetItem) => {
         return (
@@ -84,15 +81,6 @@ export default function BudgetCategoryEditRoute() {
             { action: '/api/budCat/newItem', method: 'POST' }
         )
     }
-
-    useEffect(() => {
-        if (fetcher.data) {
-            const budgetItem = fetcher.data
-            console.log('NAVIGATE TO BUDGET ITEM', budgetItem)
-            // navigate(budgetItem.id)
-        }
-    }, [fetcher.data])
-
     // if further route matching, only render that
     const matches = useMatches()
     const hasFurtherRoute = matches.some(
@@ -117,6 +105,7 @@ export default function BudgetCategoryEditRoute() {
                     name="name"
                     schema={categoryNameSchema}
                     action="/api/budCat/rename"
+                    itemUuid={budgetCategory.id}
                 />
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />

@@ -11,7 +11,7 @@ import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import itemNameSchema from '~/zodSchemas/budgetItem'
+import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 import numberSchema from '~/zodSchemas/number'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -37,11 +37,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
                 BudgetCategory: true,
             },
         })
-        console.log(allBudgetItems)
         const budgetItem = allBudgetItems.find(
             (bItem) => bItem.id === params.budgetItemId
         )
-        console.log(budgetItem)
         if (allBudgetItems === null || budgetItem === undefined) {
             throw new Error()
         }
@@ -93,6 +91,7 @@ export default function BudgetItemEditRoute() {
                     name="name"
                     schema={itemNameSchema}
                     action="/api/budItem/rename"
+                    itemUuid={budgetItem.id}
                 />
             </div>
             <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
@@ -133,9 +132,9 @@ export default function BudgetItemEditRoute() {
                     defaultValue={budgetItem.target.toFixed(2).toString()}
                     label="Target"
                     name="target"
-                    schema={z.object({
-                        target: numberSchema,
-                    })}
+                    schema={itemTargetSchema}
+                    action="/api/budItem/retarget"
+                    itemUuid={budgetItem.id}
                 />
             </div>
         </div>
