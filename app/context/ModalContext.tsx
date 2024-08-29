@@ -31,7 +31,9 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
                     active ? 'absolute z-50' : 'hidden'
                 } flex justify-center items-center`}
             >
-                <div className={`${themeClass} p-12 rounded-2xl relative`}>
+                <div
+                    className={`${themeClass} px-8 py-12 rounded-2xl relative`}
+                >
                     <button
                         className="absolute top-4 right-4 flex jutify-center items-center hover:opacity-85 transition"
                         onClick={() => setActive(false)}

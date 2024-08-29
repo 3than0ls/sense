@@ -22,4 +22,5 @@ Text color change based on budget states (namely red on negative)
 A name for the project
 
 
-NEXT: ASsigning money UI
+NEXT: Finish backend for account creation
+then we will go full frontend and fix this shit UI and CSS

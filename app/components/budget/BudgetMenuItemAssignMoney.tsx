@@ -46,7 +46,6 @@ const BudgetMenuItemAssignMoney = ({
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
         const fromFreeCash = from.name === 'Free Cash'
-        fetcher.formAction = '/assign'
         fetcher.submit(
             {
                 targetBudgetItemId: target.id,
@@ -109,7 +108,8 @@ const BudgetMenuItemAssignMoney = ({
                     />
                     <button
                         onClick={() => {
-                            const amt = target.target - target.assigned
+                            // TEMP TODO FIX THIS
+                            const amt = 0.01
                             setRawAmount(amt.toFixed(2))
                             setAmount(amt)
                             setError('')

@@ -27,9 +27,11 @@ model Account {
     createdAt      DateTime      @default(now())
     name           String
     initialBalance Float
-    budgetId       String        @db.Uuid
-    budget         Budget        @relation(fields: [budgetId], references: [id])
+    budgetId       String?       @db.Uuid
+    budget         Budget?       @relation(fields: [budgetId], references: [id])
     transactions   Transaction[]
+    userId         String        @db.Uuid
+    user           User          @relation(fields: [userId], references: [id])
 }
 
 // exists solely for visual and user sorting purposes
@@ -70,13 +72,14 @@ model Assignment {
 }
 
 model User {
-    id        String   @id @unique @db.Uuid
-    createdAt DateTime @default(now())
-    theme     Theme    @default(DARK)
-    firstName String   @db.VarChar(25)
-    lastName  String   @db.VarChar(25)
+    id        String    @id @unique @db.Uuid
+    createdAt DateTime  @default(now())
+    theme     Theme     @default(DARK)
+    firstName String    @db.VarChar(25)
+    lastName  String    @db.VarChar(25)
     email     String
     budgets   Budget[]
+    Account   Account[]
 }
 
 enum Theme {

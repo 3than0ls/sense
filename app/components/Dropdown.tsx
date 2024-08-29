@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import Icon from './icons/Icon'
 
-type DropdownItem = {
+export type DropdownItem = {
     name: string
     id: string
 }
@@ -31,6 +31,8 @@ type DropdownProps = {
     defaultItem?: DropdownItem
     className?: string
     onChange?: (dropdownItem: DropdownItem) => void
+    onExpand?: () => void
+    errorState?: boolean
 }
 
 const Dropdown = ({
@@ -38,6 +40,8 @@ const Dropdown = ({
     defaultItem,
     className,
     onChange,
+    errorState = false,
+    onExpand,
 }: DropdownProps) => {
     const { theme } = useTheme()
     const themeStyle =
@@ -60,37 +64,56 @@ const Dropdown = ({
     }, [onChange, current])
 
     return (
-        <div
-            className={`${className} ${themeStyle} min-w-64 relative ${
-                active ? 'rounded-t-lg' : 'rounded-lg'
-            } divide-y-2 divide-subtle`}
-        >
-            <button
-                className="w-full p-2 text-left rounded-2xl hover:bg-opacity-85 transition flex justify-between items-center"
-                onClick={() => setActive(!active)}
-            >
-                <span className="">{current?.name || 'Select'}</span>
-                <Icon
-                    type="chevron-down"
-                    className={`size-5 transform ${
-                        active && '-rotate-180'
-                    } transition`}
-                />
-            </button>
+        <div>
             <div
-                className={`${
-                    active ? 'absolute' : 'hidden'
-                } ${themeClass} w-full flex flex-col rounded-b-lg overflow-hidden divide-y-[1px] divide-subtle`}
+                className={`${className} ${themeStyle} min-w-64 relative ${
+                    active ? 'rounded-t-lg' : 'rounded-lg'
+                } divide-y-2 divide-subtle ${
+                    errorState &&
+                    ' outline outline-offset-2 outline-error outline-[3px]'
+                }`}
             >
-                {Array.from(dropdownItems, (dItem) => (
-                    <DropdownItem
-                        onClick={() => onItemClick(dItem)}
-                        className={themeStyle}
-                        dropdownItem={dItem}
-                        key={dItem.id}
+                <button
+                    className={`w-full p-2 text-left rounded-2xl hover:bg-opacity-85 transition flex justify-between items-center
+                `}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        if (onExpand) onExpand()
+                        setActive(!active)
+                    }}
+                >
+                    <span className="">{current?.name || 'Select'}</span>
+                    <Icon
+                        type="chevron-down"
+                        className={`size-5 transform ${
+                            active && '-rotate-180'
+                        } transition`}
                     />
-                ))}
+                </button>
+
+                <div
+                    className={`${
+                        active ? 'absolute' : 'hidden'
+                    } ${themeClass} w-full flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle`}
+                >
+                    {Array.from(dropdownItems, (dItem) => (
+                        <DropdownItem
+                            onClick={(e) => {
+                                e.preventDefault()
+                                onItemClick(dItem)
+                            }}
+                            className={themeStyle}
+                            dropdownItem={dItem}
+                            key={dItem.id}
+                        />
+                    ))}
+                </div>
             </div>
+            {errorState && (
+                <span className="ml-1 text-error text-sm">
+                    An item must be selected.
+                </span>
+            )}
         </div>
     )
 }

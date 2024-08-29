@@ -1,6 +1,6 @@
-import { Budget, Account } from '@prisma/client'
-import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { Outlet, useLoaderData } from '@remix-run/react'
+import { Account, Budget } from '@prisma/client'
+import { LoaderFunctionArgs } from '@remix-run/node'
+import { json, Outlet, useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Sidebar from '~/components/sidebar/Sidebar'
 import ServerErrorResponse from '~/error'
@@ -35,12 +35,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function View() {
     const { budgets, accounts } = useLoaderData<typeof loader>()
+
     return (
         <div className="flex h-full">
             <Sidebar
                 budgets={budgets as unknown as Budget[]}
                 accounts={accounts as unknown as Account[]}
             />
+
             <Outlet />
         </div>
     )
