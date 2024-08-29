@@ -3,13 +3,14 @@ import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
-import BudgetMenuItemAssignMoney from '~/components/budget/BudgetMenuItemAssignMoney'
+import AssignMoneyForm from '~/components/budget/AssignMoneyForm'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
+import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -39,6 +40,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
         const budgetItem = await prisma.budgetItem.findFirstOrThrow({
             where: {
+                id: params.budgetItemId,
                 budgetId: params.budgetId,
                 budget: {
                     userId: user.id,
@@ -50,8 +52,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             },
         })
 
-        const assigned = 0 // a function of target and assignments
-        const balance = 0 // a function of assigned and transactions
+        const assigned = totalAssignments(budgetItem.assignments)
+        const balance = totalTransactions(budgetItem.transactions)
 
         return json({ allBudgetItems, budgetItem, assigned, balance })
     } catch (e) {
@@ -80,10 +82,11 @@ export default function BudgetItemEditRoute() {
         // quirk in which if you set a value, but then don't change it but exit modal, state is retained
         // only if key is same
         setModalChildren(
-            <BudgetMenuItemAssignMoney
+            <AssignMoneyForm
                 key={budgetItem.id}
                 budgetItems={allBudgetItems as unknown as BudgetItem[]}
-                target={budgetItem as unknown as BudgetItem}
+                targetBudgetItem={budgetItem as unknown as BudgetItem}
+                targetBudgetItemAssigned={assigned}
             />
         )
         setActive(true)
@@ -135,7 +138,7 @@ export default function BudgetItemEditRoute() {
                 </div>
                 <BudgetMenuForm
                     key={budgetItem.target}
-                    defaultValue={budgetItem.target.toFixed(2).toString()}
+                    defaultValue={budgetItem.target.toFixed(2)}
                     label="Target"
                     name="target"
                     schema={itemTargetSchema}

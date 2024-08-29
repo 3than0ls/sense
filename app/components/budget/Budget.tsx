@@ -3,13 +3,14 @@ import BudgetCategory from './BudgetCategory'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
 import BudgetMenu from './BudgetMenu'
+import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 
 type BudgetProps = {
-    budgetData: BudgetFullType
+    budgetData: FullBudgetDataType
 }
 
 const Budget = ({ budgetData }: BudgetProps) => {
-    const { createdAt, description, name, budgetCategories } = budgetData
+    const { description, name, budgetCategories } = budgetData
 
     const budgetCategoryComponents = Array.from(
         budgetCategories,
@@ -44,9 +45,8 @@ const Budget = ({ budgetData }: BudgetProps) => {
                         <div
                             className={`relative flex flex-col divide-y ${themeStyles} flex-grow overflow-y-auto`}
                         >
-                            {...budgetCategoryComponents}
                             <div
-                                className={`sticky bottom-0 mt-auto flex w-full justify-end gap-4 text-right px-4 ${themeStyles}`}
+                                className={`sticky top-0 flex w-full justify-end gap-4 text-right px-4 ${themeStyles}`}
                             >
                                 <span className="w-56 text-left flex-grow font-work-bold">
                                     {name}
@@ -55,6 +55,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                                 <span className="w-32">Assigned</span>
                                 <span className="w-32">Target</span>
                             </div>
+                            {...budgetCategoryComponents}
                         </div>
                     </div>
                     <BudgetMenu budgetData={budgetData} />

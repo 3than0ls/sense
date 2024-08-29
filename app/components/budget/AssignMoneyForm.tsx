@@ -6,16 +6,18 @@ import { useTheme } from '~/context/ThemeContext'
 import numberSchema from '~/zodSchemas/number'
 import { action } from '~/routes/api.budItem.assign'
 
-type BudgetMenuItemAssignMoneyProps = {
-    target: BudgetItem
+type AssignMoneyFormProps = {
+    targetBudgetItem: BudgetItem
+    targetBudgetItemAssigned: number
     budgetItems: BudgetItem[]
     className?: string
 }
 
-const BudgetMenuItemAssignMoney = ({
-    target,
+const AssignMoneyForm = ({
+    targetBudgetItem,
+    targetBudgetItemAssigned,
     budgetItems,
-}: BudgetMenuItemAssignMoneyProps) => {
+}: AssignMoneyFormProps) => {
     // fetch user data
     const dropdownItems = [
         {
@@ -23,7 +25,7 @@ const BudgetMenuItemAssignMoney = ({
             id: 'Free Cash',
         },
         ...budgetItems
-            .filter((bItem) => bItem.id !== target.id)
+            .filter((bItem) => bItem.id !== targetBudgetItem.id)
             .map((bItem) => {
                 return {
                     name: bItem.name,
@@ -33,7 +35,7 @@ const BudgetMenuItemAssignMoney = ({
     ]
 
     const [from, setFrom] = useState(dropdownItems[0])
-    const [rawAmount, setRawAmount] = useState('0.00')
+    const [rawAmount, setRawAmount] = useState('')
     const [amount, setAmount] = useState(0)
     const [error, setError] = useState('')
 
@@ -48,7 +50,7 @@ const BudgetMenuItemAssignMoney = ({
         const fromFreeCash = from.name === 'Free Cash'
         fetcher.submit(
             {
-                targetBudgetItemId: target.id,
+                targetBudgetItemId: targetBudgetItem.id,
                 fromFreeCash,
                 fromBudgetItemId: fromFreeCash ? '' : from.id,
                 amount,
@@ -76,7 +78,9 @@ const BudgetMenuItemAssignMoney = ({
             onSubmit={handleSubmit}
             className="flex flex-col gap-4 w-96"
         >
-            <span className="text-2xl">Assign Money to {target.name}</span>
+            <span className="text-2xl">
+                Assign Money to {targetBudgetItem.name}
+            </span>
             <div>
                 <span>From:</span>
                 <Dropdown
@@ -102,6 +106,7 @@ const BudgetMenuItemAssignMoney = ({
                                 setError(out.error.errors[0].message)
                             }
                         }}
+                        placeholder="Enter amount"
                         value={rawAmount}
                         type="text"
                         className={`${themeStyle} w-full p-2 text-left rounded-lg hover:bg-opacity-85 transition flex justify-between items-center`}
@@ -109,9 +114,11 @@ const BudgetMenuItemAssignMoney = ({
                     <button
                         onClick={() => {
                             // TEMP TODO FIX THIS
-                            const amt = 0.01
-                            setRawAmount(amt.toFixed(2))
-                            setAmount(amt)
+                            const leftover =
+                                targetBudgetItem.target -
+                                targetBudgetItemAssigned
+                            setRawAmount(leftover.toFixed(2))
+                            setAmount(leftover)
                             setError('')
                         }}
                         type="button"
@@ -133,4 +140,4 @@ const BudgetMenuItemAssignMoney = ({
     )
 }
 
-export default BudgetMenuItemAssignMoney
+export default AssignMoneyForm

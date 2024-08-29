@@ -4,6 +4,8 @@ import { useTheme } from '~/context/ThemeContext'
 
 type BudgetItemExpandedProps = {
     budgetItem: BudgetItem
+    assigned: number
+    balance: number
 }
 
 const BudgetItemExpandedButton = ({
@@ -24,7 +26,9 @@ const BudgetItemExpandedButton = ({
 }
 
 const BudgetItemExpanded = ({
-    budgetItem: { name, balance, target, assigned },
+    budgetItem: { name, target },
+    assigned = 999,
+    balance = 999,
 }: BudgetItemExpandedProps) => {
     // add some add and edit buttons yeah?
 

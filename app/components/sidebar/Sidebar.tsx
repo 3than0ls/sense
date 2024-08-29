@@ -42,7 +42,7 @@ const Sidebar = ({ budgets, accounts }: SidebarProps) => {
                 closedChildren={() => 'H'}
             />
             <SidebarLink
-                href="c1f1b492-7b06-4742-b493-1c7bc3dece57"
+                href="/budget/c1f1b492-7b06-4742-b493-1c7bc3dece57"
                 closed={width === 0 && closed}
                 openChildren={() => 'Budget 1'}
                 closedChildren={() => 'B'}

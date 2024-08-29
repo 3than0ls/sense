@@ -1,12 +1,12 @@
 import { ActionFunctionArgs } from '@remix-run/node'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
+import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import authenticateUser from '~/utils/authenticateUser'
 import {
-    budgetItemTotalAssignments,
-    budgetItemTotalTransactions,
+    totalAssignments,
+    totalTransactions,
     budgetTotalAccounts,
-    budgetTotalAssignments,
 } from '~/utils/budgetValues'
 import { itemAssignMoneySchema } from '~/zodSchemas/budgetItem'
 
@@ -55,8 +55,11 @@ export async function action({ request }: ActionFunctionArgs) {
         })
 
         if (fromFreeCash) {
-            const totalCash = budgetTotalAccounts(budget.accounts)
-            const assigned = budgetTotalAssignments(budget.assignments)
+            // I've been naughty typescript...
+            const totalCash = budgetTotalAccounts(
+                budget as unknown as FullBudgetDataType
+            )
+            const assigned = totalAssignments(budget.assignments)
             const freeCash = totalCash - assigned
             if (freeCash < amount) {
                 throw new Error('Not enough free cash, amount is too high.')
@@ -84,12 +87,10 @@ export async function action({ request }: ActionFunctionArgs) {
                         transactions: true,
                     },
                 })
-                const totalTransacs = budgetItemTotalTransactions(
+                const totalTransacs = totalTransactions(
                     fromBudgetItem.transactions
                 )
-                const assigned = budgetItemTotalAssignments(
-                    fromBudgetItem.assignments
-                )
+                const assigned = totalAssignments(fromBudgetItem.assignments)
                 // assigned - balance = free cash to be able to be moved; assigned money doesn't always mean it can be moved
                 if (assigned - totalTransacs < amount) {
                     throw new Error('Not enough free cash, amount is too high.')

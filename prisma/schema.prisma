@@ -64,7 +64,7 @@ model BudgetItem {
 model Assignment {
     id           String     @id @unique @default(uuid()) @db.Uuid
     createdAt    DateTime   @default(now())
-    amount       Int
+    amount       Float
     budgetId     String     @db.Uuid
     budget       Budget     @relation(fields: [budgetId], references: [id])
     budgetItemId String     @db.Uuid

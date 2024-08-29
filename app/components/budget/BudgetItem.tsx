@@ -4,14 +4,20 @@ import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
 import { Link } from '@remix-run/react'
+import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 
 type BudgetItemProps = {
-    budgetItem: BudgetItemModel
+    budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
 }
 
 const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
-    const { name, balance, target, assigned } = budgetItem
+    const { name, target } = budgetItem
     const [expanded, setExpanded] = useState(false)
+
+    const transactions = totalTransactions(budgetItem.transactions)
+    const assigned = totalAssignments(budgetItem.assignments)
+    const balance = assigned - transactions
 
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
@@ -61,7 +67,13 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                 <span className="w-32 text-right">${assigned.toFixed(2)}</span>
                 <span className="w-32 text-right">${target.toFixed(2)}</span>
             </div>
-            {expanded && <BudgetItemExpanded budgetItem={budgetItem} />}
+            {expanded && (
+                <BudgetItemExpanded
+                    budgetItem={budgetItem}
+                    assigned={assigned}
+                    balance={balance}
+                />
+            )}
         </div>
     )
 }

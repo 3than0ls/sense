@@ -6,6 +6,7 @@ import { BudgetFullType } from '~/context/BudgetContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
+import fullBudgetData, { FullBudgetDataType } from '~/prisma/fullBudgetData'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     // THE PERFECT LOADER SAMPLE:
@@ -13,22 +14,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
-        const budget = await prisma.budget.findFirst({
-            where: {
-                id: params.budgetId,
-                userId: user.id,
-            },
-            include: {
-                budgetCategories: {
-                    include: {
-                        budgetItems: true,
-                    },
-                },
-            },
+        const budget = await fullBudgetData({
+            userId: user.id,
+            budgetId: params.budgetId!,
         })
-        if (budget === null) {
-            throw new Error()
-        }
 
         return json(budget)
     } catch (e) {
@@ -44,8 +33,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function BudgetRoute() {
+    // this is of some obscene type
     const data = useLoaderData<typeof loader>()
 
-    // definitely going to have to use outlet?
-    return <Budget budgetData={data as unknown as BudgetFullType} />
+    return <Budget budgetData={data as unknown as FullBudgetDataType} />
 }

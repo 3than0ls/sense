@@ -1,9 +1,14 @@
 import { Link, Outlet } from '@remix-run/react'
 import { BudgetFullType } from '~/context/BudgetContext'
 import Icon from '../icons/Icon'
+import {
+    budgetTotalAccounts,
+    budgetTotalAssignments,
+} from '~/utils/budgetValues'
+import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 
 type BudgetMenuProps = {
-    budgetData: BudgetFullType
+    budgetData: FullBudgetDataType
 }
 
 const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
@@ -33,7 +38,9 @@ const BudgetMenuLink = ({
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    const { freeCash, totalCash } = budgetData
+    const totalCash = budgetTotalAccounts(budgetData)
+    const assignedCash = budgetTotalAssignments(budgetData)
+    const freeCash = totalCash - assignedCash
 
     return (
         <div className="w-1/4 flex flex-col gap-6 p-4">

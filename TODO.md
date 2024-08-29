@@ -22,5 +22,11 @@ Text color change based on budget states (namely red on negative)
 A name for the project
 
 
-NEXT: Finish backend for account creation
-then we will go full frontend and fix this shit UI and CSS
+NEXT: 
+Fix frontend CSS issues
+- Scrollbar for things
+- Sidebar
+- Itembar color constrasting
+Create category
+- UI and backend
+Assign money inflow AND outflow

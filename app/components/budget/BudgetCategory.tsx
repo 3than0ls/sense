@@ -1,11 +1,11 @@
-import { BudgetCategoryFullType } from '~/context/BudgetContext'
 import BudgetItem from './BudgetItem'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
 import { Link, useFetcher, useNavigate } from '@remix-run/react'
+import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 
 type BudgetCategoryProps = {
-    budgetCategory: BudgetCategoryFullType
+    budgetCategory: FullBudgetDataType['budgetCategories'][number]
 }
 
 const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {

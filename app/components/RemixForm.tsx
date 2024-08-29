@@ -35,7 +35,6 @@ export default function RemixForm<FormValues extends FieldValues>({
     const _handleSubmit = async (
         e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
     ) => {
-        console.log('something happened')
         // if we don't provide e to method.handleSubmit(onSubmit)(e), it will not prevent default, submitting regardless
         await methods.handleSubmit(onSubmit)(e)
 
