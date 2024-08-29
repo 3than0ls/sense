@@ -54,13 +54,12 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
 
     return (
         <RemixForm
-            className="min-w-96 px-4 flex flex-col gap-2"
+            className="min-w-96 flex flex-col gap-2"
             methods={methods}
             fetcher={fetcher}
             onSubmit={onSubmit}
             noAction={true}
         >
-            <span className="text-2xl">Create an Account</span>
             <Input name="name" label="Name" />
             <Input name="initialBalance" label="Initial Balance" />
             <div className="mb-4">
@@ -76,7 +75,9 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
                     errorState={dropdownError}
                 />
             </div>
-            <Submit className="w-full py-2 rounded-xl">Create Account</Submit>
+            <Submit className="w-full py-2 rounded-xl mt-8">
+                Create Account
+            </Submit>
         </RemixForm>
     )
 }

@@ -78,9 +78,6 @@ const AssignMoneyForm = ({
             onSubmit={handleSubmit}
             className="flex flex-col gap-4 w-96"
         >
-            <span className="text-2xl">
-                Assign Money to {targetBudgetItem.name}
-            </span>
             <div>
                 <span>From:</span>
                 <Dropdown

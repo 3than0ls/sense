@@ -22,7 +22,7 @@ const Sidebar = ({ budgets, accounts }: SidebarProps) => {
 
     const TEMPFETCHER = useFetcher()
 
-    const { setActive, setModalChildren } = useModal()
+    const { setActive, setModalTitle, setModalChildren } = useModal()
 
     return (
         <div
@@ -64,6 +64,7 @@ const Sidebar = ({ budgets, accounts }: SidebarProps) => {
 
             <button
                 onClick={() => {
+                    setModalTitle('Create an Account')
                     setModalChildren(<AccountForm budgets={budgets} />)
                     setActive(true)
                 }}

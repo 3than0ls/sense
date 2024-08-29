@@ -77,10 +77,11 @@ export default function BudgetItemEditRoute() {
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
-    const { setActive, setModalChildren } = useModal()
+    const { setActive, setModalTitle, setModalChildren } = useModal()
     const onAssignMoneyClick = () => {
         // quirk in which if you set a value, but then don't change it but exit modal, state is retained
         // only if key is same
+        setModalTitle(`Assign Money to ${budgetItem.name}`)
         setModalChildren(
             <AssignMoneyForm
                 key={budgetItem.id}
