@@ -23,6 +23,7 @@ A name for the project
 
 
 NEXT: 
+Add op
 Fix frontend CSS issues
 - Scrollbar for things
 - Sidebar
@@ -30,3 +31,4 @@ Fix frontend CSS issues
 Create category
 - UI and backend
 Assign money inflow AND outflow
+Custom scrollbar

@@ -63,11 +63,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className="h-screen">
-                <div className="h-10 bg-yellow-300">
+            <body className="relative h-screen flex flex-col overflow-hidden">
+                <div className="sticky top-0 h-10 bg-yellow-300">
                     some sort of universal navbar here
                 </div>
-                {children}
+                <div className="min-h-0 h-full">{children}</div>
                 <ScrollRestoration />
                 <Scripts />
             </body>

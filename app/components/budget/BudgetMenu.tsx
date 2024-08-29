@@ -43,7 +43,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const freeCash = totalCash - assignedCash
 
     return (
-        <div className="w-1/4 flex flex-col gap-6 p-4">
+        <div className="w-1/4 flex flex-col gap-6 p-4 overflow-auto">
             <div className="flex gap-6 w-full">
                 <BudgetMenuCard label="Free Cash" value={freeCash} />
                 <BudgetMenuCard label="Total Cash" value={totalCash} />
