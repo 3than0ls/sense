@@ -85,6 +85,7 @@ const BudgetMenuForm = ({
     return (
         <form
             onSubmit={handleSubmit((e) => {
+                console.log('somasoidmioasdoisjm')
                 e.preventDefault()
                 submit()
             })}
@@ -114,6 +115,11 @@ const BudgetMenuForm = ({
                             reset()
                         } else {
                             submit()
+                        }
+                    }}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        if (e.code === 'Enter') {
+                            e.currentTarget.blur()
                         }
                     }}
                 />
