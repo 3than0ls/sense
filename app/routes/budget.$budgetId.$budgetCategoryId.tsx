@@ -80,7 +80,7 @@ export default function BudgetCategoryEditRoute() {
             {
                 budgetCategoryId: budgetCategory.id,
             },
-            { action: '/api/budCat/newItem', method: 'POST' }
+            { action: '/api/budItem/create', method: 'POST' }
         )
     }
     // if further route matching, only render that

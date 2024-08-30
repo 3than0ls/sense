@@ -24,7 +24,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
             {
                 budgetCategoryId: budgetCategory.id,
             },
-            { action: '/api/budCat/newItem', method: 'POST' }
+            { action: '/api/budItem/create', method: 'POST' }
         )
     }
     const onEditClick = () => navigate(budgetCategory.id)
