@@ -34,29 +34,31 @@ const Budget = ({ budgetData }: BudgetProps) => {
         <div className="w-full h-full min-w-[600px] flex flex-col">
             <div className={`flex gap-6 p-4 items-center`}>
                 <div className="flex flex-col w-full">
-                    <span className="text-4xl font-work-black">{name}</span>
+                    <button
+                        className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
+                        onClick={() => {
+                            setModalTitle('Budget info')
+                            setModalChildren(
+                                <BudgetInfoForm
+                                    name={budgetData.name}
+                                    description={budgetData.description || ''}
+                                    budgetId={budgetData.id}
+                                />
+                            )
+                            setActive(true)
+                        }}
+                    >
+                        <span className="text-4xl font-work-black group-hover:opacity-90 transition">
+                            {name}
+                        </span>
+                        <Icon
+                            type="edit"
+                            className={`size-6 stroke-subtle group-hover:brightness-150 transition`}
+                            interactive
+                        />
+                    </button>
                     <span>{description}</span>
                 </div>
-
-                <button
-                    onClick={() => {
-                        setModalTitle('Budget info')
-                        setModalChildren(
-                            <BudgetInfoForm
-                                name={budgetData.name}
-                                description={budgetData.description || ''}
-                                budgetId={budgetData.id}
-                            />
-                        )
-                        setActive(true)
-                    }}
-                >
-                    <Icon
-                        type="edit"
-                        className={`size-6 stroke-white hover:opacity-75 transition`}
-                        interactive
-                    />
-                </button>
             </div>
             <div className="flex flex-grow overflow-auto">
                 <div className="relative flex-grow flex flex-col">
@@ -69,9 +71,19 @@ const Budget = ({ budgetData }: BudgetProps) => {
                             <span className="w-56 text-left flex-grow font-work-bold">
                                 {name}
                             </span>
-                            <span className="w-32">Balance</span>
-                            <span className="w-32">Assigned</span>
-                            <span className="w-32">Target</span>
+
+                            <div className="w-24 flex justify-center items-center gap-2">
+                                <span className="text-right">Balance</span>
+                                <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
+                            </div>
+                            <div className="w-24 flex justify-center items-center gap-2">
+                                <span className="text-right">Assigned</span>
+                                <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
+                            </div>
+                            <div className="w-24 flex justify-center items-center gap-2">
+                                <span className="text-right">Target</span>
+                                <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
+                            </div>
                         </div>
                         {budgetCategoryComponents.length > 0 ? (
                             budgetCategoryComponents
