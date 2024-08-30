@@ -1,4 +1,4 @@
-import { Account, Assignment, Transaction } from '@prisma/client'
+import { Assignment, Transaction } from '@prisma/client'
 import { FullBudgetDataType } from '../prisma/fullBudgetData'
 
 /**

@@ -17,12 +17,6 @@ But then again having a vague thing here is also vague.
 A decision will be made later; code remains the same
 */
 
-export async function loader({ request }: ActionFunctionArgs) {
-    // you shuld NOT be able to navigate here... redirect immediately!
-    // TODO
-    return {}
-}
-
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()

@@ -26,7 +26,7 @@ const BudgetItemExpandedButton = ({
 }
 
 const BudgetItemExpanded = ({
-    budgetItem: { name, target },
+    budgetItem: { target },
     assigned = 999,
     balance = 999,
 }: BudgetItemExpandedProps) => {

@@ -4,12 +4,6 @@ import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 
-export async function loader({ request }: ActionFunctionArgs) {
-    // you shuld NOT be able to navigate here... redirect immediately!
-    // TODO
-    return {}
-}
-
 const uuid = z.string().uuid()
 /*
  In `budget.$budgetId.$budgetCategoryId.tsx`

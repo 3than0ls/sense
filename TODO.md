@@ -23,12 +23,11 @@ A name for the project
 
 
 NEXT: 
-Add op
-Fix frontend CSS issues
-- Scrollbar for things
-- Sidebar
-- Itembar color constrasting
+Add empty-budget thing
+Sidebar
 Create category
 - UI and backend
 Assign money inflow AND outflow
+Account menu
+Order of items
 Custom scrollbar

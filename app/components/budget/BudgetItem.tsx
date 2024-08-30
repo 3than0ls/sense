@@ -1,4 +1,3 @@
-import { BudgetItem as BudgetItemModel } from '@prisma/client'
 import { useState } from 'react'
 import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
@@ -54,7 +53,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                 </div>
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="flex-grow"
+                    className="flex-grow mr-10"
                 >
                     <BudgetItemBar
                         expanded={expanded}
@@ -63,9 +62,18 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                         assigned={assigned}
                     />
                 </button>
-                <span className="w-32 text-right">${balance.toFixed(2)}</span>
-                <span className="w-32 text-right">${assigned.toFixed(2)}</span>
-                <span className="w-32 text-right">${target.toFixed(2)}</span>
+                <div className="w-24 flex justify-center items-center gap-2">
+                    <span className="text-right">${balance.toFixed(2)}</span>
+                    <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
+                </div>
+                <div className="w-24 flex justify-center items-center gap-2">
+                    <span className="text-right">${assigned.toFixed(2)}</span>
+                    <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
+                </div>
+                <div className="w-24 flex justify-center items-center gap-2">
+                    <span className="text-right">${target.toFixed(2)}</span>
+                    <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
+                </div>
             </div>
             {expanded && (
                 <BudgetItemExpanded

@@ -1,5 +1,4 @@
 import { Link, Outlet } from '@remix-run/react'
-import { BudgetFullType } from '~/context/BudgetContext'
 import Icon from '../icons/Icon'
 import {
     budgetTotalAccounts,

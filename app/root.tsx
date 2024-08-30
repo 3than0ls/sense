@@ -26,12 +26,12 @@ export async function loader({ request }: ActionFunctionArgs) {
     } = await supabase.auth.getUser()
 
     // TODO: store theme in local storage for users that don't have an account, but still change theme
-    let initialTheme: Theme = Theme.DARK
+    let initialTheme: Theme = Theme.LIGHT
     if (user) {
         const userData = await prisma.user.findFirst({
             where: { id: user.id },
         })
-        initialTheme = userData?.theme ?? Theme.DARK
+        initialTheme = Theme.LIGHT // || userData?.theme ?? Theme.DARK
     }
 
     return {

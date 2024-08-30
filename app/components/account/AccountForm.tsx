@@ -1,8 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useFetcher } from '@remix-run/react'
-import React, { useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { useTheme } from '~/context/ThemeContext'
+import { useState } from 'react'
+import { SubmitHandler } from 'react-hook-form'
 import { accountFormSchema, AccountFormSchemaType } from '~/zodSchemas/account'
 import Input from '../form/Input'
 import useRemixForm from '~/hooks/useRemixForm'
@@ -17,10 +14,6 @@ type AccountFormProps = {
 }
 
 const AccountForm = ({ budgets }: AccountFormProps) => {
-    const { theme } = useTheme()
-    const themeStyle =
-        theme === 'DARK' ? 'bg-light text-light' : 'bg-dark text-dark'
-
     const { setActive } = useModal()
 
     // may have to use an onChange

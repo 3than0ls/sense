@@ -1,4 +1,3 @@
-import BudgetProvider, { BudgetFullType } from '~/context/BudgetContext'
 import BudgetCategory from './BudgetCategory'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
