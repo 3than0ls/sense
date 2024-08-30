@@ -14,14 +14,12 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     const budgetCategoryComponents = Array.from(
         budgetCategories,
-        (budgetCategory) => {
-            return (
-                <BudgetCategory
-                    budgetCategory={budgetCategory}
-                    key={budgetCategory.id}
-                />
-            )
-        }
+        (budgetCategory) => (
+            <BudgetCategory
+                budgetCategory={budgetCategory}
+                key={budgetCategory.id}
+            />
+        )
     )
 
     const { theme } = useTheme()
@@ -55,7 +53,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                             <span className="w-32">Target</span>
                         </div>
                         {budgetCategoryComponents.length > 0 ? (
-                            { ...budgetCategoryComponents }
+                            budgetCategoryComponents
                         ) : (
                             <EmptyBudget />
                         )}

@@ -81,7 +81,7 @@ export function ErrorBoundary() {
         console.log(error.data)
     } else {
         console.log('Non-route error occured:')
-        console.log(error)
+        console.error(error)
     }
 
     return (

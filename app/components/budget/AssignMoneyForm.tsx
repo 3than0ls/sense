@@ -5,6 +5,7 @@ import { useFetcher } from '@remix-run/react'
 import { useTheme } from '~/context/ThemeContext'
 import numberSchema from '~/zodSchemas/number'
 import { action } from '~/routes/api.budItem.assign'
+import { useModal } from '~/context/ModalContext'
 
 type AssignMoneyFormProps = {
     targetBudgetItem: BudgetItem
@@ -41,6 +42,8 @@ const AssignMoneyForm = ({
 
     const fetcher = useFetcher<typeof action>()
 
+    const { setActive } = useModal()
+
     const { theme } = useTheme()
     const themeStyle =
         theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
@@ -68,13 +71,12 @@ const AssignMoneyForm = ({
     useEffect(() => {
         if (fetcher.data) {
             if (fetcher.data.success) {
-                // trigger a modal close or some shit. refresh page!
+                setActive(false)
             } else {
                 setError(fetcher.data.reason)
             }
-            console.log('fetcher data changed', fetcher.data)
         }
-    }, [fetcher.data])
+    }, [fetcher.data, setActive])
 
     return (
         <fetcher.Form

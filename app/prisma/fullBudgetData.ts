@@ -30,9 +30,6 @@ export default async function fullBudgetData({
         },
     })
 
-    console.log('---------------------------------')
-    console.log(baseData)
-    console.log('---------------------------------')
     return baseData
 }
 

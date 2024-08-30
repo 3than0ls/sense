@@ -78,6 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 status: 422,
             }
         } else {
+            // HANDLE THIS PROPERLY
             console.error('Unexpected server error:')
             throw e
         }

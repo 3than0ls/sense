@@ -85,7 +85,6 @@ const BudgetMenuForm = ({
     return (
         <form
             onSubmit={handleSubmit((e) => {
-                console.log('somasoidmioasdoisjm')
                 e.preventDefault()
                 submit()
             })}

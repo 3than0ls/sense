@@ -23,11 +23,11 @@ A name for the project
 
 
 NEXT: 
-Add empty-budget thing
-Sidebar
 Create category
+Sidebar
 - UI and backend
 Assign money inflow AND outflow
 Account menu
 Order of items
 Custom scrollbar
+Transaction modal UI
