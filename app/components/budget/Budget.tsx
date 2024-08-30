@@ -3,6 +3,7 @@ import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
 import BudgetMenu from './BudgetMenu'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import EmptyBudget from './EmptyBudget'
 
 type BudgetProps = {
     budgetData: FullBudgetDataType
@@ -53,9 +54,14 @@ const Budget = ({ budgetData }: BudgetProps) => {
                             <span className="w-32">Assigned</span>
                             <span className="w-32">Target</span>
                         </div>
-                        {...budgetCategoryComponents}
+                        {budgetCategoryComponents.length > 0 ? (
+                            { ...budgetCategoryComponents }
+                        ) : (
+                            <EmptyBudget />
+                        )}
                     </div>
                 </div>
+
                 <BudgetMenu budgetData={budgetData} />
             </div>
         </div>
