@@ -43,7 +43,10 @@ const AssignMoneyForm = ({
 
     const { theme } = useTheme()
     const themeStyle =
-        theme === 'DARK' ? 'bg-light text-light' : 'bg-dark text-dark'
+        theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
+
+    const focusThemeStyles =
+        theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
@@ -76,7 +79,7 @@ const AssignMoneyForm = ({
     return (
         <fetcher.Form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-96"
+            className="flex flex-col gap-4 w-full"
         >
             <div>
                 <span>From:</span>
@@ -106,7 +109,7 @@ const AssignMoneyForm = ({
                         placeholder="Enter amount"
                         value={rawAmount}
                         type="text"
-                        className={`${themeStyle} w-full p-2 text-left rounded-lg hover:bg-opacity-85 transition flex justify-between items-center`}
+                        className={`${themeStyle}  transition-all duration-100 outline-none outline-offset-2 outline-[3px] ${focusThemeStyles} outline-offset-2 w-full p-2 text-left rounded-lg hover:bg-opacity-85 flex justify-between items-center`}
                     />
                     <button
                         onClick={() => {

@@ -48,7 +48,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
                 } flex flex-col justify-center items-center`}
             >
                 <div className={`${themeClass} p-8 rounded-2xl relative`}>
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between gap-4 mb-4">
                         <span className="text-2xl">{modalTitle}</span>
                         <button
                             className="flex jutify-center items-center hover:opacity-85 transition"

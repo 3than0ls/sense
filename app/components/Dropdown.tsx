@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { LegacyRef, useEffect, useRef, useState } from 'react'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import Icon from './icons/Icon'
 
@@ -19,7 +19,7 @@ const DropdownItem = ({
     return (
         <button
             onClick={onClick}
-            className={`w-full p-2 text-left hover:cursor-pointer hover:bg-opacity-85 transition ${className}`}
+            className={`w-full p-2 text-left hover:cursor-pointer hover:bg-opacity-80 transition ${className}`}
         >
             {name}
         </button>
@@ -45,7 +45,11 @@ const Dropdown = ({
 }: DropdownProps) => {
     const { theme } = useTheme()
     const themeStyle =
-        theme === 'DARK' ? 'bg-light text-light' : 'bg-dark text-dark'
+        theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
+    const hoverStyle =
+        theme === 'DARK'
+            ? 'hover:bg-opacity-80'
+            : 'hover:bg-dark hover:bg-opacity-10'
     const themeClass = useThemeClass()
 
     const [active, setActive] = useState(false)
@@ -53,20 +57,35 @@ const Dropdown = ({
     const [current, setCurrent] = useState(defaultItem ?? null)
 
     const onItemClick = (dropdownItem: DropdownItem) => {
+        // document.removeEventListener('mousedown', handleClickOutside)
         setActive(false)
         setCurrent(dropdownItem)
     }
 
+    // invoke the given onChange event when the current value changes
     useEffect(() => {
         if (onChange && current) {
             onChange(current)
         }
     }, [onChange, current])
 
+    const ref = React.useRef<HTMLDivElement>(null)
+    function handleClickOutside(event: MouseEvent) {
+        if (
+            ref.current &&
+            !ref.current.contains(event.target as unknown as Node) // teehee typescript!
+        ) {
+            setActive(false)
+        }
+    }
+
     return (
         <div>
             <div
-                className={`${className} ${themeStyle} min-w-64 relative ${
+                ref={ref}
+                className={`${className} ${themeStyle} ${
+                    !active && hoverStyle
+                } transition min-w-64 relative ${
                     active ? 'rounded-t-lg' : 'rounded-lg'
                 } divide-y-2 divide-subtle ${
                     errorState &&
@@ -74,11 +93,21 @@ const Dropdown = ({
                 }`}
             >
                 <button
-                    className={`w-full p-2 text-left rounded-2xl hover:bg-opacity-85 transition flex justify-between items-center
+                    className={`w-full p-2 text-left rounded-2xl transition flex justify-between items-center
                 `}
                     onClick={(e) => {
                         e.preventDefault()
                         if (onExpand) onExpand()
+                        if (active) {
+                            setActive(false)
+                        } else {
+                            document.addEventListener(
+                                'mousedown',
+                                handleClickOutside,
+                                { once: true }
+                            )
+                            setActive(true)
+                        }
                         setActive(!active)
                     }}
                 >
@@ -102,7 +131,7 @@ const Dropdown = ({
                                 e.preventDefault()
                                 onItemClick(dItem)
                             }}
-                            className={themeStyle}
+                            className={`${themeStyle} ${hoverStyle}`}
                             dropdownItem={dItem}
                             key={dItem.id}
                         />

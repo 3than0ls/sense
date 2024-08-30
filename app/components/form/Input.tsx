@@ -28,7 +28,7 @@ const Input = ({
 
     const { theme } = useTheme()
     const themeStyles =
-        theme === 'DARK' ? 'text-light bg-light' : 'text-dark bg-dark'
+        theme === 'DARK' ? 'text-light bg-light' : 'text-light bg-white'
     const focusThemeStyles =
         theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
