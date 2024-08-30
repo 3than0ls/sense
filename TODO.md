@@ -31,3 +31,4 @@ Account menu
 Order of items
 Custom scrollbar
 Transaction modal UI
+Delete category, delete item, delete budget

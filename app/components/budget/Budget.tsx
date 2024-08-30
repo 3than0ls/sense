@@ -7,6 +7,8 @@ import EmptyBudget from './EmptyBudget'
 import { useModal } from '~/context/ModalContext'
 import BudgetInfoForm from './BudgetInfoForm'
 import TopBar from './TopBar'
+import { useRef } from 'react'
+import { useNavigate } from '@remix-run/react'
 
 type BudgetProps = {
     budgetData: FullBudgetDataType
@@ -27,6 +29,9 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     const { theme } = useTheme()
     const themeStyles = theme === 'DARK' ? 'bg-black' : 'bg-white'
+
+    const backRef = useRef<HTMLDivElement>(null)
+    const navigate = useNavigate()
 
     const { setModalChildren, setActive, setModalTitle } = useModal()
 
@@ -63,6 +68,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
             <div className="flex flex-grow overflow-auto">
                 <div className="relative flex-grow flex flex-col border-t border-subtle">
                     <div
+                        ref={backRef}
                         className={`flex flex-col ${themeStyles} flex-grow overflow-y-auto`}
                     >
                         <TopBar budgetId={budgetData.id} />
@@ -71,6 +77,13 @@ const Budget = ({ budgetData }: BudgetProps) => {
                         ) : (
                             <EmptyBudget />
                         )}
+                        <button
+                            onClick={() => {
+                                // clicking this navigates back to main budget page
+                                navigate(`/budget/${budgetData.id}`)
+                            }}
+                            className="hover:cursor-default w-full flex-grow"
+                        ></button>
                     </div>
                 </div>
 

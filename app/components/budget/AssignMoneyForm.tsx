@@ -28,7 +28,6 @@ const AssignMoneyForm = ({
     const budgetItemFetcher = useFetcher<typeof loader>()
     useEffect(() => {
         if (!budgetItemFetcher.data) {
-            console.log('fetching some data...')
             budgetItemFetcher.load(
                 `/api/bud/items/${targetBudgetItem.budgetId}`
             )
