@@ -5,6 +5,7 @@ import BudgetItemExpanded from './BudgetItemExpanded'
 import { Link } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
+import ThreeValues from './ThreeValues'
 
 type BudgetItemProps = {
     budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
@@ -62,18 +63,11 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                         assigned={assigned}
                     />
                 </button>
-                <div className="w-24 flex justify-center items-center gap-2">
-                    <span className="text-right">${balance.toFixed(2)}</span>
-                    <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
-                </div>
-                <div className="w-24 flex justify-center items-center gap-2">
-                    <span className="text-right">${assigned.toFixed(2)}</span>
-                    <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
-                </div>
-                <div className="w-24 flex justify-center items-center gap-2">
-                    <span className="text-right">${target.toFixed(2)}</span>
-                    <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
-                </div>
+                <ThreeValues
+                    balance={`$${balance.toFixed(2)}`}
+                    assigned={`$${assigned.toFixed(2)}`}
+                    target={`$${target.toFixed(2)}`}
+                />
             </div>
             {expanded && (
                 <BudgetItemExpanded

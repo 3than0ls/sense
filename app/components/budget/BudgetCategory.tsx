@@ -60,7 +60,9 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                     />
                 </button>
             </div>
-            {...budgetItemComponents}
+            <div className="divide-y divide-subtle">
+                {...budgetItemComponents}
+            </div>
         </>
     )
 }

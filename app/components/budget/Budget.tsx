@@ -6,6 +6,7 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import EmptyBudget from './EmptyBudget'
 import { useModal } from '~/context/ModalContext'
 import BudgetInfoForm from './BudgetInfoForm'
+import TopBar from './TopBar'
 
 type BudgetProps = {
     budgetData: FullBudgetDataType
@@ -25,8 +26,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
     )
 
     const { theme } = useTheme()
-    const themeStyles =
-        theme === 'DARK' ? 'bg-black divide-subtle' : 'bg-white divide-subtle'
+    const themeStyles = theme === 'DARK' ? 'bg-black' : 'bg-white'
 
     const { setModalChildren, setActive, setModalTitle } = useModal()
 
@@ -61,30 +61,11 @@ const Budget = ({ budgetData }: BudgetProps) => {
                 </div>
             </div>
             <div className="flex flex-grow overflow-auto">
-                <div className="relative flex-grow flex flex-col">
+                <div className="relative flex-grow flex flex-col border-t border-subtle">
                     <div
-                        className={`flex flex-col divide-y ${themeStyles} flex-grow overflow-y-auto`}
+                        className={`flex flex-col ${themeStyles} flex-grow overflow-y-auto`}
                     >
-                        <div
-                            className={`absolute bg-inherit z-50 bottom-0 flex w-full justify-end gap-4 text-right px-4 ${themeStyles}`}
-                        >
-                            <span className="w-56 text-left flex-grow font-work-bold">
-                                {name}
-                            </span>
-
-                            <div className="w-24 flex justify-center items-center gap-2">
-                                <span className="text-right">Balance</span>
-                                <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
-                            </div>
-                            <div className="w-24 flex justify-center items-center gap-2">
-                                <span className="text-right">Assigned</span>
-                                <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
-                            </div>
-                            <div className="w-24 flex justify-center items-center gap-2">
-                                <span className="text-right">Target</span>
-                                <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
-                            </div>
-                        </div>
+                        <TopBar budgetId={budgetData.id} />
                         {budgetCategoryComponents.length > 0 ? (
                             budgetCategoryComponents
                         ) : (
