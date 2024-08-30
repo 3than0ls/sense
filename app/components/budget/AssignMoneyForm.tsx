@@ -6,51 +6,71 @@ import { useTheme } from '~/context/ThemeContext'
 import numberSchema from '~/zodSchemas/number'
 import { action } from '~/routes/api.budItem.assign'
 import { useModal } from '~/context/ModalContext'
+import { loader } from '~/routes/api.bud.items.$budgetId'
 
 type AssignMoneyFormProps = {
     targetBudgetItem: BudgetItem
     targetBudgetItemAssigned: number
-    budgetItems: BudgetItem[]
-    className?: string
 }
 
 const AssignMoneyForm = ({
     targetBudgetItem,
     targetBudgetItemAssigned,
-    budgetItems,
 }: AssignMoneyFormProps) => {
-    // fetch user data
-    const dropdownItems = [
+    // IGNORE THE MESSINESS BUT IT WORKS!!
+    const [dropdownItems, setDropdownItems] = useState([
         {
             name: 'Free Cash',
             id: 'Free Cash',
         },
-        ...budgetItems
-            .filter((bItem) => bItem.id !== targetBudgetItem.id)
-            .map((bItem) => {
-                return {
-                    name: bItem.name,
-                    id: bItem.id,
-                }
-            }),
-    ]
+    ])
 
+    const budgetItemFetcher = useFetcher<typeof loader>()
+    useEffect(() => {
+        if (!budgetItemFetcher.data) {
+            console.log('fetching some data...')
+            budgetItemFetcher.load(
+                `/api/bud/items/${targetBudgetItem.budgetId}`
+            )
+        }
+    }, [])
+
+    useEffect(() => {
+        if (budgetItemFetcher.data && budgetItemFetcher.data.length > 0) {
+            setDropdownItems([
+                {
+                    name: 'Free Cash',
+                    id: 'Free Cash',
+                },
+                ...budgetItemFetcher.data
+                    .filter((bItem) => bItem.id !== targetBudgetItem.id)
+                    .map((bItem) => {
+                        return {
+                            name: bItem.name,
+                            id: bItem.id,
+                        }
+                    }),
+            ])
+        }
+    }, [budgetItemFetcher.data])
+
+    // dropdown and input states
     const [from, setFrom] = useState(dropdownItems[0])
     const [rawAmount, setRawAmount] = useState('')
     const [amount, setAmount] = useState(0)
     const [error, setError] = useState('')
 
-    const fetcher = useFetcher<typeof action>()
-
+    // modal state manager
     const { setActive } = useModal()
 
+    // theme colors
     const { theme } = useTheme()
     const themeStyle =
         theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
-
     const focusThemeStyles =
         theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
+    const fetcher = useFetcher<typeof action>()
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
         const fromFreeCash = from.name === 'Free Cash'

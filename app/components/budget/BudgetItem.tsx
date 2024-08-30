@@ -6,6 +6,8 @@ import { Link } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
+import { useModal } from '~/context/ModalContext'
+import AssignMoneyForm from './AssignMoneyForm'
 
 type BudgetItemProps = {
     budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
@@ -39,18 +41,18 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                                 expanded && '-rotate-180'
                             } transition`}
                         />
+                        <Link
+                            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                            className="group hover:opacity-85 transition flex justify-center items-center overflow-hidden"
+                        >
+                            {name}
+                            <Icon
+                                type="edit"
+                                className={`size-6 stroke-subtle hover:brightness-125 transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                                interactive
+                            />
+                        </Link>
                     </button>
-                    <Link
-                        to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
-                        className="group hover:opacity-85 transition flex justify-center items-center overflow-hidden"
-                    >
-                        {name}
-                        <Icon
-                            type="edit"
-                            className={`size-6 stroke-subtle hover:brightness-125 transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
-                            interactive
-                        />
-                    </Link>
                 </div>
                 <button
                     onClick={() => setExpanded(!expanded)}
@@ -64,9 +66,9 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                     />
                 </button>
                 <ThreeValues
-                    balance={`$${balance.toFixed(2)}`}
-                    assigned={`$${assigned.toFixed(2)}`}
-                    target={`$${target.toFixed(2)}`}
+                    balance={balance}
+                    assigned={assigned}
+                    budgetItem={budgetItem}
                 />
             </div>
             {expanded && (

@@ -60,9 +60,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                     />
                 </button>
             </div>
-            <div className="divide-y divide-subtle">
-                {...budgetItemComponents}
-            </div>
+            {budgetItemComponents.length > 0 ? (
+                <div className="divide-y divide-subtle">
+                    {...budgetItemComponents}
+                </div>
+            ) : (
+                <div className="w-full h-2" />
+            )}
         </>
     )
 }

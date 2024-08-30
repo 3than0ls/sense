@@ -14,29 +14,8 @@ import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-    // split between just using outlet context to cut out another fetching step,
-    // but will likely do a refetch so revalidating is easy
-
-    // a concern is that fetching all budget items here is any unecessary step (that may? significantly increase loading time)
-    // allBudgetItem data is only used when assigning money for the assign money modal
-    // and could technically just be fetched only for that step
-    // an improvement would be to do that, but this suffices. Messy but lazy.
-
     try {
         const { user } = await authenticateUser(request)
-
-        const allBudgetItems = await prisma.budgetItem.findMany({
-            select: {
-                name: true,
-                id: true,
-            },
-            where: {
-                budgetId: params.budgetId,
-                budget: {
-                    userId: user.id,
-                },
-            },
-        })
 
         const budgetItem = await prisma.budgetItem.findFirstOrThrow({
             where: {
@@ -55,7 +34,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         const assigned = totalAssignments(budgetItem.assignments)
         const balance = totalTransactions(budgetItem.transactions)
 
-        return json({ allBudgetItems, budgetItem, assigned, balance })
+        return json({ budgetItem, assigned, balance })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -70,8 +49,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export default function BudgetItemEditRoute() {
-    const { budgetItem, balance, assigned, allBudgetItems } =
-        useLoaderData<typeof loader>()
+    const { budgetItem, balance, assigned } = useLoaderData<typeof loader>()
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
@@ -79,13 +57,9 @@ export default function BudgetItemEditRoute() {
 
     const { setActive, setModalTitle, setModalChildren } = useModal()
     const onAssignMoneyClick = () => {
-        // quirk in which if you set a value, but then don't change it but exit modal, state is retained
-        // only if key is same
         setModalTitle(`Assign Money to ${budgetItem.name}`)
         setModalChildren(
             <AssignMoneyForm
-                key={budgetItem.id}
-                budgetItems={allBudgetItems as unknown as BudgetItem[]}
                 targetBudgetItem={budgetItem as unknown as BudgetItem}
                 targetBudgetItemAssigned={assigned}
             />
