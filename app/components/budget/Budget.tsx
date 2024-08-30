@@ -4,6 +4,8 @@ import { useTheme } from '~/context/ThemeContext'
 import BudgetMenu from './BudgetMenu'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import EmptyBudget from './EmptyBudget'
+import { useModal } from '~/context/ModalContext'
+import BudgetInfoForm from './BudgetInfoForm'
 
 type BudgetProps = {
     budgetData: FullBudgetDataType
@@ -26,7 +28,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
     const themeStyles =
         theme === 'DARK' ? 'bg-black divide-subtle' : 'bg-white divide-subtle'
 
-    // TODO: add editing buttons for all this
+    const { setModalChildren, setActive, setModalTitle } = useModal()
 
     return (
         <div className="w-full h-full min-w-[600px] flex flex-col">
@@ -35,7 +37,26 @@ const Budget = ({ budgetData }: BudgetProps) => {
                     <span className="text-4xl font-work-black">{name}</span>
                     <span>{description}</span>
                 </div>
-                <Icon type="edit" interactive />
+
+                <button
+                    onClick={() => {
+                        setModalTitle('Budget info')
+                        setModalChildren(
+                            <BudgetInfoForm
+                                name={budgetData.name}
+                                description={budgetData.description || ''}
+                                budgetId={budgetData.id}
+                            />
+                        )
+                        setActive(true)
+                    }}
+                >
+                    <Icon
+                        type="edit"
+                        className={`size-6 stroke-white hover:opacity-75 transition`}
+                        interactive
+                    />
+                </button>
             </div>
             <div className="flex flex-grow overflow-auto">
                 <div className="relative flex-grow flex flex-col">

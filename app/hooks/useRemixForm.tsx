@@ -31,7 +31,7 @@ import { z } from 'zod'
  * // in component
  * const { methods, fetcher } = useRemixForm<FormValues>(schema)
  * const onSubmit = (data: FormValues) => {
- *      console.log(data)
+ *      // some action
  *      // will prevent fetcher from POSTING to the action, something you COULD do but better off doing in schema
  *      methods.setError('field', { type: 'custom', message: 'Invalid field' })
  * }

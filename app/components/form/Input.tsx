@@ -7,7 +7,9 @@ interface InputProps {
     name: string
     label?: string
     placeholder?: string
+    defaultValue?: string
     type?: React.HTMLInputTypeAttribute | undefined
+    textArea?: boolean
 }
 
 const Input = ({
@@ -16,6 +18,8 @@ const Input = ({
     label,
     placeholder,
     type = 'text',
+    defaultValue = '',
+    textArea = false,
 }: InputProps) => {
     const {
         register,
@@ -37,18 +41,35 @@ const Input = ({
             <label htmlFor={name} className="ml-1 text-xl">
                 {label}
             </label>
-            <input
-                {...register(name)}
-                aria-label={label}
-                placeholder={placeholder}
-                type={type}
-                className={
-                    `${themeStyles} rounded-lg p-2 transition-all duration-100 outline-none outline-offset-2` +
-                    (error
-                        ? ' outline-error outline-[3px]'
-                        : ` ${focusThemeStyles} focus:outline-[3px]`)
-                }
-            />
+            {!textArea ? (
+                <input
+                    {...register(name)}
+                    aria-label={label}
+                    placeholder={placeholder}
+                    type={type}
+                    className={
+                        `${themeStyles} rounded-lg p-2 transition-all duration-100 outline-none outline-offset-2` +
+                        (error
+                            ? ' outline-error outline-[3px]'
+                            : ` ${focusThemeStyles} focus:outline-[3px]`)
+                    }
+                    defaultValue={defaultValue}
+                />
+            ) : (
+                <textarea
+                    {...register(name)}
+                    aria-label={label}
+                    placeholder={placeholder}
+                    className={
+                        `${themeStyles} rounded-lg p-2 h-32 transition-all duration-100 outline-none outline-offset-2` +
+                        (error
+                            ? ' outline-error outline-[3px]'
+                            : ` ${focusThemeStyles} focus:outline-[3px]`)
+                    }
+                    defaultValue={defaultValue}
+                />
+            )}
+
             <span className="text-sm ml-1">
                 {error ? (
                     <p className="text-error transition-all duration-100 animate-fade-in">

@@ -32,10 +32,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     const { theme } = useTheme()
     const themeStyle =
         theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
+    const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
     return (
         <>
-            <div className="px-4 flex justify-end items-center min-h-10 border-collapse group overflow-y-hidden">
+            <div
+                className={`px-4 flex justify-end items-center min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
+            >
                 <Link
                     to={budgetCategory.id}
                     className="font-work-bold text-xl mr-auto hover:cursor-pointer"
