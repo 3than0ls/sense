@@ -1,3 +1,4 @@
+import { BudgetCategory } from '@prisma/client'
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import {
     Link,
@@ -8,7 +9,10 @@ import {
 } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
+import DeleteCategoryForm from '~/components/budget/DeleteCategoryForm'
+import DeleteButton from '~/components/DeleteButton'
 import Icon from '~/components/icons/Icon'
+import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
@@ -83,6 +87,18 @@ export default function BudgetCategoryEditRoute() {
             { action: '/api/budItem/create', method: 'POST' }
         )
     }
+
+    const { setModalChildren, setModalTitle, setActive } = useModal()
+    const onDeleteClick = () => {
+        setModalTitle('Confirm Deletion')
+        setModalChildren(
+            <DeleteCategoryForm
+                budgetCategory={budgetCategory as unknown as BudgetCategory}
+            />
+        )
+        setActive(true)
+    }
+
     // if further route matching, only render that
     const matches = useMatches()
     const hasFurtherRoute = matches.some(
@@ -124,6 +140,14 @@ export default function BudgetCategoryEditRoute() {
                     </button>
                 </fetcher.Form>
             </div>
+            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <DeleteButton
+                className="flex justify-center items-center gap-4 h-10"
+                onClick={onDeleteClick}
+            >
+                Delete Category
+                <Icon type="trash" className="size-5" />
+            </DeleteButton>
         </div>
     )
 }

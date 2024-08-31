@@ -3,6 +3,8 @@ import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
 import { Link, useFetcher, useNavigate } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { useModal } from '~/context/ModalContext'
+import DeleteCategoryForm from './DeleteCategoryForm'
 
 type BudgetCategoryProps = {
     budgetCategory: FullBudgetDataType['budgetCategories'][number]
@@ -18,6 +20,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
 
     const fetcher = useFetcher()
     const navigate = useNavigate()
+    const { setActive, setModalChildren, setModalTitle } = useModal()
 
     const onAddClick = () => {
         fetcher.submit(
@@ -28,6 +31,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
         )
     }
     const onEditClick = () => navigate(budgetCategory.id)
+
+    const onDeleteClick = () => {
+        navigate(budgetCategory.id)
+        setModalTitle('Confirm Deletion')
+        setModalChildren(<DeleteCategoryForm budgetCategory={budgetCategory} />)
+        setActive(true)
+    }
 
     const { theme } = useTheme()
     const themeStyle =
@@ -55,6 +65,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                 <button onClick={onEditClick}>
                     <Icon
                         type="edit"
+                        className={`size-6 stroke-subtle ${themeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                        interactive
+                    />
+                </button>
+                <button onClick={onDeleteClick}>
+                    <Icon
+                        type="trash"
                         className={`size-6 stroke-subtle ${themeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
                         interactive
                     />

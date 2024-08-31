@@ -8,6 +8,7 @@ import ChevronRight from './ChevronRight'
 import CurrencyDollar from './CurrencyDollar'
 import PlusCircle from './PlusCircle'
 import XCircle from './XCircle'
+import Trash from './Trash'
 
 type IconProps = {
     color?: string
@@ -20,6 +21,7 @@ type IconProps = {
         | 'currency-dollar'
         | 'plus-circle'
         | 'x-circle'
+        | 'trash'
     className?: string
     interactive?: boolean
 }
@@ -66,6 +68,9 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'x-circle':
             icon = <XCircle className={className} />
+            break
+        case 'trash':
+            icon = <Trash className={className} />
             break
     }
 
