@@ -23,7 +23,13 @@ export default async function fullBudgetData({
                             transactions: true,
                             assignments: true,
                         },
+                        orderBy: {
+                            order: 'asc',
+                        },
                     },
+                },
+                orderBy: {
+                    order: 'asc',
                 },
             },
             accounts: true,

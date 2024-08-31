@@ -30,11 +30,11 @@ export async function action({ request }: ActionFunctionArgs) {
                 id: budCatId,
             },
             include: {
-                budgetItems: true,
+                _count: { select: { budgetItems: true } },
             },
         })
 
-        const position = budgetCategory.budgetItems.length + 1
+        const order = budgetCategory._count.budgetItems + 1
 
         const budgetItem = await prisma.budgetItem.create({
             data: {
@@ -42,7 +42,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 target: 0,
                 budgetId: budgetCategory.budgetId,
                 budgetCategoryId: budgetCategory.id,
-                order: position,
+                order: order,
             },
         })
 
