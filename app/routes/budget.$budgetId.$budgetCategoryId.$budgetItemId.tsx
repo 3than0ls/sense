@@ -12,6 +12,8 @@ import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
+import DeleteItemForm from '~/components/budget/DeleteItemForm'
+import DeleteButton from '~/components/DeleteButton'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
@@ -63,6 +65,13 @@ export default function BudgetItemEditRoute() {
                 targetBudgetItem={budgetItem as unknown as BudgetItem}
                 targetBudgetItemAssigned={assigned}
             />
+        )
+        setActive(true)
+    }
+    const onDeleteClick = () => {
+        setModalTitle('Confirm Deletion')
+        setModalChildren(
+            <DeleteItemForm budgetItem={budgetItem as unknown as BudgetItem} />
         )
         setActive(true)
     }
@@ -121,6 +130,15 @@ export default function BudgetItemEditRoute() {
                     itemUuid={budgetItem.id}
                 />
             </div>
+            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+
+            <DeleteButton
+                className="flex justify-center items-center gap-4 h-10"
+                onClick={onDeleteClick}
+            >
+                Delete Item
+                <Icon type="trash" className="size-5" />
+            </DeleteButton>
         </div>
     )
 }

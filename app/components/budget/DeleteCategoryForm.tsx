@@ -24,7 +24,10 @@ const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
                     </span>
                 </span>
             </Exclamation>
-            <DeleteButton onClick={() => alert('delete category')}>
+            <DeleteButton
+                className="mt-3"
+                onClick={() => alert('delete category')}
+            >
                 Yes, I want to delete this category.
             </DeleteButton>
         </div>
