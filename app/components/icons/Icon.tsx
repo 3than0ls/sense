@@ -9,6 +9,7 @@ import CurrencyDollar from './CurrencyDollar'
 import PlusCircle from './PlusCircle'
 import XCircle from './XCircle'
 import Trash from './Trash'
+import ExclamationCircle from './ExclamationCircle'
 
 type IconProps = {
     color?: string
@@ -22,6 +23,7 @@ type IconProps = {
         | 'plus-circle'
         | 'x-circle'
         | 'trash'
+        | 'exclamation-circle'
     className?: string
     interactive?: boolean
 }
@@ -71,6 +73,9 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'trash':
             icon = <Trash className={className} />
+            break
+        case 'exclamation-circle':
+            icon = <ExclamationCircle className={className} />
             break
     }
 
