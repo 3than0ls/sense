@@ -14,6 +14,7 @@ import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 import DeleteItemForm from '~/components/budget/DeleteItemForm'
 import DeleteButton from '~/components/DeleteButton'
+import Divider from '~/components/Divider'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
@@ -91,7 +92,7 @@ export default function BudgetItemEditRoute() {
                     itemUuid={budgetItem.id}
                 />
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
             <div className="flex flex-col w-full gap-1">
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Balance</span>
@@ -99,7 +100,7 @@ export default function BudgetItemEditRoute() {
                     <span className="ml-auto">${balance.toFixed(2)}</span>
                 </div>
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
             <div className="flex flex-col w-full gap-1">
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
@@ -114,7 +115,7 @@ export default function BudgetItemEditRoute() {
                     <Icon type="plus-circle" />
                 </button>
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
             <div className="flex flex-col w-full justify-center items-center relative">
                 <div className="absolute mx-1 inset-0 flex text-lg w-fit h-fit gap-3 items-center">
                     <span className="text-transparent">Target</span>
@@ -130,7 +131,7 @@ export default function BudgetItemEditRoute() {
                     itemUuid={budgetItem.id}
                 />
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
 
             <DeleteButton
                 className="flex justify-center items-center gap-4 h-10"

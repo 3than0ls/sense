@@ -1,4 +1,5 @@
 import React from 'react'
+import { useThemeClass } from '~/context/ThemeContext'
 
 type BackgroundProps = {
     className?: string
@@ -12,11 +13,13 @@ const Background = ({
     children,
 }: BackgroundProps) => {
     const leftSide = side === 'left'
+    const themeStyle = useThemeClass()
+
     return (
         <div
             className={`${className} flex ${
                 leftSide ? 'flex-row-reverse' : 'flex-row'
-            } min-h-screen`} // this will undoubtedly cause issues sometime down the road
+            } min-h-full h-fit overflow-y-auto ${themeStyle}`}
         >
             <div className="relative flex-grow">
                 <div

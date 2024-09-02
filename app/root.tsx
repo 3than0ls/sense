@@ -31,7 +31,7 @@ export async function loader({ request }: ActionFunctionArgs) {
         const userData = await prisma.user.findFirst({
             where: { id: user.id },
         })
-        initialTheme = userData?.theme ?? Theme.DARK
+        initialTheme = Theme.LIGHT //userData?.theme ?? Theme.DARK
     }
 
     return {
@@ -63,7 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className="relative h-screen flex flex-col overflow-hidden">
+            <body className="relative h-screen flex flex-col">
                 <div className="sticky top-0 h-10 bg-yellow-300">
                     some sort of universal navbar here
                 </div>

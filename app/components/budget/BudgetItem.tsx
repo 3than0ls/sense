@@ -8,6 +8,7 @@ import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
 import { useModal } from '~/context/ModalContext'
 import AssignMoneyForm from './AssignMoneyForm'
+import { useTheme } from '~/context/ThemeContext'
 
 type BudgetItemProps = {
     budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
@@ -25,6 +26,10 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     // drag the assigned and balance ends to automatically set assigned and balance categories
 
     // alternative design choice: have own flex-box column for editing, making it fixed not hover
+
+    const { theme } = useTheme()
+    const hoverThemeStyle =
+        theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
 
     return (
         <div>
@@ -48,7 +53,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                             {name}
                             <Icon
                                 type="edit"
-                                className={`size-6 stroke-subtle hover:brightness-125 transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                                className={`size-6 stroke-subtle ${hoverThemeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
                                 interactive
                             />
                         </Link>

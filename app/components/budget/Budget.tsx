@@ -29,6 +29,10 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     const { theme } = useTheme()
     const themeStyles = theme === 'DARK' ? 'bg-black' : 'bg-white'
+    const hoverThemeStyle =
+        theme === 'DARK'
+            ? 'group-hover:stroke-light'
+            : 'group-hover:stroke-dark'
 
     const backRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
@@ -58,7 +62,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                         </span>
                         <Icon
                             type="edit"
-                            className={`size-6 stroke-subtle group-hover:brightness-150 transition`}
+                            className={`size-6 stroke-subtle ${hoverThemeStyle} transition`}
                             interactive
                         />
                     </button>

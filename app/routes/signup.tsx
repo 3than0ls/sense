@@ -4,6 +4,7 @@ import { AuthApiError } from '@supabase/supabase-js'
 import { useEffect } from 'react'
 import { z, ZodError } from 'zod'
 import Background from '~/components/Background'
+import Divider from '~/components/Divider'
 import Input from '~/components/form/Input'
 import Submit from '~/components/form/Submit'
 import RemixForm from '~/components/RemixForm'
@@ -107,14 +108,14 @@ export default function SignUp() {
     return (
         <Background>
             <RemixForm
-                className="px-8 lg:px-20 py-10  h-full flex flex-col gap-5 relative"
+                className="px-8 lg:px-20 py-8  h-full flex flex-col gap-10 relative"
                 fetcher={fetcher}
                 methods={methods}
             >
                 <h1 className="text-6xl font-work-black w-[450px]">
                     Stack money today.
                 </h1>
-                <div className="w-full max-h-[500px] flex-grow flex flex-col justify-center">
+                <div className="w-full max-h-[500px] flex flex-col justify-center">
                     <Input label="First Name" name="firstName" type="text" />
                     <Input label="Last Name" name="lastName" type="text" />
                     <Input label="Email Address" name="email" type="email" />
@@ -125,9 +126,9 @@ export default function SignUp() {
                         </Submit>
                     </div>
                 </div>
-                <div className="absolute bottom-0 mb-2 w-full px-20 self-center flex flex-col justify-center gap-2">
-                    <hr className="h-[2px] bg-black" />
-                    <span className="text-subtle text-center">
+                <div className="mb-2 w-full mt-auto self-center flex flex-col justify-center gap-2">
+                    <Divider className="h-0.5" />
+                    <span className="text-subtle text-center mx-auto">
                         Already have an account?{' '}
                         <Link to="/signin" className="underline">
                             Log in.

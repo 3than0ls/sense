@@ -11,6 +11,7 @@ import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import DeleteCategoryForm from '~/components/budget/DeleteCategoryForm'
 import DeleteButton from '~/components/DeleteButton'
+import Divider from '~/components/Divider'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
@@ -126,7 +127,7 @@ export default function BudgetCategoryEditRoute() {
                     itemUuid={budgetCategory.id}
                 />
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
             <div className="w-full flex flex-col gap-1">
                 <span className="text-lg ml-2">Items in Category</span>
                 <div className="flex flex-col gap-2">{...budgetItems}</div>
@@ -140,7 +141,7 @@ export default function BudgetCategoryEditRoute() {
                     </button>
                 </fetcher.Form>
             </div>
-            <hr className={`h-[1px] border-none ${altThemeStyle} bg-subtle`} />
+            <Divider />
             <DeleteButton
                 className="flex justify-center items-center gap-4 h-10"
                 onClick={onDeleteClick}

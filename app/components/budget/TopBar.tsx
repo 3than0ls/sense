@@ -2,6 +2,7 @@ import React from 'react'
 import Icon from '../icons/Icon'
 import ThreeValues from './ThreeValues'
 import { useFetcher } from '@remix-run/react'
+import { useTheme } from '~/context/ThemeContext'
 
 type TopBarProps = {
     budgetId: string
@@ -22,8 +23,15 @@ const TopBar = ({ budgetId }: TopBarProps) => {
         )
     }
 
+    const { theme } = useTheme()
+    const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
+    const hoverThemeStyle =
+        theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
+
     return (
-        <div className="sticky top-0 w-full bg-black h-10 flex items-center px-4 gap-3 justify-between border-b border-subtle z-40">
+        <div
+            className={`sticky top-0 w-full bg-black h-10 flex items-center px-4 gap-3 justify-between border-b border-subtle z-40 ${themeStyle}`}
+        >
             <button
                 onClick={createCategory}
                 className="flex items-center gap-2 hover:opacity-85 transition"
@@ -31,7 +39,7 @@ const TopBar = ({ budgetId }: TopBarProps) => {
                 Create Category
                 <Icon
                     type="plus-circle"
-                    className="size-5 stroke-subtle hover:brightness-150 transition"
+                    className={`size-5 stroke-subtle ${hoverThemeStyle} transition`}
                     interactive
                 />
             </button>

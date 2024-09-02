@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useRevalidator } from '@remix-run/react'
 import { z } from 'zod'
 import Background from '~/components/Background'
+import Divider from '~/components/Divider'
 import Input from '~/components/form/Input'
 import Submit from '~/components/form/Submit'
 import RemixForm from '~/components/RemixForm'
@@ -42,7 +43,7 @@ export default function SignIn() {
     return (
         <Background>
             <RemixForm
-                className="px-8 lg:px-20 py-10  h-full flex flex-col gap-5 relative"
+                className="px-8 lg:px-20 py-8 h-full flex flex-col gap-10 relative"
                 fetcher={fetcher}
                 methods={methods}
                 onSubmit={signIn}
@@ -51,7 +52,7 @@ export default function SignIn() {
                 <h1 className="text-6xl font-work-black w-[450px]">
                     Good to see you again.
                 </h1>
-                <div className="w-full max-h-[500px] flex-grow flex flex-col justify-center">
+                <div className="w-full max-h-[500px] flex flex-col justify-center">
                     <Input label="Email Address" name="email" type="email" />
                     <Input label="Password" name="password" type="password" />
                     <div className="flex justify-center mt-4">
@@ -60,8 +61,8 @@ export default function SignIn() {
                         </Submit>
                     </div>
                 </div>
-                <div className="absolute bottom-0 mb-2 w-full px-20 self-center flex flex-col justify-center gap-2">
-                    <hr className="h-[2px] bg-black" />
+                <div className="mt-auto mb-2 w-full self-center flex flex-col justify-center gap-2">
+                    <Divider className="h-0.5 mt-auto" />
                     <span className="text-subtle text-center">
                         Don&apos;t have an account?{' '}
                         <Link to="/signup" className="underline">
