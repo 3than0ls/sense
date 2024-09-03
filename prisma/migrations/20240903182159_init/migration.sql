@@ -29,6 +29,7 @@ CREATE TABLE "BudgetCategory" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "budgetId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
 
@@ -40,6 +41,7 @@ CREATE TABLE "BudgetItem" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "target" DOUBLE PRECISION NOT NULL,
     "budgetCategoryId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
@@ -52,7 +54,7 @@ CREATE TABLE "BudgetItem" (
 CREATE TABLE "Assignment" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "amount" INTEGER NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
     "budgetId" UUID NOT NULL,
     "budgetItemId" UUID NOT NULL,
 

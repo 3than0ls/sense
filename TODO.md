@@ -19,7 +19,7 @@ Custom scrollbar
 Text color change based on budget states (namely red on negative)
 
 --- Misc. ---
-A name for the project
+A name for the projecte
 
 
 NEXT: 
@@ -28,7 +28,8 @@ Sidebar
 - UI and backend
 Assign money inflow AND outflow
 Account menu
-Order of items
 Custom scrollbar
 Transaction modal UI
 Delete category, delete item, delete budget
+topbar decision- keep it when in budget or not?
+budget item dropdown things
