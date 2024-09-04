@@ -46,7 +46,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                     <button
                         className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
                         onClick={() => {
-                            setModalTitle('Budget info')
+                            setModalTitle('Edit Budget info')
                             setModalChildren(
                                 <BudgetInfoForm
                                     name={budgetData.name}
