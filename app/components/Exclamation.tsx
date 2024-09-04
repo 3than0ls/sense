@@ -13,7 +13,7 @@ const Exclamation = ({
     children,
 }: ExclamationProps) => {
     return (
-        <div className={`${divClassName}`}>
+        <div className={`${divClassName} text-lg`}>
             <Icon
                 type="exclamation-circle"
                 className={`size-6 mr-1 inline-block align-top ${iconClassName}`}

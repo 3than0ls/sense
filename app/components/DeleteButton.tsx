@@ -13,7 +13,7 @@ const DeleteButton = ({
 }: DeleteButtonProps) => {
     return (
         <button
-            className={`bg-error text-error bg-opacity-30 shadow-sm hover:bg-opacity-40 p-3 rounded-lg hover:shadow-md transition ease-in-out ${className}`}
+            className={`bg-error text-error bg-opacity-20 shadow-sm hover:bg-opacity-40 p-3 rounded-lg transition ease-in-out text-base ${className}`}
             type="submit"
             onClick={onClick}
         >

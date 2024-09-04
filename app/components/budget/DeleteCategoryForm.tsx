@@ -14,7 +14,8 @@ const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
     return (
         <div className="flex flex-col gap-4 w-96">
             <span className="text-lg w-fit px-2">
-                Are you sure you want to delete {budgetCategory.name}?
+                Are you sure you want to delete{' '}
+                <span className="font-work-bold">{budgetCategory.name}</span>?
             </span>
             <Exclamation divClassName="px-2">
                 <span>
