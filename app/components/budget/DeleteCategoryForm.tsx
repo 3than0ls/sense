@@ -2,6 +2,7 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import DeleteButton from '../DeleteButton'
 import { BudgetCategory } from '@prisma/client'
 import Exclamation from '../Exclamation'
+import { useFetcher } from '@remix-run/react'
 
 type DeleteCategoryFormProps = {
     budgetCategory:
@@ -10,6 +11,17 @@ type DeleteCategoryFormProps = {
 }
 
 const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
+    const fetcher = useFetcher()
+    const onDelete = () => {
+        fetcher.submit(
+            {
+                budgetCategoryId: budgetCategory.id,
+            },
+            {
+                action: '/api/budCat/delete',
+            }
+        )
+    }
     return (
         <div className="flex flex-col gap-4 w-96">
             <span className="text-lg w-fit px-2">
@@ -24,10 +36,7 @@ const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
                     </span>
                 </span>
             </Exclamation>
-            <DeleteButton
-                className="mt-3"
-                onClick={() => alert('delete category')}
-            >
+            <DeleteButton className="mt-3" onClick={onDelete}>
                 Yes, I want to delete this category.
             </DeleteButton>
         </div>

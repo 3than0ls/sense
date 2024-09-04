@@ -2,6 +2,7 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import DeleteButton from '../DeleteButton'
 import { BudgetItem } from '@prisma/client'
 import Exclamation from '../Exclamation'
+import { useFetcher } from '@remix-run/react'
 
 type DeleteItemFormProps = {
     budgetItem:
@@ -10,6 +11,18 @@ type DeleteItemFormProps = {
 }
 
 const DeleteItemForm = ({ budgetItem }: DeleteItemFormProps) => {
+    const fetcher = useFetcher()
+    const onDelete = () => {
+        fetcher.submit(
+            {
+                budgetItemId: budgetItem.id,
+            },
+            {
+                action: '/api/budItem/delete',
+            }
+        )
+    }
+
     return (
         <div className="flex flex-col gap-4 text-lg w-96">
             <span className="w-fit px-2">
@@ -25,7 +38,7 @@ const DeleteItemForm = ({ budgetItem }: DeleteItemFormProps) => {
                     </span>
                 </span>
             </Exclamation>
-            <DeleteButton className="mt-3" onClick={() => alert('delete item')}>
+            <DeleteButton className="mt-3" onClick={onDelete}>
                 Yes, I want to delete this item.
             </DeleteButton>
         </div>

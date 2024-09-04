@@ -43,7 +43,9 @@ const BudgetInfoForm = ({
 
     const onDeleteClick = () => {
         setModalTitle('Delete Budget')
-        setModalChildren(<DeleteBudgetForm budgetName={name} />)
+        setModalChildren(
+            <DeleteBudgetForm budgetName={name} budgetId={budgetId} />
+        )
         setActive(true)
     }
 

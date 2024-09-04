@@ -31,7 +31,8 @@ Custom scrollbar
 Transaction modal UI
 topbar decision- keep it when in budget or not?
 budget item dropdown things  (TRANSACTION AND BUSINESS)
-delete budget/item/category backend
+
+delete budget/item/category backend (WILL REQUIRE CASCADE PRISMA)
 
 
 ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.

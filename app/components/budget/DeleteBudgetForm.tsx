@@ -1,11 +1,25 @@
+import { useFetcher } from '@remix-run/react'
 import DeleteButton from '../DeleteButton'
 import Exclamation from '../Exclamation'
 
 type DeleteBudgetFormProps = {
     budgetName: string
+    budgetId: string
 }
 
-const DeleteBudgetForm = ({ budgetName }: DeleteBudgetFormProps) => {
+const DeleteBudgetForm = ({ budgetName, budgetId }: DeleteBudgetFormProps) => {
+    const fetcher = useFetcher()
+    const onDelete = () => {
+        fetcher.submit(
+            {
+                budgetId: budgetId,
+            },
+            {
+                action: '/api/bud/delete',
+            }
+        )
+    }
+
     return (
         <div className="flex flex-col gap-4 w-96">
             <span className="text-lg w-fit px-2">
@@ -21,10 +35,7 @@ const DeleteBudgetForm = ({ budgetName }: DeleteBudgetFormProps) => {
                     </span>
                 </span>
             </Exclamation>
-            <DeleteButton
-                className="mt-3"
-                onClick={() => alert('delete budget')}
-            >
+            <DeleteButton className="mt-3" onClick={onDelete}>
                 Yes, I want to delete this budget.
             </DeleteButton>
         </div>
