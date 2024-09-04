@@ -6,8 +6,6 @@ import { Link } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
-import { useModal } from '~/context/ModalContext'
-import AssignMoneyForm from './AssignMoneyForm'
 import { useTheme } from '~/context/ThemeContext'
 
 type BudgetItemProps = {

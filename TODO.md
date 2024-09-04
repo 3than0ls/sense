@@ -25,11 +25,14 @@ A name for the projecte
 NEXT: 
 Create category
 Sidebar
-- UI and backend
 Assign money inflow AND outflow
 Account menu
 Custom scrollbar
 Transaction modal UI
-Delete category, delete item, delete budget
 topbar decision- keep it when in budget or not?
-budget item dropdown things
+budget item dropdown things  (TRANSACTION AND BUSINESS)
+delete budget/item/category backend
+
+
+ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.
+add dollar sign in front of inputs that require dollar signs

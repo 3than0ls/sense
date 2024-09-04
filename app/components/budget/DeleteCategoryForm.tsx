@@ -1,7 +1,6 @@
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import DeleteButton from '../DeleteButton'
 import { BudgetCategory } from '@prisma/client'
-import Icon from '../icons/Icon'
 import Exclamation from '../Exclamation'
 
 type DeleteCategoryFormProps = {

@@ -32,6 +32,7 @@ const AssignMoneyForm = ({
                 `/api/bud/items/${targetBudgetItem.budgetId}`
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -51,6 +52,7 @@ const AssignMoneyForm = ({
                     }),
             ])
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [budgetItemFetcher.data])
 
     // dropdown and input states

@@ -1,6 +1,4 @@
-import React from 'react'
 import Icon from '../icons/Icon'
-import ThreeValues from './ThreeValues'
 import { useFetcher } from '@remix-run/react'
 import { useTheme } from '~/context/ThemeContext'
 

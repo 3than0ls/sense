@@ -31,7 +31,7 @@ export async function loader({ request }: ActionFunctionArgs) {
         const userData = await prisma.user.findFirst({
             where: { id: user.id },
         })
-        initialTheme = Theme.LIGHT //userData?.theme ?? Theme.DARK
+        initialTheme = userData?.theme ?? Theme.DARK
     }
 
     return {
