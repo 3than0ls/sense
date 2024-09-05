@@ -7,8 +7,6 @@ datasource db {
     url      = env("DB_SESSION_URL")
 }
 
-// THIRD NORMAL FORM
-
 model Budget {
     id               String           @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime         @default(now())
@@ -28,10 +26,8 @@ model Account {
     name           String
     initialBalance Float
     budgetId       String?       @db.Uuid
-    budget         Budget?       @relation(fields: [budgetId], references: [id])
+    budget         Budget?       @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     transactions   Transaction[]
-    userId         String        @db.Uuid
-    user           User          @relation(fields: [userId], references: [id])
 }
 
 // exists solely for visual and user sorting purposes
@@ -42,7 +38,7 @@ model BudgetCategory {
     deleted     Boolean      @default(false) // determines if it should appear in the budget, and if true, only use for previous transacs
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
-    budget      Budget       @relation(fields: [budgetId], references: [id])
+    budget      Budget       @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     order       Int // the order in which this category appears in the budget
 }
 
@@ -68,20 +64,19 @@ model Assignment {
     createdAt    DateTime   @default(now())
     amount       Float
     budgetId     String     @db.Uuid
-    budget       Budget     @relation(fields: [budgetId], references: [id])
+    budget       Budget     @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     budgetItemId String     @db.Uuid
     budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
 }
 
 model User {
-    id        String    @id @unique @db.Uuid
-    createdAt DateTime  @default(now())
-    theme     Theme     @default(DARK)
-    firstName String    @db.VarChar(25)
-    lastName  String    @db.VarChar(25)
+    id        String   @id @unique @db.Uuid
+    createdAt DateTime @default(now())
+    theme     Theme    @default(DARK)
+    firstName String   @db.VarChar(25)
+    lastName  String   @db.VarChar(25)
     email     String
     budgets   Budget[]
-    Account   Account[]
 }
 
 enum Theme {
@@ -95,7 +90,7 @@ model Transaction {
     description  String?
     amount       Float
     accountId    String     @db.Uuid
-    account      Account    @relation(fields: [accountId], references: [id])
+    account      Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
     budgetItemId String     @db.Uuid
     budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
 }

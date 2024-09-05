@@ -23,7 +23,6 @@ A name for the projecte
 
 
 NEXT: 
-Create category
 Sidebar
 Assign money inflow AND outflow
 Account menu
