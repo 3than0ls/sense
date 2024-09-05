@@ -11,12 +11,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
+        const budget = await prisma.budget.findFirstOrThrow({
+            where: {
+                id: newAccount.budgetId,
+                userId: user.id,
+            },
+        })
+
         const account = await prisma.account.create({
             data: {
                 name: newAccount.name,
                 initialBalance: newAccount.initialBalance,
-                budgetId: newAccount.budgetId,
-                userId: user.id,
+                budgetId: budget.id,
             },
         })
         return redirect(`/account/${account.id}`)

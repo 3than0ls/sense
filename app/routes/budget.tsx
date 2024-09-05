@@ -17,13 +17,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
             },
         })
 
-        const accounts = await prisma.account.findMany({
-            where: {
-                userId: user.id,
-            },
-        })
-
-        return json({ budgets, accounts })
+        return json({ budgets })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -34,13 +28,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function View() {
-    const { budgets, accounts } = useLoaderData<typeof loader>()
+    const { budgets } = useLoaderData<typeof loader>()
     return (
         <div className="flex h-full">
-            <Sidebar
-                budgets={budgets as unknown as Budget[]}
-                accounts={accounts as unknown as Account[]}
-            />
+            <Sidebar budgets={budgets as unknown as Budget[]} />
             <Outlet />
         </div>
     )
