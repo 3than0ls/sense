@@ -14,6 +14,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
                 id: true,
             },
             where: {
+                deleted: false,
                 budgetId: params.budgetId,
                 budget: {
                     userId: user.id,

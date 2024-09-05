@@ -1,6 +1,7 @@
-import { useFetcher } from '@remix-run/react'
+import { useFetcher, useNavigate } from '@remix-run/react'
 import DeleteButton from '../DeleteButton'
 import Exclamation from '../Exclamation'
+import { useModal } from '~/context/ModalContext'
 
 type DeleteBudgetFormProps = {
     budgetName: string
@@ -9,6 +10,8 @@ type DeleteBudgetFormProps = {
 
 const DeleteBudgetForm = ({ budgetName, budgetId }: DeleteBudgetFormProps) => {
     const fetcher = useFetcher()
+    const navigate = useNavigate()
+    const { setActive } = useModal()
     const onDelete = () => {
         fetcher.submit(
             {
@@ -16,8 +19,11 @@ const DeleteBudgetForm = ({ budgetName, budgetId }: DeleteBudgetFormProps) => {
             },
             {
                 action: '/api/bud/delete',
+                method: 'POST',
             }
         )
+        setActive(false)
+        navigate('/budget')
     }
 
     return (

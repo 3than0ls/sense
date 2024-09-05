@@ -13,14 +13,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        const deletedUser = await prisma.budget.delete({
+        const deleteBudget = await prisma.budget.delete({
             where: {
                 id: budgetId,
                 userId: user.id,
             },
         })
 
-        return json(deletedUser)
+        return json(deleteBudget)
     } catch (e) {
         throw new ServerErrorResponse()
     }

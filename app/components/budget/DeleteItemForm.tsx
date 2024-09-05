@@ -2,7 +2,8 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import DeleteButton from '../DeleteButton'
 import { BudgetItem } from '@prisma/client'
 import Exclamation from '../Exclamation'
-import { useFetcher } from '@remix-run/react'
+import { useFetcher, useNavigate } from '@remix-run/react'
+import { useModal } from '~/context/ModalContext'
 
 type DeleteItemFormProps = {
     budgetItem:
@@ -12,6 +13,8 @@ type DeleteItemFormProps = {
 
 const DeleteItemForm = ({ budgetItem }: DeleteItemFormProps) => {
     const fetcher = useFetcher()
+    const navigate = useNavigate()
+    const { setActive } = useModal()
     const onDelete = () => {
         fetcher.submit(
             {
@@ -19,8 +22,11 @@ const DeleteItemForm = ({ budgetItem }: DeleteItemFormProps) => {
             },
             {
                 action: '/api/budItem/delete',
+                method: 'POST',
             }
         )
+        setActive(false)
+        navigate(`/budget/${budgetItem.budgetId}`)
     }
 
     return (

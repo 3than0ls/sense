@@ -13,32 +13,16 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        const [budCat] = await prisma.$transaction([
-            prisma.budgetCategory.update({
-                where: {
-                    id: budCatId,
-                    budget: {
-                        userId: user.id,
-                    },
+        const deleteCat = await prisma.budgetCategory.delete({
+            where: {
+                id: budCatId,
+                budget: {
+                    userId: user.id,
                 },
-                data: {
-                    deleted: true,
-                },
-            }),
-            prisma.budgetItem.updateMany({
-                where: {
-                    budgetCategoryId: budCatId,
-                    budget: {
-                        userId: user.id,
-                    },
-                },
-                data: {
-                    deleted: true,
-                },
-            }),
-        ])
+            },
+        })
 
-        return json(budCat)
+        return json(deleteCat)
     } catch (e) {
         throw new ServerErrorResponse()
     }

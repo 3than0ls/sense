@@ -2,7 +2,8 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import DeleteButton from '../DeleteButton'
 import { BudgetCategory } from '@prisma/client'
 import Exclamation from '../Exclamation'
-import { useFetcher } from '@remix-run/react'
+import { useFetcher, useNavigate } from '@remix-run/react'
+import { useModal } from '~/context/ModalContext'
 
 type DeleteCategoryFormProps = {
     budgetCategory:
@@ -12,6 +13,8 @@ type DeleteCategoryFormProps = {
 
 const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
     const fetcher = useFetcher()
+    const navigate = useNavigate()
+    const { setActive } = useModal()
     const onDelete = () => {
         fetcher.submit(
             {
@@ -19,8 +22,11 @@ const DeleteCategoryForm = ({ budgetCategory }: DeleteCategoryFormProps) => {
             },
             {
                 action: '/api/budCat/delete',
+                method: 'POST',
             }
         )
+        setActive(false)
+        navigate(`/budget/${budgetCategory.budgetId}`)
     }
     return (
         <div className="flex flex-col gap-4 w-96">

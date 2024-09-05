@@ -51,10 +51,10 @@ model BudgetItem {
     // balance          Float  Would just be assigned - transactions
     // assigned         Float  Would just be sum of assignments
     budgetCategoryId String         @db.Uuid
-    budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+    budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id], onDelete: Cascade)
     order            Int // the order in which this item appears in the category
     budgetId         String         @db.Uuid
-    budget           Budget         @relation(fields: [budgetId], references: [id])
+    budget           Budget         @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     transactions     Transaction[]
     assignments      Assignment[]
 }
@@ -66,7 +66,7 @@ model Assignment {
     budgetId     String     @db.Uuid
     budget       Budget     @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     budgetItemId String     @db.Uuid
-    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
+    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -92,5 +92,5 @@ model Transaction {
     accountId    String     @db.Uuid
     account      Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
     budgetItemId String     @db.Uuid
-    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id])
+    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id], onDelete: Cascade)
 }

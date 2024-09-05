@@ -13,19 +13,16 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        const budgetItem = await prisma.budgetItem.update({
+        const deleteItem = await prisma.budgetItem.delete({
             where: {
                 id: budItemId,
                 budget: {
                     userId: user.id,
                 },
             },
-            data: {
-                deleted: true,
-            },
         })
 
-        return json(budgetItem)
+        return json(deleteItem)
     } catch (e) {
         throw new ServerErrorResponse()
     }
