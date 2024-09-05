@@ -155,7 +155,7 @@ const AssignMoneyForm = ({
             <button
                 type="submit"
                 disabled={!!error}
-                className={`hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50  transition bg-primary rounded-lg w-fit mr-auto px-4 py-2`}
+                className={`hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-4 transition bg-primary rounded-lg mr-auto px-4 py-2`}
             >
                 Assign Money
             </button>

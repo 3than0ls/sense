@@ -93,7 +93,7 @@ const Dropdown = ({
                 }`}
             >
                 <button
-                    className={`w-full p-2 text-left rounded-2xl transition flex justify-between items-center
+                    className={`w-full p-2 text-left rounded-2xl transition flex justify-between items-center outline-none
                 `}
                     onClick={(e) => {
                         e.preventDefault()

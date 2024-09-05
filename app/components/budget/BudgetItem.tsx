@@ -32,9 +32,13 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     return (
         <div>
             <div className="flex flex-row items-center gap-4 min-h-10 px-4">
-                <div className="text-lg leading-snug w-56 flex gap-2">
+                <div
+                    className={`text-lg leading-snug ${
+                        expanded ? 'flex-grow max-w-96' : 'w-64'
+                    } flex gap-2`}
+                >
                     <button
-                        className={`flex items-center text-left gap-2 hover:opacity-80 transition`}
+                        className={`flex items-center max-w-full text-left gap-2 hover:opacity-80 transition`}
                         onClick={() => setExpanded(!expanded)}
                     >
                         <Icon
@@ -46,9 +50,9 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                         />
                         <Link
                             to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
-                            className="group hover:opacity-85 transition flex justify-center items-center overflow-hidden"
+                            className="w-full group hover:opacity-85 transition flex justify-center items-center overflow-hidden"
                         >
-                            {name}
+                            <span className="w-full truncate">{name}</span>
                             <Icon
                                 type="edit"
                                 className={`size-6 stroke-subtle ${hoverThemeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
@@ -59,7 +63,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                 </div>
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="flex-grow mr-10"
+                    className="flex-grow"
                 >
                     <BudgetItemBar
                         expanded={expanded}

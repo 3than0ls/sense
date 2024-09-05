@@ -37,8 +37,9 @@ const DeleteItemForm = ({ budgetItem }: DeleteItemFormProps) => {
             </span>
             <Exclamation divClassName="px-2">
                 <span>
-                    Previous transactions to this account will still exist, but
-                    the item will no longer appear in your budget.{' '}
+                    All transactions to/from this item will also be deleted! You
+                    may have to manually reconcile your account balance if you
+                    do this.{' '}
                     <span className="font-work-bold">
                         This action is irreversible!
                     </span>

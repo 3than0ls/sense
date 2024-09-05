@@ -93,7 +93,7 @@ const BudgetMenuForm = ({
             <label htmlFor={name} className={`ml-1 text-lg`}>
                 {label}
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
                 <input
                     aria-label={label}
                     className={
@@ -124,7 +124,7 @@ const BudgetMenuForm = ({
                 />
                 <button
                     onClick={() => inputRef.current?.focus()}
-                    className="flex justify-center items-center bg-opacity-100 hover:bg-opacity-[85%] bg-primary transition aspect-square h-full rounded-lg"
+                    className="flex justify-center items-center bg-opacity-100 hover:bg-opacity-[85%] bg-primary transition w-9 h-full rounded-lg"
                 >
                     <Icon type="edit" className="size-5" />
                 </button>

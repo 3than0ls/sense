@@ -44,8 +44,8 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
                 action: '/api/account/create',
                 method: 'POST',
             })
-            setActive(false)
             validator.revalidate()
+            setActive(false)
         }
     }
 

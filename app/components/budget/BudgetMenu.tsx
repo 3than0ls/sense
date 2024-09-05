@@ -13,7 +13,7 @@ type BudgetMenuProps = {
 const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
     return (
         <div className="bg-primary flex-grow flex flex-col text-center p-3 rounded-lg">
-            <span className="font-work-bold text-xl">${value}</span>
+            <span className="font-work-bold text-xl">${value.toFixed(2)}</span>
             <span className="text-sm">{label}</span>
         </div>
     )
@@ -42,7 +42,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const freeCash = totalCash - assignedCash
 
     return (
-        <div className="w-1/4 flex flex-col gap-4 p-4 overflow-auto border-t border-l border-subtle">
+        <div className="w-1/4 min-w-fit flex flex-col gap-4 p-4 overflow-auto border-t border-l border-subtle">
             <div className="flex gap-4 w-full">
                 <BudgetMenuCard label="Free Cash" value={freeCash} />
                 <BudgetMenuCard label="Total Cash" value={totalCash} />

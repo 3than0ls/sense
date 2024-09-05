@@ -5,7 +5,7 @@ import { useThemeClass } from '~/context/ThemeContext'
 import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
 import AccountForm from '../account/AccountForm'
-import { Budget } from '@prisma/client'
+import { Account, Budget } from '@prisma/client'
 import Divider from '../Divider'
 import Icon from '../icons/Icon'
 
@@ -22,9 +22,9 @@ const SidebarDropdown = ({
         <div className="w-full">
             <button
                 onClick={() => setClosed(!closed)}
-                className="w-full flex justify-between mb-1 group"
+                className="w-full flex justify-between mb-1 group text-left"
             >
-                <span className="text-2xl font-work-black group-hover:text-white transition">
+                <span className="text-lg truncate font-work-bold group-hover:text-white transition">
                     {title}
                 </span>
                 <Icon
@@ -35,13 +35,15 @@ const SidebarDropdown = ({
                 />
             </button>
             {!closed && children}
-            <hr className="border-black border my-2" />
+            {/* <hr className="border-black border my-2" /> */}
         </div>
     )
 }
 
 type SidebarProps = {
-    budgets: Budget[]
+    budgets: (Budget & {
+        accounts: Account[]
+    })[]
 }
 
 const Sidebar = ({ budgets }: SidebarProps) => {
@@ -52,7 +54,15 @@ const Sidebar = ({ budgets }: SidebarProps) => {
     const themeStyle = useThemeClass()
 
     const budgetLinks = Array.from(budgets, (b) => (
-        <SidebarLink key={b.id} href={`/budget/${b.id}`} text={b.name} />
+        <SidebarDropdown title={b.name} key={b.id}>
+            {Array.from(b.accounts, (a) => (
+                <SidebarLink
+                    key={a.id}
+                    href={`/account/${a.id}`}
+                    text={a.name}
+                />
+            ))}
+        </SidebarDropdown>
     ))
 
     const TEMPFETCHER = useFetcher()
@@ -71,7 +81,9 @@ const Sidebar = ({ budgets }: SidebarProps) => {
                     closed && 'opacity-0'
                 } absolute w-64 flex flex-col gap-2 transition-all duration-500 ease-in-out p-4`}
             >
-                <SidebarDropdown title="Budgets">{budgetLinks}</SidebarDropdown>
+                <span className="font-work-black text-2xl">Budgets</span>
+                {budgetLinks}
+                <Divider className="border-black" />
 
                 <TEMPFETCHER.Form action="/api/bud/create" method="POST">
                     <button
@@ -91,7 +103,7 @@ const Sidebar = ({ budgets }: SidebarProps) => {
                 >
                     create a account!
                 </button>
-                <Divider themed />
+                <Divider className="border-black" />
             </div>
             <div
                 className={`${!closed && 'hidden'} absolute h-full w-64 z-10`}
