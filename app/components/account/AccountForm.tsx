@@ -8,6 +8,7 @@ import Submit from '../form/Submit'
 import Dropdown from '../Dropdown'
 import { Budget } from '@prisma/client'
 import { useModal } from '~/context/ModalContext'
+import { useRevalidator } from '@remix-run/react'
 
 type AccountFormProps = {
     budgets: Budget[]
@@ -29,6 +30,8 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
     const [selectedBudget, setSelectedBudget] = useState<string | null>(null)
     const [dropdownError, setDropdownError] = useState(false)
 
+    const validator = useRevalidator()
+
     const onSubmit: SubmitHandler<AccountFormSchemaType> = (data) => {
         if (selectedBudget === null) {
             setDropdownError(true)
@@ -42,6 +45,7 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
                 method: 'POST',
             })
             setActive(false)
+            validator.revalidate()
         }
     }
 
@@ -53,8 +57,12 @@ const AccountForm = ({ budgets }: AccountFormProps) => {
             onSubmit={onSubmit}
             noAction={true}
         >
-            <Input name="name" label="Name" />
-            <Input name="initialBalance" label="Initial Balance" />
+            <Input name="name" label="Name" placeholder="Account Name" />
+            <Input
+                name="initialBalance"
+                label="Initial Balance"
+                placeholder="0.00"
+            />
             <div className="mb-4">
                 <span className="text-xl ml-1">Budget</span>
                 <Dropdown

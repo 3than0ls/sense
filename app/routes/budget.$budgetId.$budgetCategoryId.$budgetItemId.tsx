@@ -35,9 +35,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         })
 
         const assigned = totalAssignments(budgetItem.assignments)
-        const balance = totalTransactions(budgetItem.transactions)
+        const spent = totalTransactions(budgetItem.transactions)
+        const balance = assigned - spent
 
-        return json({ budgetItem, assigned, balance })
+        return json({ budgetItem, assigned, balance, spent })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
