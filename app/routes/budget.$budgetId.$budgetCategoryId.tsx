@@ -136,12 +136,12 @@ export default function BudgetCategoryEditRoute() {
                         type="submit"
                         className="bg-primary w-full mt-1 flex justify-center items-center gap-2 rounded-xl hover:bg-opacity-80 transition px-4 py-2"
                     >
-                        Create New
+                        Create Item
                         <Icon type="plus-circle" className="size-5" />
                     </button>
                 </fetcher.Form>
             </div>
-            <Divider />
+            <Divider className="mt-auto border-subtle" />
             <DeleteButton
                 className="flex justify-center items-center gap-4 h-10"
                 onClick={onDeleteClick}

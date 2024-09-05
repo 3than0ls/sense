@@ -132,8 +132,8 @@ export default function BudgetItemEditRoute() {
                     itemUuid={budgetItem.id}
                 />
             </div>
-            <Divider />
 
+            <Divider className="mt-auto border-subtle" />
             <DeleteButton
                 className="flex justify-center items-center gap-4 h-10"
                 onClick={onDeleteClick}

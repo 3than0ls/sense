@@ -47,7 +47,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     return (
         <>
             <div
-                className={`px-4 flex justify-end items-center min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
+                className={`px-4 flex justify-end items-center gap-2 min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
             >
                 <Link
                     to={budgetCategory.id}
@@ -58,21 +58,21 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                 <button onClick={onAddClick}>
                     <Icon
                         type="plus-circle"
-                        className={`size-6 stroke-subtle ${themeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                        className={`size-6 stroke-subtle ${themeStyle} transition`}
                         interactive
                     />
                 </button>
                 <button onClick={onEditClick}>
                     <Icon
                         type="edit"
-                        className={`size-6 stroke-subtle ${themeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                        className={`size-6 stroke-subtle ${themeStyle} transition`}
                         interactive
                     />
                 </button>
                 <button onClick={onDeleteClick}>
                     <Icon
                         type="trash"
-                        className={`size-6 stroke-subtle ${themeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                        className={`size-6 stroke-subtle ${themeStyle} transition`}
                         interactive
                     />
                 </button>
