@@ -5,6 +5,8 @@ import {
     budgetTotalAssignments,
 } from '~/utils/budgetValues'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { useModal } from '~/context/ModalContext'
+import TransactionForm from './TransactionForm'
 
 type BudgetMenuProps = {
     budgetData: FullBudgetDataType
@@ -41,6 +43,21 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const assignedCash = budgetTotalAssignments(budgetData)
     const freeCash = totalCash - assignedCash
 
+    const { setActive, setModalChildren, setModalTitle } = useModal()
+    const onTransacClick = () => {
+        setModalChildren(
+            <TransactionForm
+                budgetId={budgetData.id}
+                // accounts={budgetData.accounts}
+                // budgetItems={budgetData.budgetCategories.flatMap(
+                //     (cat) => cat.budgetItems
+                // )}
+            />
+        )
+        setModalTitle('Log Transaction')
+        setActive(true)
+    }
+
     return (
         <div className="w-1/4 min-w-fit flex flex-col gap-4 p-4 overflow-auto border-t border-l border-subtle">
             <div className="flex gap-4 w-full">
@@ -48,10 +65,17 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                 <BudgetMenuCard label="Total Cash" value={totalCash} />
             </div>
             <div className="w-full flex flex-col gap-4">
-                <BudgetMenuLink href="transaction">
+                {/* <BudgetMenuLink href="transaction">
                     <Icon type="currency-dollar" className="size-8 mx-2" />
                     <span>Add transaction</span>
-                </BudgetMenuLink>
+                </BudgetMenuLink> */}
+                <button
+                    onClick={onTransacClick}
+                    className="w-full bg-primary hover:bg-opacity-60 transition-all duration-400 ease-in-out rounded-lg font-work-bold p-1.5 flex justify-center items-center"
+                >
+                    <Icon type="currency-dollar" className="size-8 mx-2" />
+                    <span>Add transaction</span>
+                </button>
                 {/* <BudgetMenuLink href="assign">
                     <Icon type="plus-circle" className="size-8 mx-2" />
                     <span>Assign free cash</span>

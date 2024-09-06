@@ -25,14 +25,17 @@ A name for the projecte
 NEXT: 
 Sidebar
 Assign money inflow AND outflow
-Account menu
+Account menu <--- THEN THIS!!!
 Custom scrollbar
-Transaction modal UI
 topbar decision- keep it when in budget or not?
 budget item dropdown things  (TRANSACTION AND BUSINESS)
 
-delete budget/item/category backend (WILL REQUIRE CASCADE PRISMA)
-
-
 ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.
 add dollar sign in front of inputs that require dollar signs
+
+Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
+see add transaction for how it's done
+
+FUTURE NON ESSENTIALS:
+add date to add transaction using https://ui.shadcn.com/docs/components/date-picker
+replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) https://ui.shadcn.com/docs/components/combobox

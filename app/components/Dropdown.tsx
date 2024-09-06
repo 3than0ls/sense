@@ -19,7 +19,7 @@ const DropdownItem = ({
     return (
         <button
             onClick={onClick}
-            className={`w-full p-2 text-left hover:cursor-pointer hover:bg-opacity-80 transition ${className}`}
+            className={`w-full truncate p-2 text-left hover:cursor-pointer hover:bg-opacity-80 transition ${className}`}
         >
             {name}
         </button>
@@ -111,7 +111,9 @@ const Dropdown = ({
                         setActive(!active)
                     }}
                 >
-                    <span className="">{current?.name || 'Select'}</span>
+                    <span className="truncate">
+                        {current?.name || 'Select'}
+                    </span>
                     <Icon
                         type="chevron-down"
                         className={`size-5 transform ${
@@ -123,7 +125,7 @@ const Dropdown = ({
                 <div
                     className={`${
                         active ? 'absolute' : 'hidden'
-                    } ${themeClass} w-full flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle`}
+                    } ${themeClass} w-full flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle shadow-lg`}
                 >
                     {Array.from(dropdownItems, (dItem) => (
                         <DropdownItem

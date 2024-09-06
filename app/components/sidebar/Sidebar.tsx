@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
-import { useFetcher } from '@remix-run/react'
+import { Link, useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
 import AccountForm from '../account/AccountForm'
 import { Account, Budget } from '@prisma/client'
@@ -11,16 +11,19 @@ import Icon from '../icons/Icon'
 
 const SidebarDropdown = ({
     title,
+    budget,
     children,
 }: {
     title: string
+    budget: Budget
     children?: React.ReactNode
 }) => {
     const [closed, setClosed] = useState(false)
 
     return (
         <div className="w-full">
-            <button
+            <Link
+                to={`/budget/${budget.id}`}
                 onClick={() => setClosed(!closed)}
                 className="w-full flex justify-between mb-1 group text-left"
             >
@@ -33,7 +36,7 @@ const SidebarDropdown = ({
                         closed && '-rotate-180'
                     } size-6`}
                 />
-            </button>
+            </Link>
             {!closed && children}
             {/* <hr className="border-black border my-2" /> */}
         </div>
@@ -54,7 +57,7 @@ const Sidebar = ({ budgets }: SidebarProps) => {
     const themeStyle = useThemeClass()
 
     const budgetLinks = Array.from(budgets, (b) => (
-        <SidebarDropdown title={b.name} key={b.id}>
+        <SidebarDropdown budget={b} title={b.name} key={b.id}>
             {Array.from(b.accounts, (a) => (
                 <SidebarLink
                     key={a.id}
