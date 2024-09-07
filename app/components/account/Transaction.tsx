@@ -57,15 +57,17 @@ export const TransactionRow = ({
     return (
         <tr className={`${themeStyle} border-b-2`}>
             <td className="h-8 flex items-center justify-center">
-                <button
-                    onClick={onEdit}
-                    className="w-fit h-8 flex items-center justify-center"
-                >
-                    <Icon
-                        type="edit"
-                        className={`stroke-subtle size-5 ${hoverThemeStyle} transition`}
-                    />
-                </button>
+                {onEdit && (
+                    <button
+                        onClick={onEdit}
+                        className="w-fit h-8 flex items-center justify-center"
+                    >
+                        <Icon
+                            type="edit"
+                            className={`stroke-subtle size-5 ${hoverThemeStyle} transition`}
+                        />
+                    </button>
+                )}
             </td>
             <td className={`px-3 h-8 truncate border-l ${themeStyle}`}>
                 {date}

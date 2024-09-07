@@ -25,11 +25,12 @@ A name for the projecte
 NEXT: 
 Sidebar
 Assign money inflow AND outflow
-Account menu <--- THEN THIS!!!
 Custom scrollbar
-topbar decision- keep it when in budget or not?
-budget item dropdown things  (TRANSACTION AND BUSINESS)
+topbar decision- keep it when in budget or not? (NO!!!)
+budget item expanded dropdown things  (TRANSACTION AND BUSINESS)
 
+
+/// IMMEDIATE CONCERNS
 ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.
 add dollar sign in front of inputs that require dollar signs
 
