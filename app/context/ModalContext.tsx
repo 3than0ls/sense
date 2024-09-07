@@ -47,8 +47,12 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
                     active ? 'absolute z-50' : 'hidden'
                 } flex flex-col justify-center items-center`}
             >
-                <div className={`${themeClass} p-8 rounded-2xl relative`}>
-                    <div className="flex items-center justify-between gap-4 mb-4">
+                <div
+                    className={`${themeClass} m-16 pb-8 rounded-2xl px-8 relative overflow-y-auto`}
+                >
+                    <div
+                        className={`${themeClass} pt-8 z-[99] h-fit w-full sticky top-0 flex items-center justify-between gap-4 pb-4`}
+                    >
                         <span className="text-2xl max-w-[500px] truncate">
                             {modalTitle}
                         </span>

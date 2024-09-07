@@ -8,12 +8,16 @@ import useRemixForm from '~/hooks/useRemixForm'
 import Input from '../form/Input'
 import RemixForm from '../RemixForm'
 import { transactionFormSchema } from '~/zodSchemas/transaction'
+import { FullAccountDataType } from '~/prisma/fullAccountData'
+import Divider from '../Divider'
+import DeleteButton from '../DeleteButton'
 
 type TransactionFormProps = {
-    selectedBudgetItem?: BudgetItem
+    selectedBudgetItem?: Pick<BudgetItem, 'id' | 'name'>
     accounts?: Account[]
     budgetItems?: BudgetItem[]
     budgetId: string
+    editTransaction?: FullAccountDataType['transactions'][number]
 }
 
 const TransactionForm = ({
@@ -21,6 +25,7 @@ const TransactionForm = ({
     accounts,
     budgetItems,
     budgetId,
+    editTransaction,
 }: TransactionFormProps) => {
     // modal state manager
     const { setActive } = useModal()
@@ -97,6 +102,43 @@ const TransactionForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetcher.data, fetcher.state])
 
+    // if (editTransaction) {
+    //     let idx =
+    //         accountDropdownData[
+    //             accountDropdownData.findIndex(
+    //                 (data) => data.id === editTransaction.accountId
+    //             )
+    //         ]
+    //     console.log(idx)
+    // }
+
+    if (editTransaction) {
+        console.log(
+            editTransaction
+                ? accountDropdownData[
+                      accountDropdownData.findIndex(
+                          (data) => data.id === editTransaction.accountId
+                      )
+                  ]
+                : undefined
+        )
+    }
+
+    // code only applies if editTransaction object is not undefined
+    const deleteFetcher = useFetcher()
+    const onDelete = () => {
+        if (editTransaction) {
+            deleteFetcher.submit(
+                {
+                    transactionId: editTransaction.id,
+                },
+                { action: '/api/transac/delete', method: 'POST' }
+            )
+            setActive(false)
+        }
+        // user is NOT supposed to be here
+    }
+
     return (
         <RemixForm
             methods={methods}
@@ -110,7 +152,14 @@ const TransactionForm = ({
                     <span className="ml-1 text-lg">From Account:</span>
                     <Dropdown
                         dropdownItems={accountDropdownData}
-                        defaultItem={accountDropdownData[0]}
+                        defaultItem={
+                            editTransaction
+                                ? {
+                                      id: editTransaction.accountId,
+                                      name: editTransaction.account.name,
+                                  }
+                                : undefined
+                        }
                         onChange={(d) => {
                             setSelectedAccount(d)
                         }}
@@ -123,7 +172,14 @@ const TransactionForm = ({
                     <span className="ml-1 text-lg">For Item:</span>
                     <Dropdown
                         dropdownItems={itemDropdownData}
-                        defaultItem={itemDropdownData[0]}
+                        defaultItem={
+                            editTransaction
+                                ? {
+                                      id: editTransaction.budgetItemId,
+                                      name: editTransaction.budgetItem.name,
+                                  }
+                                : undefined
+                        }
                         onChange={(d) => {
                             setSelectedItem(d)
                         }}
@@ -134,20 +190,36 @@ const TransactionForm = ({
                 </div>
             </div>
             <div className="flex flex-col gap-2">
-                <Input placeholder="0.00" label="Amount" name="amount" />
+                <Input
+                    placeholder="0.00"
+                    label="Amount"
+                    name="amount"
+                    defaultValue={
+                        editTransaction?.amount.toFixed(2) || undefined
+                    }
+                />
                 <Input
                     placeholder="Optional description..."
                     label="Description"
                     name="description"
                     textArea
+                    defaultValue={editTransaction?.description || undefined}
                 />
             </div>
             <button
                 type="submit"
                 className={`hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-2 transition bg-primary rounded-lg mr-auto px-4 py-2`}
             >
-                Log Transaction
+                {editTransaction ? 'Log Transaction' : 'Update Transaction'}
             </button>
+            {editTransaction && (
+                <div className="w-full mt-4 flex flex-col gap-4">
+                    <Divider />{' '}
+                    <DeleteButton noSubmit onClick={onDelete}>
+                        Delete Transaction
+                    </DeleteButton>
+                </div>
+            )}
             {fetcher.state === 'loading' && 'TEMP TEMPORARY LOADING STATE!!!!'}
         </RemixForm>
     )

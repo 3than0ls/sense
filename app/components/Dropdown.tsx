@@ -7,6 +7,16 @@ export type DropdownItem = {
     id: string
 }
 
+export function mapToDropdownItem(
+    sourceArr: { id: string; name: string }[] | undefined
+): DropdownItem[] {
+    return (
+        sourceArr?.map((x) => {
+            return { id: x.id, name: x.name }
+        }) ?? []
+    )
+}
+
 const DropdownItem = ({
     dropdownItem: { name },
     onClick,

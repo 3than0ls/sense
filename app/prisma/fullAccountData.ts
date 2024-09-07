@@ -19,16 +19,20 @@ export default async function fullAccountData({
             budget: true,
             transactions: {
                 orderBy: {
-                    date: 'asc',
+                    date: 'desc',
                 },
                 include: {
                     budgetItem: {
                         // include: { budgetCategory: { select: { name: true } } },
                         select: {
                             name: true,
-                            budgetCategory: { select: { name: true } },
+                            id: true,
+                            budgetCategory: {
+                                select: { name: true, id: true },
+                            },
                         },
                     },
+                    account: { select: { name: true } }, // I know I know but fk this
                 },
             },
         },
