@@ -1,13 +1,11 @@
-import React from 'react'
 import { useTheme } from '~/context/ThemeContext'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 
 type TransactionProps = {
     transaction: FullAccountDataType['transactions'][number]
-    className?: string
 }
 
-const Transaction = ({ transaction, className }: TransactionProps) => {
+const Transaction = ({ transaction }: TransactionProps) => {
     return (
         <TransactionRow
             date={new Date(transaction.date).toLocaleDateString()}

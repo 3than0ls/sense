@@ -1,4 +1,3 @@
-import React from 'react'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Icon from '../icons/Icon'
 import { Link } from '@remix-run/react'
@@ -12,7 +11,6 @@ type AccountProps = {
 
 const Account = ({ accountData }: AccountProps) => {
     const { theme } = useTheme()
-    const themeStyles = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const hoverThemeStyle =
         theme === 'DARK'
             ? 'group-hover:stroke-light'

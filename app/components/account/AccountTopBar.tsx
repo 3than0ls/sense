@@ -1,4 +1,3 @@
-import React from 'react'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import { accountTotalTransactions } from '~/utils/accountValues'
 

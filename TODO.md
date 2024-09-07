@@ -43,3 +43,4 @@ Add reconciliations in Account
 FUTURE NON ESSENTIALS:
 add date to add transaction using https://ui.shadcn.com/docs/components/date-picker
 replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) https://ui.shadcn.com/docs/components/combobox
+replace AccountTransaction's table with shadcn's Resizeable so column widths are draggable (https://ui.shadcn.com/docs/components/resizable)

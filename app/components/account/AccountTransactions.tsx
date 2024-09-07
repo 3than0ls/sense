@@ -1,5 +1,4 @@
-import React from 'react'
-import { useTheme, useThemeClass } from '~/context/ThemeContext'
+import { useTheme } from '~/context/ThemeContext'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Transaction, { TransactionRow } from './Transaction'
 
@@ -13,6 +12,9 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
         theme === 'DARK'
             ? 'bg-black border-dark divide-dark'
             : 'bg-white border-light divide-light'
+
+    // table can be made adjustable with shadcn: https://ui.shadcn.com/docs/components/resizable
+    // but that's for the future
 
     return (
         <div className="w-full h-full">

@@ -1,19 +1,12 @@
 import { Account, BudgetItem } from '@prisma/client'
 import Dropdown from '../Dropdown'
 import { useEffect, useState } from 'react'
-import { useFetcher, useLoaderData } from '@remix-run/react'
-import { useTheme } from '~/context/ThemeContext'
-import numberSchema from '~/zodSchemas/number'
+import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
-import { loader } from '~/routes/api.bud.items.$budgetId'
-import { FullBudgetDataType } from '~/prisma/fullBudgetData'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldValues } from 'react-hook-form'
 import useRemixForm from '~/hooks/useRemixForm'
 import Input from '../form/Input'
 import RemixForm from '../RemixForm'
-import Submit from '../form/Submit'
 import { transactionFormSchema } from '~/zodSchemas/transaction'
 
 type TransactionFormProps = {
@@ -41,6 +34,7 @@ const TransactionForm = ({
         if (!budgetItems) {
             itemFetcher.load(`/api/bud/items/${budgetId}`)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accounts, budgetItems])
 
     const accountDropdownData =
@@ -75,13 +69,6 @@ const TransactionForm = ({
 
     const { fetcher, methods } = useRemixForm(transactionFormSchema, 'onChange')
 
-    // theme colors
-    const { theme } = useTheme()
-    const themeStyle =
-        theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
-    const focusThemeStyles =
-        theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
-
     const [itemError, setItemError] = useState(false)
     const [accountError, setAccountError] = useState(false)
 
@@ -107,6 +94,7 @@ const TransactionForm = ({
         if (fetcher.data && fetcher.state === 'idle') {
             setActive(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetcher.data, fetcher.state])
 
     return (
