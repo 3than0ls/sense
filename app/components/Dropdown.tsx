@@ -148,6 +148,13 @@ const Dropdown = ({
                             key={dItem.id}
                         />
                     ))}
+                    {dropdownItems.length === 0 && (
+                        <div
+                            className={`text-subtle text-sm ${themeStyle} p-2`}
+                        >
+                            No items available.
+                        </div>
+                    )}
                 </div>
             </div>
             {errorState && (

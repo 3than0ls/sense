@@ -36,11 +36,15 @@ add dollar sign in front of inputs that require dollar signs
 Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
 see add transaction for how it's done
 
+account edit menu modal
+
 no other options for dropdown
 
 Remove delete property from schema
 
 Add reconciliations in Account
+
+create budget modal, rather than the weird shit I have now
 
 FUTURE NON ESSENTIALS:
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
