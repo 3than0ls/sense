@@ -12,12 +12,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
-        const budget = await fullBudgetData({
+        const budgetData = await fullBudgetData({
             userId: user.id,
             budgetId: params.budgetId!,
         })
 
-        return json(budget)
+        return json({ budgetData })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -32,7 +32,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export default function BudgetRoute() {
     // this is of some obscene type
-    const data = useLoaderData<typeof loader>()
+    const { budgetData } = useLoaderData<typeof loader>()
 
-    return <Budget budgetData={data as unknown as FullBudgetDataType} />
+    return <Budget budgetData={budgetData as unknown as FullBudgetDataType} />
 }

@@ -41,33 +41,31 @@ const Budget = ({ budgetData }: BudgetProps) => {
 
     return (
         <div className="w-full h-full min-w-[600px] flex flex-col">
-            <div className={`flex gap-6 p-4 items-center`}>
-                <div className="flex flex-col w-full">
-                    <button
-                        className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
-                        onClick={() => {
-                            setModalTitle('Edit Budget info')
-                            setModalChildren(
-                                <BudgetInfoForm
-                                    name={budgetData.name}
-                                    description={budgetData.description || ''}
-                                    budgetId={budgetData.id}
-                                />
-                            )
-                            setActive(true)
-                        }}
-                    >
-                        <span className="text-4xl font-work-black group-hover:opacity-90 transition">
-                            {name}
-                        </span>
-                        <Icon
-                            type="edit"
-                            className={`size-6 stroke-subtle ${hoverThemeStyle} transition`}
-                            interactive
-                        />
-                    </button>
-                    <span>{description}</span>
-                </div>
+            <div className="flex flex-col w-full p-4">
+                <button
+                    className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
+                    onClick={() => {
+                        setModalTitle('Edit Budget info')
+                        setModalChildren(
+                            <BudgetInfoForm
+                                name={budgetData.name}
+                                description={budgetData.description || ''}
+                                budgetId={budgetData.id}
+                            />
+                        )
+                        setActive(true)
+                    }}
+                >
+                    <span className="text-4xl font-work-black group-hover:opacity-90 transition">
+                        {name}
+                    </span>
+                    <Icon
+                        type="edit"
+                        className={`size-6 stroke-subtle ${hoverThemeStyle} transition`}
+                        interactive
+                    />
+                </button>
+                <span>{description}</span>
             </div>
             <div className="flex flex-grow overflow-auto">
                 <div className="relative flex-grow flex flex-col border-t border-subtle">

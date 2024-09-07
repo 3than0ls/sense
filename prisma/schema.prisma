@@ -25,8 +25,8 @@ model Account {
     createdAt      DateTime      @default(now())
     name           String
     initialBalance Float
-    budgetId       String?       @db.Uuid
-    budget         Budget?       @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+    budgetId       String        @db.Uuid
+    budget         Budget        @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     transactions   Transaction[]
 }
 

@@ -36,6 +36,10 @@ add dollar sign in front of inputs that require dollar signs
 Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
 see add transaction for how it's done
 
+Remove delete property from schema
+
+Add reconciliations in Account
+
 FUTURE NON ESSENTIALS:
 add date to add transaction using https://ui.shadcn.com/docs/components/date-picker
 replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) https://ui.shadcn.com/docs/components/combobox
