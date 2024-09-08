@@ -16,6 +16,8 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
     // table can be made adjustable with shadcn: https://ui.shadcn.com/docs/components/resizable
     // but that's for the future
 
+    // for filtering; perhaps look into https://tailwindcss.com/docs/visibility#collapsing-elements
+
     // table widths are something I abhor
 
     return (

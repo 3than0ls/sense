@@ -56,6 +56,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function BudgetCategoryEditRoute() {
+    // definitely should all be moved to it's own component
     const budgetCategory = useLoaderData<typeof loader>()
 
     const { theme } = useTheme()
@@ -71,7 +72,9 @@ export default function BudgetCategoryEditRoute() {
                 key={budgetItem.id}
                 className={`${altThemeStyle} rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-between items-center`}
             >
-                {budgetItem.name}
+                <span className="mr-1.5 w-full truncate">
+                    {budgetItem.name}
+                </span>
                 <Icon type="edit" className="size-5 stroke-subtle" />
             </Link>
         )
@@ -122,7 +125,7 @@ export default function BudgetCategoryEditRoute() {
     // ideally should be moved to it's own component
     return (
         <div
-            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl w-full h-full`}
+            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-64`}
         >
             <div className="flex flex-col w-full justify-center items-center">
                 <BudgetMenuForm
@@ -138,7 +141,9 @@ export default function BudgetCategoryEditRoute() {
             <Divider />
             <div className="w-full flex flex-col gap-1">
                 <span className="text-lg ml-2">Items in Category</span>
-                <div className="flex flex-col gap-2">{...budgetItems}</div>
+                <div className="flex flex-col gap-2 min-w-full w-0">
+                    {...budgetItems}
+                </div>
                 <fetcher.Form onSubmit={createNewBudgetItem}>
                     <button
                         type="submit"

@@ -31,14 +31,14 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
 
     return (
         <div>
-            <div className="flex flex-row items-center gap-4 min-h-10 px-4">
+            <div className="flex flex-row items-center gap-4 min-h-10 px-4 w-full">
                 <div
                     className={`text-lg leading-snug ${
-                        expanded ? 'flex-grow max-w-96' : 'w-64'
-                    } flex gap-2`}
+                        expanded ? 'mr-auto' : 'mr-auto'
+                    } flex gap-2 max-w-80 xl:max-w-96 2xl:w-96 2xl:overflow-hidden`}
                 >
                     <button
-                        className={`flex items-center max-w-full text-left gap-2 hover:opacity-80 transition`}
+                        className={`flex items-center truncate text-left gap-2 hover:opacity-80 transition`}
                         onClick={() => setExpanded(!expanded)}
                     >
                         <Icon
@@ -63,7 +63,9 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                 </div>
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="flex-grow"
+                    className={`hidden ${
+                        expanded ? '2xl:hidden' : '2xl:block'
+                    } 2xl:flex-grow`}
                 >
                     <BudgetItemBar
                         expanded={expanded}

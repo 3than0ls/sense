@@ -93,7 +93,7 @@ export default function BudgetItemEditRoute() {
 
     return (
         <div
-            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl w-full h-full`}
+            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-64`}
         >
             <div className="flex flex-col w-full justify-center items-center">
                 <BudgetMenuForm
