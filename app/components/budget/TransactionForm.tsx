@@ -42,6 +42,10 @@ const TransactionForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accounts, budgetItems])
 
+    // fetcher.data forces component rerender, meaning accountDropdownData is updated
+    // but variables based off this do not update too.
+    // problem: can't use accountDropdownData[0] as default value, because
+    // it still thinks accountDropdownData (based on accountFetcher.data) is empty {}
     const accountDropdownData =
         (accounts ?? (accountFetcher.data as typeof accounts))?.map((a) => {
             return {
@@ -94,7 +98,6 @@ const TransactionForm = ({
     }
 
     useEffect(() => {
-        console.log(fetcher.state)
         // assumes fetcher data is a valid response (which SHOULD be the transaction object) and not some error code or other... hopefully.
         if (fetcher.data && fetcher.state === 'idle') {
             setActive(false)
@@ -102,30 +105,7 @@ const TransactionForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetcher.data, fetcher.state])
 
-    // if (editTransaction) {
-    //     let idx =
-    //         accountDropdownData[
-    //             accountDropdownData.findIndex(
-    //                 (data) => data.id === editTransaction.accountId
-    //             )
-    //         ]
-    //     console.log(idx)
-    // }
-
-    if (editTransaction) {
-        console.log(
-            editTransaction
-                ? accountDropdownData[
-                      accountDropdownData.findIndex(
-                          (data) => data.id === editTransaction.accountId
-                      )
-                  ]
-                : undefined
-        )
-    }
-
     // code only applies if editTransaction object is not undefined
-    const deleteFetcher = useFetcher()
     const onDelete = () => {
         if (editTransaction) {
             setModalTitle('Confirm Deletion')
@@ -216,7 +196,7 @@ const TransactionForm = ({
                 type="submit"
                 className={`hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-2 transition bg-primary rounded-lg mr-auto px-4 py-2`}
             >
-                {editTransaction ? 'Log Transaction' : 'Update Transaction'}
+                {editTransaction ? 'Update Transaction' : 'Log Transaction'}
             </button>
             {editTransaction && (
                 <div className="w-full mt-4 flex flex-col gap-4">

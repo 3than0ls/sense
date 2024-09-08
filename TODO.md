@@ -23,7 +23,7 @@ A name for the projecte
 
 
 NEXT: 
-Sidebar (medium)
+Sidebar (medium) (have to make design decisions)
 Assign money inflow AND outflow (hard)
 Custom scrollbar (medium)
 topbar decision- keep it when in budget or not? (NO!!!) (easy)
@@ -41,7 +41,13 @@ account edit menu modal (medium)
 
 Add reconciliations in Account (hard)
 
-create budget modal, rather than the weird shit I have now (hard)
+create budget modal, rather than the weird shit I have now (hard) (just copy paste budgetInfoForm, modify it to match AccountForm)
+
+find all form submits and add disabled when loading to prevent spam (Easy)
+
+even out padding spacings between form labels and items, label text size, etc (Easy)
+
+add active to Dropdown
 
 FUTURE NON ESSENTIALS:
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)

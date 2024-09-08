@@ -43,6 +43,7 @@ type DropdownProps = {
     onChange?: (dropdownItem: DropdownItem) => void
     onExpand?: () => void
     errorState?: boolean
+    disabled?: boolean
 }
 
 const Dropdown = ({
@@ -52,6 +53,7 @@ const Dropdown = ({
     onChange,
     errorState = false,
     onExpand,
+    disabled,
 }: DropdownProps) => {
     const { theme } = useTheme()
     const themeStyle =
@@ -89,8 +91,15 @@ const Dropdown = ({
         }
     }
 
-    return (
-        <div>
+    return disabled ? (
+        <div
+            aria-disabled
+            className={`${className} ${themeStyle} transition min-w-64 rounded-lg p-2 mt-1 brightness-75 hover:cursor-not-allowed`}
+        >
+            {current?.name || 'Select'}
+        </div>
+    ) : (
+        <div className="mt-1">
             <div
                 ref={ref}
                 className={`${className} ${themeStyle} ${
@@ -103,6 +112,7 @@ const Dropdown = ({
                 }`}
             >
                 <button
+                    disabled={disabled}
                     className={`w-full p-2 text-left rounded-2xl transition flex justify-between items-center outline-none
                 `}
                     onClick={(e) => {

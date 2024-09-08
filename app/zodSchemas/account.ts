@@ -10,6 +10,10 @@ export const accountFormSchema = z.object({
 })
 export type AccountFormSchemaType = z.infer<typeof accountFormSchema>
 
-export const accountSchema = accountFormSchema.extend({
+export const createAccountSchema = accountFormSchema.extend({
     budgetId: z.string().uuid(),
+})
+
+export const updateAccountSchema = createAccountSchema.extend({
+    accountId: z.string().uuid(),
 })

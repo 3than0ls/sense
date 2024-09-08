@@ -2,12 +2,12 @@ import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import ServerError from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import { accountSchema } from '~/zodSchemas/account'
+import { createAccountSchema } from '~/zodSchemas/account'
 
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
-        const newAccount = accountSchema.parse(Object.fromEntries(data))
+        const newAccount = createAccountSchema.parse(Object.fromEntries(data))
 
         const { user } = await authenticateUser(request)
 
@@ -25,7 +25,10 @@ export async function action({ request }: ActionFunctionArgs) {
                 budgetId: budget.id,
             },
         })
+
+        // has issues- not redirecting, client not getting any data, perhaps form with RemixForm component
         return redirect(`/account/${account.id}`)
+        // return json(account)
     } catch (e) {
         // regardless of if it's an auth api error or not found error, just say bad request!
         throw new ServerError({
