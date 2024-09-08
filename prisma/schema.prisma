@@ -35,7 +35,6 @@ model BudgetCategory {
     id          String       @id @unique @default(uuid()) @db.Uuid
     createdAt   DateTime     @default(now())
     name        String
-    deleted     Boolean      @default(false) // determines if it should appear in the budget, and if true, only use for previous transacs
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
     budget      Budget       @relation(fields: [budgetId], references: [id], onDelete: Cascade)
@@ -46,7 +45,6 @@ model BudgetItem {
     id               String         @id @unique @default(uuid()) @db.Uuid
     createdAt        DateTime       @default(now())
     name             String
-    deleted          Boolean        @default(false) // determines if it should appear in the budget, and if true, only use for previous transacs
     target           Float
     // balance          Float  Would just be assigned - transactions
     // assigned         Float  Would just be sum of assignments

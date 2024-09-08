@@ -23,29 +23,25 @@ A name for the projecte
 
 
 NEXT: 
-Sidebar
-Assign money inflow AND outflow
-Custom scrollbar
-topbar decision- keep it when in budget or not? (NO!!!)
-budget item expanded dropdown things  (TRANSACTION AND BUSINESS)
+Sidebar (medium)
+Assign money inflow AND outflow (hard)
+Custom scrollbar (medium)
+topbar decision- keep it when in budget or not? (NO!!!) (easy)
+budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (easy)
 
 
 /// IMMEDIATE CONCERNS
 ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.
-add dollar sign in front of inputs that require dollar signs
+add dollar sign in front of inputs that require dollar signs (easy)
 
 Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
 see add transaction for how it's done
 
-account edit menu modal
+account edit menu modal (medium)
 
-no other options for dropdown
+Add reconciliations in Account (hard)
 
-Remove delete property from schema
-
-Add reconciliations in Account
-
-create budget modal, rather than the weird shit I have now
+create budget modal, rather than the weird shit I have now (hard)
 
 FUTURE NON ESSENTIALS:
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
