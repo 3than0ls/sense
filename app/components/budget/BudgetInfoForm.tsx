@@ -7,7 +7,8 @@ import { useModal } from '~/context/ModalContext'
 import { budgetInfoFormSchema } from '~/zodSchemas/budgetInfo'
 import Divider from '../Divider'
 import DeleteButton from '../DeleteButton'
-import DeleteBudgetForm from './DeleteBudgetForm'
+import DeleteForm from '../DeleteForm'
+import { useNavigate } from '@remix-run/react'
 
 type BudgetInfoFormProps = {
     name: string
@@ -41,15 +42,24 @@ const BudgetInfoForm = ({
         }
     }
 
+    const navigate = useNavigate()
     const onDeleteClick = () => {
-        setModalTitle('Delete Budget')
+        setModalTitle('Confirm Deletion')
         setModalChildren(
-            <DeleteBudgetForm budgetName={name} budgetId={budgetId} />
+            <DeleteForm
+                deleteItemName={name}
+                fetcherAction="/api/bud/delete"
+                fetcherTarget={{ budgetId: budgetId }}
+                onSubmitLoad={() => navigate(`/budget/`)} //  <-- doesn't matter since auto-navigates back anyway
+            >
+                <span>
+                    Everything will be deleted, including all accounts created
+                    under this budget.
+                </span>
+            </DeleteForm>
         )
         setActive(true)
     }
-
-    // useEffect onSubmit setActive
 
     return (
         <RemixForm
@@ -73,10 +83,12 @@ const BudgetInfoForm = ({
                 defaultValue={description}
             />
             <Submit className="w-full py-2 rounded-xl mt-3 mb-2">Save</Submit>
-            <Divider themed />
-            <DeleteButton className="mt-2" onClick={onDeleteClick}>
-                Delete Budget
-            </DeleteButton>
+            <div className="w-full mt-4 flex flex-col gap-4">
+                <Divider themed />
+                <DeleteButton onClick={onDeleteClick}>
+                    Delete Budget
+                </DeleteButton>
+            </div>
         </RemixForm>
     )
 }

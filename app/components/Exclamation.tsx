@@ -16,7 +16,7 @@ const Exclamation = ({
         <div className={`${divClassName} text-lg`}>
             <Icon
                 type="exclamation-circle"
-                className={`size-6 mr-1 inline-block align-top ${iconClassName}`}
+                className={`size-6 mr-1 inline-block align-middle transform -translate-y-[1px] ${iconClassName}`}
             />
             {children}
         </div>

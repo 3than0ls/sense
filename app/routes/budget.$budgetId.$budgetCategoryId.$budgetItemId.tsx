@@ -1,6 +1,6 @@
 import { BudgetItem } from '@prisma/client'
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, useNavigate } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import AssignMoneyForm from '~/components/budget/AssignMoneyForm'
@@ -12,9 +12,9 @@ import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
-import DeleteItemForm from '~/components/budget/DeleteItemForm'
 import DeleteButton from '~/components/DeleteButton'
 import Divider from '~/components/Divider'
+import DeleteForm from '~/components/DeleteForm'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
@@ -70,10 +70,23 @@ export default function BudgetItemEditRoute() {
         )
         setActive(true)
     }
+
+    const navigate = useNavigate()
     const onDeleteClick = () => {
         setModalTitle('Confirm Deletion')
         setModalChildren(
-            <DeleteItemForm budgetItem={budgetItem as unknown as BudgetItem} />
+            <DeleteForm
+                deleteItemName={budgetItem.name}
+                fetcherAction="/api/budItem/delete"
+                fetcherTarget={{ budgetItemId: budgetItem.id }}
+                onSubmitLoad={() => navigate(`/budget/${budgetItem.budgetId}`)} //  <-- doesn't matter since auto-navigates back anyway
+            >
+                <span>
+                    All transactions to and from this item will also be deleted!
+                    You may have to manually reconcile your account balance if
+                    you do this.
+                </span>
+            </DeleteForm>
         )
         setActive(true)
     }

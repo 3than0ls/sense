@@ -11,6 +11,7 @@ import { transactionFormSchema } from '~/zodSchemas/transaction'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Divider from '../Divider'
 import DeleteButton from '../DeleteButton'
+import DeleteForm from '../DeleteForm'
 
 type TransactionFormProps = {
     selectedBudgetItem?: Pick<BudgetItem, 'id' | 'name'>
@@ -27,8 +28,7 @@ const TransactionForm = ({
     budgetId,
     editTransaction,
 }: TransactionFormProps) => {
-    // modal state manager
-    const { setActive } = useModal()
+    const { setModalTitle, setModalChildren, setActive } = useModal()
 
     const accountFetcher = useFetcher()
     const itemFetcher = useFetcher()
@@ -128,13 +128,19 @@ const TransactionForm = ({
     const deleteFetcher = useFetcher()
     const onDelete = () => {
         if (editTransaction) {
-            deleteFetcher.submit(
-                {
-                    transactionId: editTransaction.id,
-                },
-                { action: '/api/transac/delete', method: 'POST' }
+            setModalTitle('Confirm Deletion')
+            setModalChildren(
+                <DeleteForm
+                    deleteItemName={`${new Date(
+                        editTransaction.date
+                    ).toLocaleDateString()} transaction for ${
+                        editTransaction.budgetItem.name
+                    } of $${editTransaction.amount}`}
+                    fetcherAction="/api/transac/delete"
+                    fetcherTarget={{ transactionId: editTransaction.id }}
+                ></DeleteForm>
             )
-            setActive(false)
+            setActive(true)
         }
         // user is NOT supposed to be here
     }
@@ -214,13 +220,12 @@ const TransactionForm = ({
             </button>
             {editTransaction && (
                 <div className="w-full mt-4 flex flex-col gap-4">
-                    <Divider />{' '}
+                    <Divider themed />
                     <DeleteButton noSubmit onClick={onDelete}>
                         Delete Transaction
                     </DeleteButton>
                 </div>
             )}
-            {fetcher.state === 'loading' && 'TEMP TEMPORARY LOADING STATE!!!!'}
         </RemixForm>
     )
 }

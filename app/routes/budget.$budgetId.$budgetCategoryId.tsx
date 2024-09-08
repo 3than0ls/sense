@@ -9,8 +9,8 @@ import {
 } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
-import DeleteCategoryForm from '~/components/budget/DeleteCategoryForm'
 import DeleteButton from '~/components/DeleteButton'
+import DeleteForm from '~/components/DeleteForm'
 import Divider from '~/components/Divider'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
@@ -93,9 +93,17 @@ export default function BudgetCategoryEditRoute() {
     const onDeleteClick = () => {
         setModalTitle('Confirm Deletion')
         setModalChildren(
-            <DeleteCategoryForm
-                budgetCategory={budgetCategory as unknown as BudgetCategory}
-            />
+            <DeleteForm
+                deleteItemName={budgetCategory.name}
+                fetcherAction="/api/budCat/delete"
+                fetcherTarget={{ budgetCategoryId: budgetCategory.id }}
+                // onSubmitLoad={() => navigate(`/budget/${budgetItem.budgetId}`)} //  <-- doesn't matter since auto-navigates back anyway
+            >
+                <span>
+                    All budget items (and transactions to and form) under this
+                    category will also be deleted.
+                </span>
+            </DeleteForm>
         )
         setActive(true)
     }

@@ -4,7 +4,7 @@ import { useTheme } from '~/context/ThemeContext'
 import { Link, useFetcher, useNavigate } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
-import DeleteCategoryForm from './DeleteCategoryForm'
+import DeleteForm from '../DeleteForm'
 
 type BudgetCategoryProps = {
     budgetCategory: FullBudgetDataType['budgetCategories'][number]
@@ -35,7 +35,19 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     const onDeleteClick = () => {
         navigate(budgetCategory.id)
         setModalTitle('Confirm Deletion')
-        setModalChildren(<DeleteCategoryForm budgetCategory={budgetCategory} />)
+        setModalChildren(
+            <DeleteForm
+                deleteItemName={budgetCategory.name}
+                fetcherAction="/api/budCat/delete"
+                fetcherTarget={{ budgetCategoryId: budgetCategory.id }}
+                // onSubmitLoad={() => navigate(`/budget/${budgetItem.budgetId}`)} //  <-- doesn't matter since auto-navigates back anyway
+            >
+                <span>
+                    All budget items (and transactions to and form) under this
+                    category will also be deleted.
+                </span>
+            </DeleteForm>
+        )
         setActive(true)
     }
 
