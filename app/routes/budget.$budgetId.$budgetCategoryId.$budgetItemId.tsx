@@ -93,7 +93,7 @@ export default function BudgetItemEditRoute() {
 
     return (
         <div
-            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-64`}
+            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-full h-fit`}
         >
             <div className="flex flex-col w-full justify-center items-center">
                 <BudgetMenuForm
@@ -115,14 +115,14 @@ export default function BudgetItemEditRoute() {
                 </div>
             </div>
             <Divider />
-            <div className="flex flex-col w-full gap-1">
+            <div className="flex flex-col min-w-full gap-1">
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
                     <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
                     <span className="ml-auto">${assigned.toFixed(2)}</span>
                 </div>
                 <button
-                    className={`${altThemeStyle} rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
+                    className={`${altThemeStyle} w-full rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
                     onClick={onAssignMoneyClick}
                 >
                     <span>Assign Money</span>
@@ -143,6 +143,7 @@ export default function BudgetItemEditRoute() {
                     schema={itemTargetSchema}
                     action="/api/budItem/retarget"
                     itemUuid={budgetItem.id}
+                    isNumber
                 />
             </div>
 

@@ -47,7 +47,7 @@ find all form submits and add disabled when loading to prevent spam (Easy)
 
 even out padding spacings between form labels and items, label text size, etc (Easy)
 
-add active to Dropdown
+add active outline to Dropdown
 
 FUTURE NON ESSENTIALS:
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)

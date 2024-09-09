@@ -125,7 +125,7 @@ export default function BudgetCategoryEditRoute() {
     // ideally should be moved to it's own component
     return (
         <div
-            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-64`}
+            className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-full h-fit`}
         >
             <div className="flex flex-col w-full justify-center items-center">
                 <BudgetMenuForm

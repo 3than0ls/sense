@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFetcher, useRevalidator } from '@remix-run/react'
 import { BudgetCategory } from '@prisma/client'
+import numberSchema from '~/zodSchemas/number'
 
 type BudgetMenuProps = {
     className?: string
@@ -15,6 +16,7 @@ type BudgetMenuProps = {
     schema: z.AnyZodObject
     action?: string
     itemUuid: string
+    isNumber?: boolean
 }
 
 const BudgetMenuForm = ({
@@ -25,6 +27,7 @@ const BudgetMenuForm = ({
     schema,
     action,
     itemUuid,
+    isNumber = false,
 }: BudgetMenuProps) => {
     // this component is an abomination
     // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
@@ -93,35 +96,44 @@ const BudgetMenuForm = ({
             <label htmlFor={name} className={`ml-1 text-lg`}>
                 {label}
             </label>
-            <div className="flex gap-2 w-full">
-                <input
-                    aria-label={label}
-                    className={
-                        `${themeStyles} flex-grow rounded-lg p-2 transition-all duration-100 outline-none outline-offset-0` +
-                        (error
-                            ? ' outline-error outline-[3px]'
-                            : ` ${focusThemeStyles} focus:outline-[3px]`)
-                    }
-                    autoComplete="off"
-                    defaultValue={defaultValue}
-                    ref={(e) => {
-                        ref(e)
-                        inputRef.current = e
-                    }}
-                    {...rest}
-                    onBlur={() => {
-                        if (error) {
-                            reset()
-                        } else {
-                            submit()
+            <div className="flex gap-2 w-full ">
+                <div className="relative flex-grow">
+                    <input
+                        aria-label={label}
+                        className={
+                            `${themeStyles} w-full rounded-lg p-2 transition-all duration-100 outline-none outline-offset-0` +
+                            (error
+                                ? ' outline-error outline-[3px]'
+                                : ` ${focusThemeStyles} focus:outline-[3px]`)
                         }
-                    }}
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                        if (e.code === 'Enter') {
-                            e.currentTarget.blur()
-                        }
-                    }}
-                />
+                        autoComplete="off"
+                        defaultValue={defaultValue}
+                        ref={(e) => {
+                            ref(e)
+                            inputRef.current = e
+                        }}
+                        {...rest}
+                        onBlur={() => {
+                            if (error) {
+                                reset()
+                            } else {
+                                submit()
+                            }
+                        }}
+                        onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement>
+                        ) => {
+                            if (e.code === 'Enter') {
+                                e.currentTarget.blur()
+                            }
+                        }}
+                    />
+                    {isNumber && (
+                        <span className="absolute p-2 right-0 text-sm text-subtle">
+                            ($)
+                        </span>
+                    )}
+                </div>
                 <button
                     onClick={() => inputRef.current?.focus()}
                     className="flex justify-center items-center bg-opacity-100 hover:bg-opacity-[85%] bg-primary transition w-9 h-full rounded-lg"
@@ -130,7 +142,7 @@ const BudgetMenuForm = ({
                 </button>
             </div>
             {error && (
-                <p className="text-error transition-all duration-100 animate-fade-in">
+                <p className="text-error w-full transition-all duration-100 animate-fade-in text-wrap">
                     {error.message}
                 </p>
             )}

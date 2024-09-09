@@ -1,6 +1,6 @@
 import BudgetCategory from './BudgetCategory'
 import Icon from '../icons/Icon'
-import { useTheme } from '~/context/ThemeContext'
+import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import BudgetMenu from './BudgetMenu'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import EmptyBudget from './EmptyBudget'
@@ -28,6 +28,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
     )
 
     const { theme } = useTheme()
+    const themeClass = useThemeClass()
     const themeStyles = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const hoverThemeStyle =
         theme === 'DARK'
@@ -40,7 +41,9 @@ const Budget = ({ budgetData }: BudgetProps) => {
     const { setModalChildren, setActive, setModalTitle } = useModal()
 
     return (
-        <div className="w-full h-full min-w-[600px] flex flex-col">
+        <div
+            className={`w-full h-full min-w-[600px] flex flex-col overflow-y-auto ${themeClass}`}
+        >
             <div className="flex flex-col w-full p-4">
                 <button
                     className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
@@ -67,11 +70,11 @@ const Budget = ({ budgetData }: BudgetProps) => {
                 </button>
                 <span>{description}</span>
             </div>
-            <div className="flex flex-grow overflow-auto">
-                <div className="relative flex-grow flex flex-col border-t border-subtle">
+            <div className="flex flex-grow h-full overflow-hidden">
+                <div className="relative min-w-64 flex-grow overflow-y-auto flex flex-col border-t border-subtle">
                     <div
                         ref={backRef}
-                        className={`flex flex-col ${themeStyles} flex-grow overflow-y-auto`}
+                        className={`min-w-[800px] flex flex-col ${themeStyles} flex-grow overflow-auto`}
                     >
                         <TopBar budgetId={budgetData.id} />
                         {budgetCategoryComponents.length > 0 ? (

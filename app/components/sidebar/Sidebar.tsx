@@ -79,8 +79,8 @@ const Sidebar = ({ budgets }: SidebarProps) => {
 
     return (
         <div
-            className={`relative bg-primary overflow-hidden h-full flex flex-col max-w-64 ${
-                closed ? 'w-16' : 'w-96'
+            className={`relative bg-primary overflow-hidden h-full flex flex-col ${
+                closed ? 'w-full min-w-16 max-w-16' : 'w-full min-w-64 max-w-64'
             } transition-all duration-500 ease-in-out ${themeStyle} `}
             ref={sidebarRef}
         >
