@@ -8,7 +8,7 @@ import Submit from '../form/Submit'
 import Dropdown from '../Dropdown'
 import { Budget } from '@prisma/client'
 import { useModal } from '~/context/ModalContext'
-import { useNavigate, useRevalidator } from '@remix-run/react'
+import { useNavigate } from '@remix-run/react'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import DeleteButton from '../DeleteButton'
 import Divider from '../Divider'
@@ -37,8 +37,6 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
         editAccount?.budgetId ?? null
     )
     const [dropdownError, setDropdownError] = useState(false)
-
-    const validator = useRevalidator()
 
     const onSubmit: SubmitHandler<AccountFormSchemaType> = (data) => {
         if (selectedBudget === null) {

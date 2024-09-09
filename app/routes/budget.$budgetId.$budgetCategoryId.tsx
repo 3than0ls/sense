@@ -1,4 +1,3 @@
-import { BudgetCategory } from '@prisma/client'
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import {
     Link,

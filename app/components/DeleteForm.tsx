@@ -1,4 +1,4 @@
-import { useFetcher, useNavigate, useRevalidator } from '@remix-run/react'
+import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
 import React, { useEffect } from 'react'
 import Exclamation from './Exclamation'
@@ -44,8 +44,6 @@ const DeleteForm = ({
             }
         }
     }
-
-    const validator = useRevalidator()
 
     useEffect(() => {
         if (fetcher.data && fetcher.state === 'loading') {

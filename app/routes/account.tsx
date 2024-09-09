@@ -1,11 +1,9 @@
-import { Account, Budget } from '@prisma/client'
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { json, Outlet, useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Sidebar from '~/components/sidebar/Sidebar'
 import ServerErrorResponse from '~/error'
-import prisma from '~/prisma/client'
-import getSidebarData, { SidebarDataType } from '~/prisma/sidebarData'
+import getSidebarData from '~/prisma/sidebarData'
 import authenticateUser from '~/utils/authenticateUser'
 
 export async function loader({ request }: LoaderFunctionArgs) {

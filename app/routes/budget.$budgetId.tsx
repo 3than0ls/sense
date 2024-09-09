@@ -1,16 +1,10 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import {
-    useLoaderData,
-    useNavigation,
-    useNavigationType,
-} from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
 import ServerErrorResponse from '~/error'
 import authenticateUser from '~/utils/authenticateUser'
-import fullBudgetData, { FullBudgetDataType } from '~/prisma/fullBudgetData'
-import Loading from '~/components/Loading'
-import LoadingBar from '~/components/LoadingBar'
+import fullBudgetData from '~/prisma/fullBudgetData'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     // THE PERFECT LOADER SAMPLE:

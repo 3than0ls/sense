@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFetcher, useRevalidator } from '@remix-run/react'
 import { BudgetCategory } from '@prisma/client'
-import numberSchema from '~/zodSchemas/number'
 
 type BudgetMenuProps = {
     className?: string
