@@ -26,7 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(deletedTransaction)
     } catch (e) {
-        console.log(e)
         throw new ServerError({
             message: 'Transaction unable to be deleted.',
             status: 400,

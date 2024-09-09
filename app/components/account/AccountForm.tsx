@@ -55,17 +55,25 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
             if (editAccount) {
                 submitTarget.append('accountId', editAccount.id)
             }
-
             fetcher.submit(submitTarget, {
                 action: editAccount
                     ? '/api/account/update'
                     : '/api/account/create',
                 method: 'POST',
             })
-            validator.revalidate()
-            setActive(false)
         }
     }
+
+    // if you setActive(false) right after calling fetcher.submit,
+    // this component disappears and the fetcher is unable to receive the redirect
+    // thus, we must wait after the fetcher submits and is loading to setActive(false)
+    //  and the fetcher goes out of scope/ceases to exist/whatever occurs in JS
+    useEffect(() => {
+        if (fetcher.state === 'loading') {
+            setActive(false)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetcher.state])
 
     const navigate = useNavigate()
     const onDeleteClick = () => {
@@ -138,7 +146,7 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
             {editAccount && (
                 <div className="w-full mt-4 flex flex-col gap-4">
                     <Divider themed />
-                    <DeleteButton onClick={onDeleteClick}>
+                    <DeleteButton noSubmit onClick={onDeleteClick}>
                         Delete Account
                     </DeleteButton>
                 </div>

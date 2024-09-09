@@ -26,7 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        // has issues- not redirecting, client not getting any data, perhaps form with RemixForm component
         return redirect(`/account/${account.id}`)
         // return json(account)
     } catch (e) {
