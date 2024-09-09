@@ -13,6 +13,7 @@ import { z } from 'zod'
 import RemixForm from '../RemixForm'
 import { SubmitHandler } from 'react-hook-form'
 import { AccountFormSchemaType } from '~/zodSchemas/account'
+import { SidebarDataType } from '~/prisma/sidebarData'
 
 const SidebarDropdown = ({
     title,
@@ -49,19 +50,17 @@ const SidebarDropdown = ({
 }
 
 type SidebarProps = {
-    budgets: (Budget & {
-        accounts: Account[]
-    })[]
+    sidebarData: SidebarDataType
 }
 
-const Sidebar = ({ budgets }: SidebarProps) => {
+const Sidebar = ({ sidebarData }: SidebarProps) => {
     // make length adjustable, make it able to close
 
     const [closed, setClosed] = useState(false)
     const sidebarRef = useRef<HTMLDivElement | null>(null)
     const themeStyle = useThemeClass()
 
-    const budgetLinks = Array.from(budgets, (b) => (
+    const budgetLinks = Array.from(sidebarData, (b) => (
         <SidebarDropdown budget={b} title={b.name} key={b.id}>
             {Array.from(b.accounts, (a) => (
                 <SidebarLink
@@ -104,7 +103,7 @@ const Sidebar = ({ budgets }: SidebarProps) => {
                 <button
                     onClick={() => {
                         setModalTitle('Create an Account')
-                        setModalChildren(<AccountForm budgets={budgets} />)
+                        setModalChildren(<AccountForm budgets={sidebarData} />)
                         setActive(true)
                     }}
                     className="bg-primary text-white border-2 border-black rounded-2xl"
