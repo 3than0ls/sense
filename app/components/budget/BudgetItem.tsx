@@ -31,7 +31,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
 
     return (
         <div>
-            <div className="flex flex-row items-center gap-4 min-h-10 px-4 w-full">
+            <div className="flex flex-row items-center gap-4 min-h-10 px-3 w-full">
                 <div
                     className={`text-lg leading-snug ${
                         expanded ? 'mr-auto' : 'mr-auto'
@@ -48,18 +48,18 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                                 expanded && '-rotate-180'
                             } transition`}
                         />
-                        <Link
-                            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
-                            className="w-full group hover:opacity-85 transition flex justify-center items-center overflow-hidden"
-                        >
-                            <span className="w-full truncate">{name}</span>
-                            <Icon
-                                type="edit"
-                                className={`size-6 stroke-subtle ${hoverThemeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
-                                interactive
-                            />
-                        </Link>
                     </button>
+                    <Link
+                        to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                        className="w-full group hover:opacity-85 transition flex items-center overflow-hidden"
+                    >
+                        <span className="w-fit truncate">{name}</span>
+                        <Icon
+                            type="edit"
+                            className={`size-6 stroke-subtle ${hoverThemeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
+                            interactive
+                        />
+                    </Link>
                 </div>
                 <button
                     onClick={() => setExpanded(!expanded)}

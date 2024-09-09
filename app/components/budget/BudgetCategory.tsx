@@ -59,7 +59,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     return (
         <>
             <div
-                className={`px-4 flex justify-end items-center gap-2 min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
+                className={`px-3 flex justify-end items-center gap-2 min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
             >
                 <Link
                     to={budgetCategory.id}

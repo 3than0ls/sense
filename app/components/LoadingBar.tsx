@@ -18,11 +18,9 @@ const LoadingBar = () => {
         // may want to refine navigation.state !== 'idle' to just navigation.state === 'loading'
         // this would eliminate the submitting state, thus preventing loading bar when form submitting
         if (navigation.state !== 'idle' && aniState !== 'start') {
-            console.log('starting animation')
             setAniState('start')
         }
         if (navigation.state === 'idle' && aniState === 'start') {
-            console.log('stopping animation')
             setAniState('stop')
         }
     }, [navigation.state, aniState])
@@ -33,11 +31,9 @@ const LoadingBar = () => {
                 <div
                     onTransitionEnd={() => {
                         if (aniState === 'stop') {
-                            console.log('ending animation')
                             setAniState('end')
                         }
                         if (aniState === 'end') {
-                            console.log('disappearing animation')
                             setAniState('disappear')
                         }
                     }}

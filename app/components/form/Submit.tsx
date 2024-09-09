@@ -17,7 +17,7 @@ const Submit = ({ className, disabled, children }: SubmitProps) => {
                 disabled
                     ? 'bg-opacity-50 hover:cursor-not-allowed'
                     : 'bg-opacity-100 hover:bg-opacity-[85%]'
-            } bg-primary shadow-sm hover:shadow-md transition ease-in-out ${style} ${className}`}
+            } bg-primary shadow-sm hover:shadow-md transition ease-in-out flex justify-center gap-4 ${style} ${className}`}
             type="submit"
         >
             {children}

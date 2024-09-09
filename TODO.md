@@ -35,6 +35,11 @@ budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (easy)
 Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
 see add transaction for how it's done
 
+
+BACKGROUND REDIRECT CLICKING URGENT THINGYMABOB (recreate: Assign Money when on budgetItemId.tsx) (URGENT medium)
+
+refactor AssignMoneyForm to AssignmentForm, and update api to api/assign/create instead of budItem/assign (Easy)
+
 account edit menu modal (medium)
 
 Add reconciliations in Account (hard)

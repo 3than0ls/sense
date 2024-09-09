@@ -28,7 +28,7 @@ const TopBar = ({ budgetId }: TopBarProps) => {
 
     return (
         <div
-            className={`sticky top-0 w-full bg-black h-10 flex items-center px-4 gap-3 justify-between border-b border-subtle z-40 ${themeStyle}`}
+            className={`sticky top-0 w-full bg-black h-10 flex items-center px-3 gap-3 justify-between border-b border-subtle z-40 ${themeStyle}`}
         >
             <button
                 onClick={createCategory}

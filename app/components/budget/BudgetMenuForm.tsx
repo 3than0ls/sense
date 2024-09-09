@@ -72,7 +72,8 @@ const BudgetMenuForm = ({
         if (
             inputValue &&
             inputValue !== defaultValue &&
-            inputValue !== (fetcher.data as BudgetCategory)?.name
+            inputValue !== (fetcher.data as BudgetCategory)?.name &&
+            fetcher.state !== 'submitting'
         ) {
             fetcher.submit(
                 { [name]: getValues(name), id: itemUuid },

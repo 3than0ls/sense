@@ -7,6 +7,7 @@ import numberSchema from '~/zodSchemas/number'
 import { action } from '~/routes/api.budItem.assign'
 import { useModal } from '~/context/ModalContext'
 import { loader } from '~/routes/api.bud.items.$budgetId'
+import Icon from '../icons/Icon'
 
 type AssignMoneyFormProps = {
     targetBudgetItem: BudgetItem
@@ -97,8 +98,7 @@ const AssignMoneyForm = ({
                 setError(fetcher.data.reason)
             }
         }
-    }, [fetcher.data, setActive])
-
+    }, [fetcher.data, fetcher.state, setActive])
     return (
         <fetcher.Form
             onSubmit={handleSubmit}
@@ -154,10 +154,17 @@ const AssignMoneyForm = ({
             </div>
             <button
                 type="submit"
-                disabled={!!error}
-                className={`hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-4 transition bg-primary rounded-lg mr-auto px-4 py-2`}
+                disabled={!!error || fetcher.state === 'submitting'}
+                className={`flex justify-center gap-4 hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-4 transition bg-primary rounded-lg mr-auto px-4 py-2`}
             >
                 Assign Money
+                {fetcher.state === 'submitting' && (
+                    <Icon
+                        type="spinner"
+                        color="#fff"
+                        className="size-6 animate-spin flex items-center justify-center"
+                    />
+                )}
             </button>
         </fetcher.Form>
     )

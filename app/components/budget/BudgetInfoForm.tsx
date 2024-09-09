@@ -9,6 +9,8 @@ import Divider from '../Divider'
 import DeleteButton from '../DeleteButton'
 import DeleteForm from '../DeleteForm'
 import { useNavigate } from '@remix-run/react'
+import Icon from '../icons/Icon'
+import { useEffect } from 'react'
 
 type BudgetInfoFormProps = {
     name: string
@@ -24,7 +26,7 @@ const BudgetInfoForm = ({
     const { setActive, setModalTitle, setModalChildren } = useModal()
 
     // may have to use an onChange
-    const { methods, fetcher } = useRemixForm(budgetInfoFormSchema)
+    const { methods, fetcher } = useRemixForm(budgetInfoFormSchema, 'onChange')
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         if (data.name !== name || data.description !== description) {
@@ -38,9 +40,14 @@ const BudgetInfoForm = ({
                     method: 'POST',
                 }
             )
-            setActive(false)
         }
     }
+
+    useEffect(() => {
+        if (fetcher.data && fetcher.state === 'idle') {
+            setActive(false)
+        }
+    }, [fetcher, setActive])
 
     const navigate = useNavigate()
     const onDeleteClick = () => {
@@ -82,7 +89,22 @@ const BudgetInfoForm = ({
                 placeholder="Description"
                 defaultValue={description}
             />
-            <Submit className="w-full py-2 rounded-xl mt-3 mb-2">Save</Submit>
+            <Submit
+                disabled={
+                    !!methods.formState.errors['name'] ||
+                    fetcher.state === 'submitting'
+                }
+                className="w-full py-2 rounded-xl mt-3 mb-2"
+            >
+                Save
+                {fetcher.state === 'submitting' && (
+                    <Icon
+                        type="spinner"
+                        color="#fff"
+                        className="size-6 animate-spin flex items-center justify-center"
+                    />
+                )}
+            </Submit>
             <div className="w-full mt-4 flex flex-col gap-4">
                 <Divider themed />
                 <DeleteButton onClick={onDeleteClick}>
