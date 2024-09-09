@@ -16,6 +16,7 @@ import { Theme } from '@prisma/client'
 import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
 import ModalProvider from './context/ModalContext'
+import LoadingBar from './components/LoadingBar'
 
 // export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
 
@@ -64,9 +65,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
             </head>
             <body className="relative h-screen flex flex-col">
-                <div className="sticky top-0 h-10 bg-yellow-300">
+                {/* <div className="sticky top-0 h-10 bg-yellow-300">
                     some sort of universal navbar here
-                </div>
+                </div> */}
                 <div className="min-h-0 h-full">{children}</div>
                 <ScrollRestoration />
                 <Scripts />
@@ -109,6 +110,7 @@ export default function App() {
             theme={{ initialTheme }}
         >
             <div className={`relative h-full ${basicTheme}`}>
+                <LoadingBar />
                 <ModalProvider>
                     <Outlet />
                 </ModalProvider>

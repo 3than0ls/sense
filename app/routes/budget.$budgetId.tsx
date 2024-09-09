@@ -1,10 +1,16 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import {
+    useLoaderData,
+    useNavigation,
+    useNavigationType,
+} from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
 import ServerErrorResponse from '~/error'
 import authenticateUser from '~/utils/authenticateUser'
 import fullBudgetData, { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import Loading from '~/components/Loading'
+import LoadingBar from '~/components/LoadingBar'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     // THE PERFECT LOADER SAMPLE:
@@ -31,8 +37,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function BudgetRoute() {
-    // this is of some obscene type
     const { budgetData } = useLoaderData<typeof loader>()
 
-    return <Budget budgetData={budgetData as unknown as FullBudgetDataType} />
+    // return <Loading />
+    return <Budget budgetData={budgetData as never} />
 }
