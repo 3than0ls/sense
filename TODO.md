@@ -31,8 +31,6 @@ budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (easy)
 
 
 /// IMMEDIATE CONCERNS
-ACCOUNT IS NOW UNDER BUDGEWT, NOT SEPERATE FROM.
-add dollar sign in front of inputs that require dollar signs (easy)
 
 Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
 see add transaction for how it's done

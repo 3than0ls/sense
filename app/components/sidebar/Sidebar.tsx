@@ -28,21 +28,28 @@ const SidebarDropdown = ({
 
     return (
         <div className="w-full">
-            <Link
-                to={`/budget/${budget.id}`}
-                onClick={() => setClosed(!closed)}
-                className="w-full flex justify-between mb-1 group text-left"
-            >
-                <span className="text-lg truncate font-work-bold group-hover:text-white transition">
-                    {title}
-                </span>
-                <Icon
-                    type="chevron-down"
-                    className={`group-hover:stroke-white ml-auto transform transition ${
-                        closed && '-rotate-180'
-                    } size-6`}
-                />
-            </Link>
+            <div className="w-full flex">
+                <Link
+                    to={`/budget/${budget.id}`}
+                    className="overflow-hidden flex justify-between mb-1 group text-left"
+                    onClick={() => setClosed(false)}
+                >
+                    <span className="text-lg truncate font-work-bold group-hover:text-white transition">
+                        {title}
+                    </span>
+                </Link>
+                <button
+                    className="ml-auto w-fit"
+                    onClick={() => setClosed(!closed)}
+                >
+                    <Icon
+                        type="chevron-down"
+                        className={`group-hover:stroke-white ml-auto transform transition ${
+                            closed && '-rotate-180'
+                        } size-6`}
+                    />
+                </button>
+            </div>
             {!closed && children}
             {/* <hr className="border-black border my-2" /> */}
         </div>
