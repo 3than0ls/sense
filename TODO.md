@@ -27,13 +27,12 @@ Sidebar (medium) (have to make design decisions)
 Assign money inflow AND outflow (hard)
 Custom scrollbar (medium)
 topbar decision- keep it when in budget or not? (NO!!!) (easy)
+
 budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (easy)
+- shrink the size of everything
 
 
 /// IMMEDIATE CONCERNS
-
-Add temporary loading state to add transaction and assign money   <----------- FINISH THESE TWO
-see add transaction for how it's done
 
 
 BACKGROUND REDIRECT CLICKING URGENT THINGYMABOB (recreate: Assign Money when on budgetItemId.tsx) (URGENT medium)

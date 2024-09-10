@@ -35,7 +35,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                 <div
                     className={`text-lg leading-snug ${
                         expanded ? 'mr-auto' : 'mr-auto'
-                    } flex gap-2 max-w-80 xl:max-w-96 2xl:w-96 2xl:overflow-hidden`}
+                    } flex gap-2 max-w-80 xl:max-w-96 2xl:max-w-none 2xl:w-1/2 2xl:overflow-hidden`}
                 >
                     <button
                         className={`flex items-center truncate text-left gap-2 hover:opacity-80 transition`}
@@ -65,7 +65,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                     onClick={() => setExpanded(!expanded)}
                     className={`hidden ${
                         expanded ? '2xl:hidden' : '2xl:block'
-                    } 2xl:flex-grow`}
+                    } 2xl:flex-grow 2xl:w-1/2`}
                 >
                     <BudgetItemBar
                         expanded={expanded}

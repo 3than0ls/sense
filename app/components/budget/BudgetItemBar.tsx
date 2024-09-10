@@ -23,7 +23,7 @@ const BudgetItemBar = ({
 
     return (
         <div
-            className={`relative w-full h-2 flex justify-center items-center ${
+            className={`relative w-full h-2 flex min-w-64 justify-center items-center ${
                 expanded && 'hidden'
             }`}
         >
