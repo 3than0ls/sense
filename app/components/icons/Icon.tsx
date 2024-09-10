@@ -11,6 +11,7 @@ import XCircle from './XCircle'
 import Trash from './Trash'
 import ExclamationCircle from './ExclamationCircle'
 import Spinner from './Spinner'
+import InformationCircle from './InformationCircle'
 
 type IconProps = {
     color?: string
@@ -26,6 +27,7 @@ type IconProps = {
         | 'trash'
         | 'exclamation-circle'
         | 'spinner'
+        | 'information-circle'
     className?: string
     interactive?: boolean
 }
@@ -81,6 +83,9 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'spinner':
             icon = <Spinner className={className} />
+            break
+        case 'information-circle':
+            icon = <InformationCircle className={className} />
             break
     }
 

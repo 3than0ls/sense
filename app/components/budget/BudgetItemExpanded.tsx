@@ -1,6 +1,9 @@
 import { BudgetItem } from '@prisma/client'
-import BudgetItemBarExpanded from './BudgetItemBarExpanded'
+import BudgetItemExpandedBar from './BudgetItemExpandedBar'
 import { useTheme } from '~/context/ThemeContext'
+import Icon from '../icons/Icon'
+import Information from '../Information'
+import BudgetItemExpandedTable from './BudgetItemExpandedTable'
 
 type BudgetItemExpandedProps = {
     budgetItem: BudgetItem
@@ -14,11 +17,12 @@ const BudgetItemExpandedButton = ({
     children: React.ReactNode
 }) => {
     const { theme } = useTheme()
-    const themeStyles = theme === 'LIGHT' ? 'border-dark' : 'border-light'
+    const themeStyles =
+        theme === 'LIGHT' ? 'bg-light text-light' : 'bg-dark text-dark'
 
     return (
         <button
-            className={`text-lg font-work-bold w-full rounded-xl h-12 transition ${themeStyles} border-2 bg-opacity-0 bg-primary hover:bg-opacity-40`}
+            className={`text-sm w-48 flex gap-2 rounded-xl px-2 py-3 transition ${themeStyles} hover:bg-opacity-85 items-center justify-center`}
         >
             {children}
         </button>
@@ -26,38 +30,48 @@ const BudgetItemExpandedButton = ({
 }
 
 const BudgetItemExpanded = ({
-    budgetItem: { target },
-    assigned = 999,
-    balance = 999,
+    budgetItem: { target, id, name },
+    assigned,
+    balance,
 }: BudgetItemExpandedProps) => {
-    // add some add and edit buttons yeah?
+    let tip = undefined
+    if (target === 0) {
+        tip = 'Set a target for this item.'
+    } else if (assigned !== target) {
+        tip = `Assign $${(target - assigned).toFixed(
+            2
+        )} more to reach your target of $${target.toFixed(2)}.`
+    } else if (assigned === target) {
+        tip = `You've met your target! You have $${balance.toFixed(
+            2
+        )} left to spend.`
+    }
 
     return (
-        <div className="w-full py-4 flex flex-col">
-            <BudgetItemBarExpanded
+        <div className="w-full mb-4 flex flex-col">
+            <BudgetItemExpandedBar
                 assigned={assigned}
                 balance={balance}
                 target={target}
             />
-            <div className="flex gap-10 py-4 px-10 mt-2">
-                <div className="flex flex-col w-2/3">
-                    <span className="text-lg">
-                        Perhaps a little bit of information about this budgeted
-                        item
-                    </span>
-                    <span className="text-subtle">
-                        And maybe some transaction history here that can be
-                        expanded further to see all.
-                    </span>
-                </div>
-                <div className="flex flex-col gap-5 w-1/3">
+            <div className="flex flex-col gap-4 py-3 px-5 mt-2 w-full">
+                <div className="flex items-center gap-4">
+                    <Information divClassName="flex-grow ml-2">
+                        {tip}
+                    </Information>
                     <BudgetItemExpandedButton>
                         Add Transaction
+                        <Icon type="currency-dollar" />
                     </BudgetItemExpandedButton>
                     <BudgetItemExpandedButton>
                         Assign money
+                        <Icon type="plus-circle" />
                     </BudgetItemExpandedButton>
                 </div>
+                <BudgetItemExpandedTable
+                    budgetItemName={name}
+                    budgetItemId={id}
+                />
             </div>
         </div>
     )

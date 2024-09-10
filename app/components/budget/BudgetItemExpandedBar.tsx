@@ -24,50 +24,52 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
         <div
             className={`absolute flex flex-col items-center text-sm text-nowrap `}
             style={{
-                left: `${bindNumber(x, 0.5, 99.5)}%`,
+                left: `${bindNumber(x, 1, 99)}%`,
             }}
         >
             <div
                 className={`absolute ${
-                    direction === 'up' ? '-top-[60px]' : '-top-[60px] '
+                    direction === 'up' ? '-top-[30px]' : '-top-[30px] '
                 } flex flex-col items-center`}
             >
                 <div
                     className={`w-[4px] ${
-                        direction === 'up' ? 'h-[105px]' : 'h-[70px]'
+                        direction === 'up' ? 'h-[75px]' : 'h-[40px]'
                     }  ${themeStyle}`}
                 ></div>
-                <span className={`${themeStyle} px-3 py-1 rounded-full`}>
-                    {label}: ${amount}
+                <span
+                    className={`${themeStyle} px-3 py-1 text-xs rounded-full`}
+                >
+                    {label}: ${amount.toFixed(2)}
                 </span>
             </div>
         </div>
     )
 }
 
-type BudgetItemBarExpandedProps = {
+type BudgetItemExpandedBarProps = {
     balance: number
     target: number
     assigned: number
 }
 
-const BudgetItemBarExpanded = ({
+const BudgetItemExpandedBar = ({
     balance,
     target,
     assigned,
-}: BudgetItemBarExpandedProps) => {
-    const assignedWidth = bindNumber((assigned / target) * 100, 0, 100)
-    const balanceWidth = bindNumber((balance / target) * 100, 0, 100)
+}: BudgetItemExpandedBarProps) => {
+    const assignedWidth = bindNumber((assigned / (target || 1)) * 100, 0, 100)
+    const balanceWidth = bindNumber((balance / (target || 1)) * 100, 0, 100)
     const stacked = Math.abs(balanceWidth - assignedWidth) < 15
 
     return (
         <div
-            className={`pt-4 ${
-                stacked ? 'pb-[4.75rem]' : 'pb-11'
+            className={`pt-3 ${
+                stacked ? 'pb-[4.5rem]' : 'pb-9'
             } px-20 relative w-full flex flex-col justify-center items-start`}
         >
             <div
-                className={`h-[50px] relative flex justify-end items-center w-full rounded-lg overflow-x-hidden`}
+                className={`h-[20px] relative flex justify-end items-center w-full rounded-lg overflow-x-hidden`}
             >
                 {/* <span className="mr-2">{target}</span> */}
                 <div className="absolute left-0 bg-target w-full h-full rounded-lg" />
@@ -102,4 +104,4 @@ const BudgetItemBarExpanded = ({
     )
 }
 
-export default BudgetItemBarExpanded
+export default BudgetItemExpandedBar

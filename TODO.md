@@ -24,28 +24,20 @@ A name for the projecte
 
 NEXT: 
 Sidebar (medium) (have to make design decisions)
+
 Assign money inflow AND outflow (hard)
+
 Custom scrollbar (medium)
-topbar decision- keep it when in budget or not? (NO!!!) (easy)
 
-budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (easy)
-- shrink the size of everything
+budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (medium) < -------- FINISH
 
-
-/// IMMEDIATE CONCERNS
-
-
-BACKGROUND REDIRECT CLICKING URGENT THINGYMABOB (recreate: Assign Money when on budgetItemId.tsx) (URGENT medium)
+delete budget redirect (easy) cuz it gets 404
 
 refactor AssignMoneyForm to AssignmentForm, and update api to api/assign/create instead of budItem/assign (Easy)
-
-account edit menu modal (medium)
 
 Add reconciliations in Account (hard)
 
 create budget modal, rather than the weird shit I have now (hard) (just copy paste budgetInfoForm, modify it to match AccountForm)
-
-find all form submits and add disabled when loading to prevent spam (Easy)
 
 even out padding spacings between form labels and items, label text size, etc (Easy)
 
