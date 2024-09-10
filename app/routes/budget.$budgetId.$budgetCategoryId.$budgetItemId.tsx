@@ -3,7 +3,7 @@ import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData, useNavigate } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
-import AssignMoneyForm from '~/components/budget/AssignMoneyForm'
+import AssignmentForm from '~/components/budget/AssignmentForm'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
@@ -60,10 +60,10 @@ export default function BudgetItemEditRoute() {
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
     const { setActive, setModalTitle, setModalChildren } = useModal()
-    const onAssignMoneyClick = () => {
+    const onAssignClick = () => {
         setModalTitle(`Assign Money to ${budgetItem.name}`)
         setModalChildren(
-            <AssignMoneyForm
+            <AssignmentForm
                 targetBudgetItem={budgetItem as unknown as BudgetItem}
                 targetBudgetItemAssigned={assigned}
             />
@@ -123,7 +123,7 @@ export default function BudgetItemEditRoute() {
                 </div>
                 <button
                     className={`${altThemeStyle} w-full rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
-                    onClick={onAssignMoneyClick}
+                    onClick={onAssignClick}
                 >
                     <span>Assign Money</span>
                     <Icon type="plus-circle" />

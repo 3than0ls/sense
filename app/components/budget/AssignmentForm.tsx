@@ -4,20 +4,20 @@ import { useEffect, useState } from 'react'
 import { useFetcher } from '@remix-run/react'
 import { useTheme } from '~/context/ThemeContext'
 import numberSchema from '~/zodSchemas/number'
-import { action } from '~/routes/api.budItem.assign'
+import { action } from '~/routes/api.assign.create'
 import { useModal } from '~/context/ModalContext'
 import { loader } from '~/routes/api.bud.items.$budgetId'
 import Icon from '../icons/Icon'
 
-type AssignMoneyFormProps = {
+type AssignmentFormProps = {
     targetBudgetItem: BudgetItem
     targetBudgetItemAssigned: number
 }
 
-const AssignMoneyForm = ({
+const AssignmentForm = ({
     targetBudgetItem,
     targetBudgetItemAssigned,
-}: AssignMoneyFormProps) => {
+}: AssignmentFormProps) => {
     // IGNORE THE MESSINESS BUT IT WORKS!!
     const [dropdownItems, setDropdownItems] = useState([
         {
@@ -85,7 +85,7 @@ const AssignMoneyForm = ({
             },
             {
                 method: 'POST',
-                action: '/api/budItem/assign',
+                action: '/api/assign/create',
             }
         )
     }
@@ -170,4 +170,4 @@ const AssignMoneyForm = ({
     )
 }
 
-export default AssignMoneyForm
+export default AssignmentForm

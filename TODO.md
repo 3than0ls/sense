@@ -33,8 +33,6 @@ budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (medium) < ----
 
 delete budget redirect (easy) cuz it gets 404
 
-refactor AssignMoneyForm to AssignmentForm, and update api to api/assign/create instead of budItem/assign (Easy)
-
 Add reconciliations in Account (hard)
 
 create budget modal, rather than the weird shit I have now (hard) (just copy paste budgetInfoForm, modify it to match AccountForm)

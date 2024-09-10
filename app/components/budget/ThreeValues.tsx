@@ -1,5 +1,5 @@
 import { useModal } from '~/context/ModalContext'
-import AssignMoneyForm from './AssignMoneyForm'
+import AssignmentForm from './AssignmentForm'
 import { BudgetItem } from '@prisma/client'
 
 type ThreeValuesProps = {
@@ -10,10 +10,10 @@ type ThreeValuesProps = {
 
 const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     const { setModalTitle, setModalChildren, setActive } = useModal()
-    const onAssignMoneyClick = () => {
+    const onAssignClick = () => {
         setModalTitle(`Assign Money to ${budgetItem.name}`)
         setModalChildren(
-            <AssignMoneyForm
+            <AssignmentForm
                 targetBudgetItem={budgetItem}
                 targetBudgetItemAssigned={assigned}
             />
@@ -28,7 +28,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
             </div>
             <button
-                onClick={onAssignMoneyClick}
+                onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
                 <span className="text-right">{`$${assigned.toFixed(2)}`}</span>

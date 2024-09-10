@@ -8,7 +8,7 @@ import {
     totalTransactions,
     budgetTotalAccounts,
 } from '~/utils/budgetValues'
-import { itemAssignMoneySchema } from '~/zodSchemas/budgetItem'
+import { assignmentSchema } from '~/zodSchemas/assignment'
 
 /*
 Could also be called: budget.$budgetId.$budgetCategoryId.$budgetItemId.assign.tsx
@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
         const { amount, fromBudgetItemId, fromFreeCash, targetBudgetItemId } =
-            itemAssignMoneySchema.parse(Object.fromEntries(data))
+            assignmentSchema.parse(Object.fromEntries(data))
         const { user } = await authenticateUser(request)
 
         const budgetItem = await prisma.budgetItem.findFirstOrThrow({
