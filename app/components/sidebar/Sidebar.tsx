@@ -9,6 +9,7 @@ import { Budget } from '@prisma/client'
 import Divider from '../Divider'
 import Icon from '../icons/Icon'
 import { SidebarDataType } from '~/prisma/sidebarData'
+import BudgetForm from '../budget/BudgetForm'
 
 const SidebarDropdown = ({
     title,
@@ -94,14 +95,24 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
                 {budgetLinks}
                 <Divider className="border-black" />
 
-                <TEMPFETCHER.Form action="/api/bud/create" method="POST">
+                {/* <TEMPFETCHER.Form action="/api/bud/create" method="POST">
                     <button
                         type="submit"
                         className="bg-primary text-white border-2 border-black rounded-2xl"
                     >
                         create a budget!
                     </button>
-                </TEMPFETCHER.Form>
+                </TEMPFETCHER.Form> */}
+                <button
+                    onClick={() => {
+                        setModalTitle('Create a Budget')
+                        setModalChildren(<BudgetForm />)
+                        setActive(true)
+                    }}
+                    className="bg-primary text-white border-2 border-black rounded-2xl"
+                >
+                    create a budget!
+                </button>
                 <button
                     onClick={() => {
                         setModalTitle('Create an Account')

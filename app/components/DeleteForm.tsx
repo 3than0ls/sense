@@ -46,7 +46,7 @@ const DeleteForm = ({
     }
 
     useEffect(() => {
-        if (fetcher.data && fetcher.state === 'loading') {
+        if (fetcher.state === 'loading') {
             if (onSubmitLoad) {
                 onSubmitLoad(fetcher.data)
             }

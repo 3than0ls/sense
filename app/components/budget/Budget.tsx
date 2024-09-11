@@ -5,7 +5,7 @@ import BudgetMenu from './BudgetMenu'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import EmptyBudget from './EmptyBudget'
 import { useModal } from '~/context/ModalContext'
-import BudgetInfoForm from './BudgetInfoForm'
+import BudgetForm from './BudgetForm'
 import TopBar from './TopBar'
 import { useRef } from 'react'
 import { useNavigate } from '@remix-run/react'
@@ -49,13 +49,7 @@ const Budget = ({ budgetData }: BudgetProps) => {
                     className="text-4xl font-work-black text-left flex items-center gap-4 group w-fit"
                     onClick={() => {
                         setModalTitle('Edit Budget info')
-                        setModalChildren(
-                            <BudgetInfoForm
-                                name={budgetData.name}
-                                description={budgetData.description || ''}
-                                budgetId={budgetData.id}
-                            />
-                        )
+                        setModalChildren(<BudgetForm editBudget={budgetData} />)
                         setActive(true)
                     }}
                 >
