@@ -14,7 +14,7 @@ const Information = ({
 }: InformationProps) => {
     return (
         <div
-            className={`${divClassName} flex items-center text-wrap gap-1 text-base`}
+            className={`${divClassName} flex items-center text-wrap gap-1 text-base leading-snug `}
         >
             <Icon
                 type="information-circle"

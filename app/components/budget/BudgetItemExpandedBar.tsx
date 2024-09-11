@@ -24,7 +24,7 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
         <div
             className={`absolute flex flex-col items-center text-sm text-nowrap `}
             style={{
-                left: `${bindNumber(x, 1, 99)}%`,
+                left: `${x}%`,
             }}
         >
             <div
@@ -58,9 +58,17 @@ const BudgetItemExpandedBar = ({
     target,
     assigned,
 }: BudgetItemExpandedBarProps) => {
-    const assignedWidth = bindNumber((assigned / (target || 1)) * 100, 0, 100)
-    const balanceWidth = bindNumber((balance / (target || 1)) * 100, 0, 100)
-    const stacked = Math.abs(balanceWidth - assignedWidth) < 15 && balance === 0
+    const assignedWidthUnadjusted = (assigned / (target || 1)) * 100
+    const assignedWidth =
+        assigned >= 0 && assigned <= 100
+            ? bindNumber(assignedWidthUnadjusted, 1, 99)
+            : bindNumber(assignedWidthUnadjusted, 0, 100)
+    const balanceWidthUnadjusted = (balance / (target || 1)) * 100
+    const balanceWidth =
+        balance >= 0 && balance <= 100
+            ? bindNumber(balanceWidthUnadjusted, 1, 99)
+            : bindNumber(balanceWidthUnadjusted, 0, 100)
+    const stacked = Math.abs(balanceWidth - assignedWidth) < 15 && balance !== 0
 
     return (
         <div
@@ -93,7 +101,7 @@ const BudgetItemExpandedBar = ({
                     x={assignedWidth}
                     direction={stacked ? 'up' : 'down'}
                 />
-                {balance === 0 && (
+                {balance !== 0 && (
                     <Indicator
                         label="Balance"
                         amount={balance}

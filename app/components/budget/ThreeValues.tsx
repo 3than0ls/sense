@@ -34,6 +34,9 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
         setActive(true)
     }
 
+    const balanceError = balance < 0
+    // const assignWarn = assigned > budgetItem.target
+
     return (
         <div className="flex items-center gap-4 min-h-10">
             <Link
@@ -41,7 +44,9 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 onClick={onBalanceClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
-                <span className="text-right">{`$${balance.toFixed(2)}`}</span>
+                <span
+                    className={`text-right ${balanceError && 'text-bad'}`}
+                >{`$${balance.toFixed(2)}`}</span>
                 <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
@@ -49,7 +54,9 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
-                <span className="text-right">{`$${assigned.toFixed(2)}`}</span>
+                <span className={`text-right`}>{`$${assigned.toFixed(
+                    2
+                )}`}</span>
                 <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link

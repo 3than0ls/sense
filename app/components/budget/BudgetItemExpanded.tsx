@@ -41,7 +41,10 @@ const BudgetItemExpanded = ({
     balance,
 }: BudgetItemExpandedProps) => {
     let tip = undefined
-    if (target === 0) {
+    if (balance < 0) {
+        tip =
+            "You've over-spent on this item! Reassign money to balance it out."
+    } else if (target === 0) {
         tip = 'Set a target for this item.'
     } else if (assigned !== target) {
         tip = `Assign $${(target - assigned).toFixed(
