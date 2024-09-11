@@ -123,7 +123,7 @@ const BudgetMenuForm = ({
                         onKeyDown={(
                             e: React.KeyboardEvent<HTMLInputElement>
                         ) => {
-                            if (e.code === 'Enter') {
+                            if (e.code === 'Enter' || e.code === 'Escape') {
                                 e.currentTarget.blur()
                             }
                         }}

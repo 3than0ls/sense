@@ -31,15 +31,11 @@ Custom scrollbar (medium)
 
 budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (medium) < -------- FINISH
 
-delete budget redirect (easy) cuz it gets 404
-
 Add reconciliations in Account (hard)
 
 create budget modal, rather than the weird shit I have now (hard) (just copy paste budgetInfoForm, modify it to match AccountForm)
 
 even out padding spacings between form labels and items, label text size, etc (Easy)
-
-add active outline to Dropdown
 
 FUTURE NON ESSENTIALS:
 transaction to more than one item
