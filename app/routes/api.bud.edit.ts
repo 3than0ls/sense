@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
-import ServerError from '~/error'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { updateBudgetSchema } from '~/zodSchemas/budgetInfo'
@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(updatedBudget)
     } catch (e) {
-        throw new ServerError({
+        throw new ServerErrorResponse({
             message: 'Budget not able to be edited.',
             status: 404,
         })

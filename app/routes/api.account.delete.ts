@@ -22,6 +22,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(deletedAccount)
     } catch (e) {
-        throw new ServerErrorResponse()
+        throw new ServerErrorResponse({
+            message: 'Account unable to be deleted.',
+            status: 400,
+        })
     }
 }

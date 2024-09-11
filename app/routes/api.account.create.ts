@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
-import ServerError from '~/error'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { createAccountSchema } from '~/zodSchemas/account'
@@ -30,7 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
         // return json(account)
     } catch (e) {
         // regardless of if it's an auth api error or not found error, just say bad request!
-        throw new ServerError({
+        throw new ServerErrorResponse({
             message: 'Account not able to be created.',
             status: 404,
         })

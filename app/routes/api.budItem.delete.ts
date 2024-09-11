@@ -24,6 +24,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(deleteItem)
     } catch (e) {
-        throw new ServerErrorResponse()
+        throw new ServerErrorResponse({
+            message: 'Budget Item unable to be deleted.',
+            status: 400,
+        })
     }
 }

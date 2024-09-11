@@ -24,6 +24,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(deleteCat)
     } catch (e) {
-        throw new ServerErrorResponse()
+        throw new ServerErrorResponse({
+            message: 'Budget Category unable to be deleted.',
+            status: 400,
+        })
     }
 }

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
-import ServerError from '~/error'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { budgetSchema } from '~/zodSchemas/budgetInfo'
@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return redirect(`/budget/${budget.id}`)
     } catch (e) {
-        throw new ServerError({
+        throw new ServerErrorResponse({
             message: 'Budget not able to be created.',
             status: 404,
         })

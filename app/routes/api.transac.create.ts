@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
-import ServerError from '~/error'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { transactionSchema } from '~/zodSchemas/transaction'
@@ -38,7 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(transaction)
     } catch (e) {
-        throw new ServerError({
+        throw new ServerErrorResponse({
             message: 'Transaction not able to be created.',
             status: 400,
         })

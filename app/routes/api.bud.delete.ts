@@ -22,6 +22,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return redirect('/budget')
     } catch (e) {
-        throw new ServerErrorResponse()
+        throw new ServerErrorResponse({
+            message: 'Budget unable to be deleted.',
+            status: 400,
+        })
     }
 }

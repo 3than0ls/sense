@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
 import { z } from 'zod'
-import ServerError from '~/error'
+import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 
@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(deletedTransaction)
     } catch (e) {
-        throw new ServerError({
+        throw new ServerErrorResponse({
             message: 'Transaction unable to be deleted.',
             status: 400,
         })
