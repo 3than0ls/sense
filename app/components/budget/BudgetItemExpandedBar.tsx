@@ -60,7 +60,7 @@ const BudgetItemExpandedBar = ({
 }: BudgetItemExpandedBarProps) => {
     const assignedWidth = bindNumber((assigned / (target || 1)) * 100, 0, 100)
     const balanceWidth = bindNumber((balance / (target || 1)) * 100, 0, 100)
-    const stacked = Math.abs(balanceWidth - assignedWidth) < 15
+    const stacked = Math.abs(balanceWidth - assignedWidth) < 15 && balance > 0
 
     return (
         <div
@@ -93,12 +93,14 @@ const BudgetItemExpandedBar = ({
                     x={assignedWidth}
                     direction={stacked ? 'up' : 'down'}
                 />
-                <Indicator
-                    label="Balance"
-                    amount={balance}
-                    x={balanceWidth}
-                    direction="down"
-                />
+                {balance > 0 && (
+                    <Indicator
+                        label="Balance"
+                        amount={balance}
+                        x={balanceWidth}
+                        direction="down"
+                    />
+                )}
             </div>
         </div>
     )

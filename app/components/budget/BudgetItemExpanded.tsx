@@ -4,6 +4,9 @@ import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
 import Information from '../Information'
 import BudgetItemExpandedTable from './BudgetItemExpandedTable'
+import { useModal } from '~/context/ModalContext'
+import AssignmentForm from './AssignmentForm'
+import TransactionForm from './TransactionForm'
 
 type BudgetItemExpandedProps = {
     budgetItem: BudgetItem
@@ -12,8 +15,10 @@ type BudgetItemExpandedProps = {
 }
 
 const BudgetItemExpandedButton = ({
+    onClick,
     children,
 }: {
+    onClick: () => void
     children: React.ReactNode
 }) => {
     const { theme } = useTheme()
@@ -22,6 +27,7 @@ const BudgetItemExpandedButton = ({
 
     return (
         <button
+            onClick={onClick}
             className={`text-sm min-w-48 flex gap-2 rounded-xl px-2 py-3 transition ${themeStyles} hover:bg-opacity-85 items-center justify-center`}
         >
             {children}
@@ -30,7 +36,7 @@ const BudgetItemExpandedButton = ({
 }
 
 const BudgetItemExpanded = ({
-    budgetItem: { target, id, name },
+    budgetItem: { target, id, name, budgetId },
     assigned,
     balance,
 }: BudgetItemExpandedProps) => {
@@ -47,6 +53,29 @@ const BudgetItemExpanded = ({
         )} left to spend.`
     }
 
+    const { setModalChildren, setModalTitle, setActive } = useModal()
+    const onAssignClick = () => {
+        setModalTitle(`Assign Money to ${name}`)
+        setModalChildren(
+            <AssignmentForm
+                targetBudgetItem={{ id, target, budgetId }}
+                targetBudgetItemAssigned={assigned}
+            />
+        )
+        setActive(true)
+    }
+
+    const onTransacClick = () => {
+        setModalChildren(
+            <TransactionForm
+                budgetId={budgetId}
+                selectedBudgetItem={{ name, id }}
+            />
+        )
+        setModalTitle('Log Transaction')
+        setActive(true)
+    }
+
     return (
         <div className="w-full mb-4 flex flex-col">
             <BudgetItemExpandedBar
@@ -59,11 +88,11 @@ const BudgetItemExpanded = ({
                     <Information divClassName="flex-grow ml-2">
                         {tip}
                     </Information>
-                    <BudgetItemExpandedButton>
+                    <BudgetItemExpandedButton onClick={onTransacClick}>
                         Add Transaction
                         <Icon type="currency-dollar" />
                     </BudgetItemExpandedButton>
-                    <BudgetItemExpandedButton>
+                    <BudgetItemExpandedButton onClick={onAssignClick}>
                         Assign money
                         <Icon type="plus-circle" />
                     </BudgetItemExpandedButton>

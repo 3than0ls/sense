@@ -58,14 +58,12 @@ const BudgetItemExpandedTable = ({
             Object.keys(fetcher.data).length > 0 &&
             budgetItem === null
         ) {
-            console.log(fetcher.data)
             setBudgetItem(fetcher.data as FullBudgetItemDataType)
         }
     }, [fetcher.data, budgetItem])
 
     const themeClass = useThemeClass()
     const { theme } = useTheme()
-    const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
 
     const [expanded, setExpanded] = useState(false)
     const collapsePast = 3
@@ -103,7 +101,7 @@ const BudgetItemExpandedTable = ({
                             </tr>
                         </thead>
                         <tbody>
-                            <td className="h-1"></td>
+                            <tr className="h-1" />
                             {Array.from(budgetItem.transactions, (t, k) => (
                                 <BIETRow
                                     key={t.id}

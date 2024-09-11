@@ -10,7 +10,7 @@ import { loader } from '~/routes/api.bud.items.$budgetId'
 import Icon from '../icons/Icon'
 
 type AssignmentFormProps = {
-    targetBudgetItem: BudgetItem
+    targetBudgetItem: Pick<BudgetItem, 'id' | 'target' | 'budgetId'>
     targetBudgetItemAssigned: number
 }
 
