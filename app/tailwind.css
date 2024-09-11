@@ -29,3 +29,11 @@
         font-family: 'Work-Sans', sans-serif
     }
 }
+
+.scrollbar-custom {
+    scrollbar-width: thin; /* For Firefox */
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+}

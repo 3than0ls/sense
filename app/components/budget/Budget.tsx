@@ -71,10 +71,10 @@ const Budget = ({ budgetData }: BudgetProps) => {
                 <span>{description}</span>
             </div>
             <div className="flex flex-grow h-full overflow-hidden">
-                <div className="relative min-w-64 flex-grow overflow-y-auto flex flex-col border-t border-subtle">
+                <div className="relative min-w-64 flex-grow overflow-y-auto scrollbar-custom flex flex-col border-t border-subtle">
                     <div
                         ref={backRef}
-                        className={`min-w-[800px] flex flex-col ${themeStyles} flex-grow overflow-auto`}
+                        className={`min-w-[800px] flex flex-col ${themeStyles} flex-grow overflow-auto scrollbar-custom`}
                     >
                         <TopBar budgetId={budgetData.id} />
                         {budgetCategoryComponents.length > 0 ? (

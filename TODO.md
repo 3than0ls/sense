@@ -27,8 +27,6 @@ Sidebar (medium) (have to make design decisions)
 
 Assign money inflow AND outflow (hard)
 
-Custom scrollbar (medium)
-
 budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (medium) < -------- FINISH
 
 Add reconciliations in Account (hard)
