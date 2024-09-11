@@ -66,6 +66,11 @@ const Dropdown = ({
 
     const [active, setActive] = useState(false)
 
+    const focusThemeStyles =
+        theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
+    const outlineThemeStyles =
+        theme === 'DARK' ? 'outline-light' : 'outline-dark'
+
     const [current, setCurrent] = useState(defaultItem ?? null)
 
     const onItemClick = (dropdownItem: DropdownItem) => {
@@ -113,11 +118,13 @@ const Dropdown = ({
             >
                 <button
                     disabled={disabled}
-                    className={`w-full p-2 text-left rounded-2xl transition flex justify-between items-center outline-none
-                `}
+                    className={`w-full p-2 text-left rounded-lg transition flex justify-between items-center outline outline-[3px] outline-offset-2 
+                        ${focusThemeStyles}  ${active && outlineThemeStyles}`}
                     onClick={(e) => {
                         e.preventDefault()
-                        if (onExpand) onExpand()
+                        if (onExpand) {
+                            onExpand()
+                        }
                         if (active) {
                             setActive(false)
                         } else {
