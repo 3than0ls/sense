@@ -34,7 +34,7 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
             >
                 <div
                     className={`w-[4px] ${
-                        direction === 'up' ? 'h-[75px]' : 'h-[40px]'
+                        direction === 'up' ? 'h-[70px]' : 'h-[40px]'
                     }  ${themeStyle}`}
                 ></div>
                 <span

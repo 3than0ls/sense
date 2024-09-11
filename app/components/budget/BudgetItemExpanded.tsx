@@ -22,7 +22,7 @@ const BudgetItemExpandedButton = ({
 
     return (
         <button
-            className={`text-sm w-48 flex gap-2 rounded-xl px-2 py-3 transition ${themeStyles} hover:bg-opacity-85 items-center justify-center`}
+            className={`text-sm min-w-48 flex gap-2 rounded-xl px-2 py-3 transition ${themeStyles} hover:bg-opacity-85 items-center justify-center`}
         >
             {children}
         </button>
@@ -54,7 +54,7 @@ const BudgetItemExpanded = ({
                 balance={balance}
                 target={target}
             />
-            <div className="flex flex-col gap-4 py-3 px-5 mt-2 w-full">
+            <div className="flex flex-col gap-4 py-3 px-5 w-full">
                 <div className="flex items-center gap-4">
                     <Information divClassName="flex-grow ml-2">
                         {tip}

@@ -18,8 +18,21 @@ export default async function fullBudgetItemData({
         include: {
             // assignments: true,
             transactions: {
+                include: {
+                    budgetItem: {
+                        select: {
+                            name: true,
+                            budgetCategory: { select: { name: true } },
+                        },
+                    },
+                    account: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
                 orderBy: {
-                    date: 'asc',
+                    date: 'desc',
                 },
             },
         },

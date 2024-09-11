@@ -8,7 +8,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
-        const budgetItem = fullBudgetItemData({
+        const budgetItem = await fullBudgetItemData({
             userId: user.id,
             budgetItemId: params.budgetItemId!,
         })

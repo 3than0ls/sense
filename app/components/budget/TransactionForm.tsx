@@ -62,19 +62,26 @@ const TransactionForm = ({
             }
         }) ?? []
 
+    let defaultDropdownItem = null
+    if (selectedBudgetItem) {
+        defaultDropdownItem = {
+            id: selectedBudgetItem.id,
+            name: selectedBudgetItem.name,
+        }
+    } else if (editTransaction) {
+        defaultDropdownItem = {
+            id: editTransaction.budgetItem.id,
+            name: editTransaction.budgetItem.name,
+        }
+    } else if (itemDropdownData.length > 0) {
+        // itemDropdownData is based off the prop budgetItems; this is the same as saying default to first given budget item
+        defaultDropdownItem = itemDropdownData[0]
+    }
+
     const [selectedAccount, setSelectedAccount] = useState(
         accountDropdownData.length === 0 ? null : accountDropdownData[0]
     )
-    const [selectedItem, setSelectedItem] = useState(
-        selectedBudgetItem
-            ? {
-                  id: selectedBudgetItem.id,
-                  name: selectedBudgetItem.name,
-              }
-            : itemDropdownData.length === 0
-            ? null
-            : itemDropdownData[0]
-    )
+    const [selectedItem, setSelectedItem] = useState(defaultDropdownItem)
 
     const { fetcher, methods } = useRemixForm(transactionFormSchema, 'onChange')
 
@@ -158,14 +165,7 @@ const TransactionForm = ({
                     <span className="ml-1 text-lg">For Item:</span>
                     <Dropdown
                         dropdownItems={itemDropdownData}
-                        defaultItem={
-                            editTransaction
-                                ? {
-                                      id: editTransaction.budgetItemId,
-                                      name: editTransaction.budgetItem.name,
-                                  }
-                                : undefined
-                        }
+                        defaultItem={defaultDropdownItem ?? undefined}
                         onChange={(d) => {
                             setSelectedItem(d)
                         }}

@@ -7,9 +7,29 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
 import { useTheme } from '~/context/ThemeContext'
+import { BudgetItem as BudgetItemT } from '@prisma/client'
 
 type BudgetItemProps = {
     budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
+}
+
+const LinkWrapper = ({
+    children,
+    budgetItem,
+    className,
+}: {
+    children: React.ReactNode
+    budgetItem: Pick<BudgetItemT, 'budgetCategoryId' | 'id'>
+    className?: string
+}) => {
+    return (
+        <Link
+            className={className}
+            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+        >
+            {children}
+        </Link>
+    )
 }
 
 const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
@@ -49,8 +69,8 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                             } transition`}
                         />
                     </button>
-                    <Link
-                        to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                    <LinkWrapper
+                        budgetItem={budgetItem}
                         className="w-full group hover:opacity-85 transition flex items-center overflow-hidden"
                     >
                         <span className="w-fit truncate">{name}</span>
@@ -59,21 +79,26 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
                             className={`size-6 stroke-subtle ${hoverThemeStyle} transform translate-y-16 group-hover:translate-y-0 transition ml-2`}
                             interactive
                         />
-                    </Link>
+                    </LinkWrapper>
                 </div>
-                <button
-                    onClick={() => setExpanded(!expanded)}
+                <LinkWrapper
+                    budgetItem={budgetItem}
                     className={`hidden ${
                         expanded ? '2xl:hidden' : '2xl:block'
                     } 2xl:flex-grow 2xl:w-1/2`}
                 >
-                    <BudgetItemBar
-                        expanded={expanded}
-                        balance={balance}
-                        target={target}
-                        assigned={assigned}
-                    />
-                </button>
+                    <button
+                        onClick={() => setExpanded(!expanded)}
+                        className="w-full"
+                    >
+                        <BudgetItemBar
+                            expanded={expanded}
+                            balance={balance}
+                            target={target}
+                            assigned={assigned}
+                        />
+                    </button>
+                </LinkWrapper>
                 <ThreeValues
                     balance={balance}
                     assigned={assigned}

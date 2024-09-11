@@ -87,8 +87,8 @@ const Budget = ({ budgetData }: BudgetProps) => {
                                 // clicking this navigates back to main budget page
                                 navigate(`/budget/${budgetData.id}`)
                             }}
-                            className="hover:cursor-default w-full flex-grow"
-                        ></button>
+                            className="hover:cursor-default w-full flex-grow min-h-32"
+                        />
                     </div>
                 </div>
 
