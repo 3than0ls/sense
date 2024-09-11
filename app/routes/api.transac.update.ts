@@ -2,19 +2,20 @@ import { ActionFunctionArgs, json } from '@remix-run/node'
 import ServerError from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import { transactionSchema } from '~/zodSchemas/transaction'
+import { updateTransactionSchema } from '~/zodSchemas/transaction'
 
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
-        const newTransac = transactionSchema.parse(Object.fromEntries(data))
+        const updateTransac = updateTransactionSchema.parse(
+            Object.fromEntries(data)
+        )
 
-        await authenticateUser(request)
+        const { user } = await authenticateUser(request)
 
-        // covered by foreign key constraints
         // const budgetItem = await prisma.budgetItem.findFirstOrThrow({
         //     where: {
-        //         id: newTransac.budgetItemId,
+        //         id: updateTransac.budgetItemId,
         //         budget: {
         //             userId: user.id,
         //         },
@@ -23,16 +24,23 @@ export async function action({ request }: ActionFunctionArgs) {
 
         // const account = await prisma.account.findFirstOrThrow({
         //     where: {
-        //         id: newTransac.accountId,
+        //         id: updateTransac.accountId,
         //     },
         // })
 
-        const transaction = await prisma.transaction.create({
+        const transaction = await prisma.transaction.update({
+            where: {
+                id: updateTransac.transactionId,
+                budgetItem: {
+                    budget: {
+                        userId: user.id,
+                    },
+                },
+            },
             data: {
-                amount: newTransac.amount,
-                description: newTransac.description,
-                accountId: newTransac.accountId,
-                budgetItemId: newTransac.budgetItemId,
+                amount: updateTransac.amount,
+                description: updateTransac.description,
+                budgetItemId: updateTransac.budgetItemId,
             },
         })
 

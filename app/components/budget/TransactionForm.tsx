@@ -93,14 +93,26 @@ const TransactionForm = ({
             setItemError(!selectedItem)
             setAccountError(!selectedAccount)
         } else {
-            fetcher.submit(
-                {
-                    budgetItemId: selectedItem?.id,
-                    accountId: selectedAccount?.id,
-                    ...d,
-                },
-                { action: '/api/transac/create', method: 'POST' }
-            )
+            if (!editTransaction) {
+                fetcher.submit(
+                    {
+                        budgetItemId: selectedItem?.id,
+                        accountId: selectedAccount?.id,
+                        ...d,
+                    },
+                    { action: '/api/transac/create', method: 'POST' }
+                )
+            } else {
+                fetcher.submit(
+                    {
+                        transactionId: editTransaction.id,
+                        budgetItemId: selectedItem?.id,
+                        accountId: selectedAccount?.id,
+                        ...d,
+                    },
+                    { action: '/api/transac/update', method: 'POST' }
+                )
+            }
         }
     }
 

@@ -42,6 +42,7 @@ even out padding spacings between form labels and items, label text size, etc (E
 add active outline to Dropdown
 
 FUTURE NON ESSENTIALS:
+transaction to more than one item
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
 add date to add transaction using https://ui.shadcn.com/docs/components/date-picker
 replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) https://ui.shadcn.com/docs/components/combobox

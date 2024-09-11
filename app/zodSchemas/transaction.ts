@@ -10,3 +10,7 @@ export const transactionSchema = transactionFormSchema.extend({
     budgetItemId: z.string().uuid(),
     accountId: z.string().uuid(),
 })
+
+export const updateTransactionSchema = transactionSchema.extend({
+    transactionId: z.string().uuid(),
+})
