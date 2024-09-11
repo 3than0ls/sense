@@ -15,6 +15,7 @@ import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 import DeleteButton from '~/components/DeleteButton'
 import Divider from '~/components/Divider'
 import DeleteForm from '~/components/DeleteForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
@@ -111,7 +112,7 @@ export default function BudgetItemEditRoute() {
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Balance</span>
                     <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
-                    <span className="ml-auto">${balance.toFixed(2)}</span>
+                    <span className="ml-auto">{toCurrencyString(balance)}</span>
                 </div>
             </div>
             <Divider />
@@ -119,7 +120,9 @@ export default function BudgetItemEditRoute() {
                 <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
                     <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
-                    <span className="ml-auto">${assigned.toFixed(2)}</span>
+                    <span className="ml-auto">
+                        {toCurrencyString(assigned)}
+                    </span>
                 </div>
                 <button
                     className={`${altThemeStyle} w-full rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
@@ -137,7 +140,7 @@ export default function BudgetItemEditRoute() {
                 </div>
                 <BudgetMenuForm
                     key={budgetItem.target}
-                    defaultValue={budgetItem.target.toFixed(2)}
+                    defaultValue={toCurrencyString(budgetItem.target)}
                     label="Target"
                     name="target"
                     schema={itemTargetSchema}

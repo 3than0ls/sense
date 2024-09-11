@@ -8,6 +8,7 @@ import { action } from '~/routes/api.assign.create'
 import { useModal } from '~/context/ModalContext'
 import { loader } from '~/routes/api.bud.items.$budgetId'
 import Icon from '../icons/Icon'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type AssignmentFormProps = {
     targetBudgetItem: Pick<BudgetItem, 'id' | 'target' | 'budgetId'>
@@ -136,11 +137,11 @@ const AssignmentForm = ({
                     />
                     <button
                         onClick={() => {
-                            // TEMP TODO FIX THIS
+                            // TEMP TODO FIX THIS - what was there to fix?
                             const leftover =
                                 targetBudgetItem.target -
                                 targetBudgetItemAssigned
-                            setRawAmount(leftover.toFixed(2))
+                            setRawAmount(toCurrencyString(leftover))
                             setAmount(leftover)
                             setError('')
                         }}

@@ -12,6 +12,7 @@ import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Divider from '../Divider'
 import DeleteButton from '../DeleteButton'
 import DeleteForm from '../DeleteForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type TransactionFormProps = {
     selectedBudgetItem?: Pick<BudgetItem, 'id' | 'name'>
@@ -134,7 +135,7 @@ const TransactionForm = ({
                         editTransaction.date
                     ).toLocaleDateString()} transaction for ${
                         editTransaction.budgetItem.name
-                    } of $${editTransaction.amount}`}
+                    } of ${toCurrencyString(editTransaction.amount)}`}
                     fetcherAction="/api/transac/delete"
                     fetcherTarget={{ transactionId: editTransaction.id }}
                 ></DeleteForm>
@@ -193,7 +194,9 @@ const TransactionForm = ({
                     label="Amount"
                     name="amount"
                     defaultValue={
-                        editTransaction?.amount.toFixed(2) || undefined
+                        editTransaction?.amount
+                            ? toCurrencyString(editTransaction.amount)
+                            : undefined
                     }
                 />
                 <Input

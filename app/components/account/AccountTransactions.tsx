@@ -1,6 +1,7 @@
 import { useTheme } from '~/context/ThemeContext'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Transaction, { TransactionRow } from './Transaction'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type AccountTransactionProps = {
     accountData: FullAccountDataType
@@ -53,7 +54,7 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                         date={new Date(
                             accountData.createdAt
                         ).toLocaleDateString()}
-                        amt={`$${accountData.initialBalance.toFixed(2)}`}
+                        amt={toCurrencyString(accountData.initialBalance)}
                         cat=""
                         desc="Initial balance on creation of account."
                     />

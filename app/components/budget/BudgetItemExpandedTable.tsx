@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import { FullBudgetItemDataType } from '~/prisma/fullBudgetItemData'
 import Icon from '../icons/Icon'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 const BIETRow = ({
     transaction,
@@ -23,7 +24,7 @@ const BIETRow = ({
                 )}
             </td>
             <td className="truncate text-right">
-                ${transaction.amount.toFixed(2)}
+                {toCurrencyString(transaction.amount)}
             </td>
         </tr>
     )

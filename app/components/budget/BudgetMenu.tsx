@@ -7,6 +7,7 @@ import {
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type BudgetMenuProps = {
     budgetData: FullBudgetDataType
@@ -15,7 +16,9 @@ type BudgetMenuProps = {
 const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
     return (
         <div className="bg-primary flex-grow flex flex-col text-center p-3 rounded-lg">
-            <span className="font-work-bold text-xl">${value.toFixed(2)}</span>
+            <span className="font-work-bold text-xl">
+                {toCurrencyString(value)}
+            </span>
             <span className="text-sm">{label}</span>
         </div>
     )

@@ -7,6 +7,7 @@ import BudgetItemExpandedTable from './BudgetItemExpandedTable'
 import { useModal } from '~/context/ModalContext'
 import AssignmentForm from './AssignmentForm'
 import TransactionForm from './TransactionForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type BudgetItemExpandedProps = {
     budgetItem: BudgetItem
@@ -47,12 +48,12 @@ const BudgetItemExpanded = ({
     } else if (target === 0) {
         tip = 'Set a target for this item.'
     } else if (assigned !== target) {
-        tip = `Assign $${(target - assigned).toFixed(
-            2
-        )} more to reach your target of $${target.toFixed(2)}.`
+        tip = `Assign ${toCurrencyString(
+            target - assigned
+        )} more to reach your target of ${toCurrencyString(target)}.`
     } else if (assigned === target) {
-        tip = `You've met your target! You have $${balance.toFixed(
-            2
+        tip = `You've met your target! You have ${toCurrencyString(
+            balance
         )} left to spend.`
     }
 

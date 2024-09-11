@@ -1,4 +1,5 @@
 import { useTheme } from '~/context/ThemeContext'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type IndicatorProps = {
     label: string
@@ -40,7 +41,7 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
                 <span
                     className={`${themeStyle} px-3 py-1 text-xs rounded-full`}
                 >
-                    {label}: ${amount.toFixed(2)}
+                    {label}: {toCurrencyString(amount)}
                 </span>
             </div>
         </div>

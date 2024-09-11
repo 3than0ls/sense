@@ -1,5 +1,6 @@
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import { accountTotalTransactions } from '~/utils/accountValues'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type AccountTopBarProps = {
     accountData: FullAccountDataType
@@ -8,7 +9,7 @@ type AccountTopBarProps = {
 const BigNumber = ({ number, label }: { number: number; label: string }) => {
     return (
         <div className="flex flex-col w-fit items-center">
-            <span className="text-2xl ">${number.toFixed(2)}</span>
+            <span className="text-2xl ">{toCurrencyString(number)}</span>
             <span className="text-sm">{label}</span>
         </div>
     )

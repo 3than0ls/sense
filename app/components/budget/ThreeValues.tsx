@@ -3,6 +3,7 @@ import AssignmentForm from './AssignmentForm'
 import { BudgetItem } from '@prisma/client'
 import TransactionForm from './TransactionForm'
 import { Link } from '@remix-run/react'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type ThreeValuesProps = {
     balance: number
@@ -44,9 +45,9 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 onClick={onBalanceClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
-                <span
-                    className={`text-right ${balanceError && 'text-bad'}`}
-                >{`$${balance.toFixed(2)}`}</span>
+                <span className={`text-right ${balanceError && 'text-bad'}`}>
+                    {toCurrencyString(balance)}
+                </span>
                 <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
@@ -54,18 +55,18 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
-                <span className={`text-right`}>{`$${assigned.toFixed(
-                    2
-                )}`}</span>
+                <span className={`text-right`}>
+                    {toCurrencyString(assigned)}
+                </span>
                 <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
                 to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
                 className="w-24 flex justify-end items-center gap-2"
             >
-                <span className="text-right">{`$${budgetItem.target.toFixed(
-                    2
-                )}`}</span>
+                <span className="text-right">
+                    {toCurrencyString(budgetItem.target)}
+                </span>
                 <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
             </Link>
         </div>

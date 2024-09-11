@@ -3,6 +3,7 @@ import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Icon from '../icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from '../budget/TransactionForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type TransactionProps = {
     transaction: FullAccountDataType['transactions'][number]
@@ -29,7 +30,7 @@ const Transaction = ({ transaction, budgetId }: TransactionProps) => {
             date={new Date(transaction.date).toLocaleDateString()}
             cat={`${transaction.budgetItem.budgetCategory.name}: ${transaction.budgetItem.name}`}
             desc={transaction.description || ''}
-            amt={`$${transaction.amount.toFixed(2)}`}
+            amt={toCurrencyString(transaction.amount)}
             onEdit={onEdit}
         />
     )

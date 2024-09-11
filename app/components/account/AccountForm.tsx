@@ -13,6 +13,7 @@ import { FullAccountDataType } from '~/prisma/fullAccountData'
 import DeleteButton from '../DeleteButton'
 import Divider from '../Divider'
 import DeleteForm from '../DeleteForm'
+import toCurrencyString from '~/utils/toCurrencyString'
 
 type AccountFormProps = {
     budgets: Pick<Budget, 'id' | 'name'>[]
@@ -113,7 +114,9 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                 label="Initial Balance"
                 placeholder="0.00"
                 defaultValue={
-                    editAccount?.initialBalance.toFixed(2) ?? undefined
+                    editAccount?.initialBalance
+                        ? toCurrencyString(editAccount.initialBalance)
+                        : undefined
                 }
             />
             <div className="mb-4">
