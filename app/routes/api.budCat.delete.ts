@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
@@ -22,7 +22,7 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        return json(deleteCat)
+        return redirect(`/budget/${deleteCat.budgetId}`)
     } catch (e) {
         throw new ServerErrorResponse({
             message: 'Budget Category unable to be deleted.',

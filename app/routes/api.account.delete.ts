@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
@@ -20,7 +20,7 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        return json(deletedAccount)
+        return redirect(`/budget/${deletedAccount.budgetId}`)
     } catch (e) {
         throw new ServerErrorResponse({
             message: 'Account unable to be deleted.',

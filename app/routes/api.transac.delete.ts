@@ -24,6 +24,8 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
+        // normally I would return a redirect to the account page perhaps,
+        // but given that transactions don't have their own page, that's not necessary
         return json(deletedTransaction)
     } catch (e) {
         throw new ServerErrorResponse({
