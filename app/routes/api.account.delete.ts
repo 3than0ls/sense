@@ -20,8 +20,6 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        // console.log('smt')
-        // return { bungus: 'asijd' }
         return redirect(`/budget/${deletedAccount.budgetId}`)
     } catch (e) {
         throw new ServerErrorResponse({

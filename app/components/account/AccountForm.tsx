@@ -64,17 +64,6 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
         }
     }
 
-    // if you setActive(false) right after calling fetcher.submit,
-    // this component disappears and the fetcher is unable to receive the redirect
-    // thus, we must wait after the fetcher submits and is loading to setActive(false)
-    //  and the fetcher goes out of scope/ceases to exist/whatever occurs in JS
-    // useEffect(() => {
-    //     if (fetcher.state === 'loading') {
-    //         setActive(false)
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [fetcher.state])
-
     const navigate = useNavigate()
 
     return (
@@ -90,7 +79,7 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                         deleteItemName={editAccount.name}
                         fetcherAction="/api/account/delete"
                         fetcherTarget={{ accountId: editAccount.id }}
-                        onSubmit={() =>
+                        onSubmitLoad={() =>
                             navigate(`/budget/${editAccount.budgetId}`)
                         }
                     >

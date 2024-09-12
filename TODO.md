@@ -29,10 +29,7 @@ Assign money inflow AND outflow (hard)
 
 Add reconciliations in Account (hard)
 
-even out padding spacings between form labels and items, label text size, etc (Easy)
-
 bugs found:
-ACCOUNT DELETE FORM BUG: redirect doesn't cause a loading state, so the modal doesn't go away, plus sidebar data is not revalidated, resulting in the account link still being there
 
 MOVING TRANSACTION TO ANOTHER ACCOUNT UPDATE IS FAILING BUG
 
