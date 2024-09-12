@@ -29,9 +29,9 @@ const DropdownItem = ({
     return (
         <button
             onClick={onClick}
-            className={`w-full truncate p-2 text-left hover:cursor-pointer hover:bg-opacity-80 transition ${className}`}
+            className={`w-full p-2 text-left hover:cursor-pointer hover:bg-opacity-80 transition ${className}`}
         >
-            {name}
+            <span className="w-full truncate">{name}</span>
         </button>
     )
 }
@@ -154,7 +154,7 @@ const Dropdown = ({
                 <div
                     className={`${
                         active ? 'absolute' : 'hidden'
-                    } ${themeClass} w-full z-50 flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle shadow-lg`}
+                    } ${themeClass} max-h-64 2xl:max-h-80 w-full z-50 flex flex-col rounded-b-lg overflow-x-hidden overflow-y-auto divide-y-[1px] divide-subtle shadow-lg`}
                 >
                     {Array.from(dropdownItems, (dItem) => (
                         <DropdownItem
