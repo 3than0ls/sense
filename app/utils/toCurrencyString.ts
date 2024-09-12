@@ -6,6 +6,6 @@ export default function toCurrencyString(number: number) {
     if (number < 0) {
         return out[0] + numberUnit + out.slice(1)
     } else {
-        return out
+        return numberUnit + out
     }
 }
