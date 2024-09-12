@@ -43,7 +43,7 @@ export async function action({ request }: ActionFunctionArgs) {
             },
             include: {
                 // could just select amount here... but eh... optimize later...
-                accounts: true,
+                accounts: {},
                 assignments: true,
             },
         })

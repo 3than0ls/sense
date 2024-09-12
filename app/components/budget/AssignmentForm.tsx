@@ -128,7 +128,6 @@ const AssignmentForm = ({
                     />
                     <button
                         onClick={() => {
-                            // TEMP TODO FIX THIS - what was there to fix?
                             const leftover =
                                 targetBudgetItem.target -
                                 targetBudgetItemAssigned

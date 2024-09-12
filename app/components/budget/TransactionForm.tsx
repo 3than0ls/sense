@@ -154,7 +154,6 @@ const TransactionForm = ({
                 )
             }
         >
-            {' '}
             <div className="w-full flex gap-4">
                 <div className="w-72">
                     <span className="ml-1 text-lg">From Account:</span>

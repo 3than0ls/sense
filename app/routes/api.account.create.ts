@@ -27,7 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
         })
 
         return redirect(`/account/${account.id}`)
-        // return json(account)
     } catch (e) {
         // regardless of if it's an auth api error or not found error, just say bad request!
         throw new ServerErrorResponse({

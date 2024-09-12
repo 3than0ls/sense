@@ -138,12 +138,6 @@ const BudgetItemExpandedTable = ({
                                 onClick={() => setExpanded(!expanded)}
                             >
                                 {expanded ? 'View less' : 'View more'}
-                                {/* <Icon
-                                    className="size-6"
-                                    type={
-                                        expanded ? 'chevron-up' : 'chevron-down'
-                                    }
-                                /> */}
                             </button>
                         </div>
                     )}
@@ -151,7 +145,6 @@ const BudgetItemExpandedTable = ({
             )}
         </div>
     )
-    // return <table></table>
 }
 
 export default BudgetItemExpandedTable

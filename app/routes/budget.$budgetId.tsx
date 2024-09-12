@@ -33,6 +33,5 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function BudgetRoute() {
     const { budgetData } = useLoaderData<typeof loader>()
 
-    // return <Loading />
     return <Budget budgetData={budgetData as never} />
 }

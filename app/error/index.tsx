@@ -6,24 +6,6 @@
  ********************************************************/
 
 export default class ServerErrorResponse extends Response {
-    // constructor({
-    //     message = 'Unexpected server error.',
-    //     status = 500,
-    //     code = 'unknown_server_error'
-    // }:
-    // {
-    //     message?: string
-    //     status?: number
-    //     code?: string
-    // }) {
-    //     const formData = new FormData()
-    //     formData.append('message', message)
-    //     formData.append('code', code)
-    //     super(message, {
-    //         status,
-    //     })
-    // }
-
     constructor(
         {
             message = 'Unexpected server error.',

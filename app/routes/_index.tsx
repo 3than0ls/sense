@@ -28,9 +28,6 @@ export async function action({ request }: ActionFunctionArgs) {
     return {}
 }
 
-// must also validate schema on server side
-// https://www.npmjs.com/package/zod-prisma-types may help
-
 export const meta: MetaFunction = () => {
     return [{ title: 'Dollars' }, { name: 'description', content: 'Homepage' }]
 }

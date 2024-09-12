@@ -37,6 +37,8 @@ when money is fully spent, budget item expanded bar looks funny, + tip needs to 
 
 transaction on budgetmenu base, make it so that if there is a budget item also navigated to, automatically make that the budget item target (easy)
 
+prisma optimization by only fetching what's needed, and then also correct type annotations using Pick
+
 FUTURE NON ESSENTIALS:
 transaction to more than one item
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
