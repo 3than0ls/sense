@@ -12,6 +12,8 @@ import Trash from './Trash'
 import ExclamationCircle from './ExclamationCircle'
 import Spinner from './Spinner'
 import InformationCircle from './InformationCircle'
+import MagnifyingGlassCircle from './MagnifyingGlassCircle'
+import MagnifyingGlass from './MagnifyingGlass'
 
 type IconProps = {
     color?: string
@@ -28,6 +30,8 @@ type IconProps = {
         | 'exclamation-circle'
         | 'spinner'
         | 'information-circle'
+        | 'magnifying-glass-circle'
+        | 'magnifying-glass'
     className?: string
     interactive?: boolean
 }
@@ -86,6 +90,12 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'information-circle':
             icon = <InformationCircle className={className} />
+            break
+        case 'magnifying-glass-circle':
+            icon = <MagnifyingGlassCircle className={className} />
+            break
+        case 'magnifying-glass':
+            icon = <MagnifyingGlass className={className} />
             break
     }
 

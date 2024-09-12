@@ -1,7 +1,9 @@
-import { useTheme } from '~/context/ThemeContext'
+import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Transaction, { TransactionRow } from './Transaction'
 import toCurrencyString from '~/utils/toCurrencyString'
+import TransactionsSearchBar from './TransactionsSearchBar'
+import { useState } from 'react'
 
 type AccountTransactionProps = {
     accountData: FullAccountDataType
@@ -21,8 +23,13 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
 
     // table widths are something I abhor
 
+    const [search, setSearch] = useState('')
+
     return (
         <div className={`w-full h-full flex-grow ${themeStyle}`}>
+            <TransactionsSearchBar
+                onChange={(e) => setSearch(e.target.value)}
+            />
             <table className={`w-full table-fixed text-left border-collapse`}>
                 <colgroup>
                     <col className="w-10" />
@@ -32,7 +39,7 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                     <col className="w-36" />
                 </colgroup>
                 <thead>
-                    <tr className={`${themeStyle} h-8 divide-x-2 border-b-2`}>
+                    <tr className={`${themeStyle} h-8 divide-x-2 border-y-2`}>
                         <th className="px-3 truncate"></th>
                         <th className="px-3 truncate">Date</th>
                         <th className="px-3 truncate">Category and Item</th>
@@ -48,6 +55,7 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                             budgetId={accountData.budgetId}
                             transaction={t}
                             key={t.id}
+                            search={search}
                         />
                     ))}
                     <TransactionRow
@@ -57,6 +65,7 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                         amt={toCurrencyString(accountData.initialBalance)}
                         cat=""
                         desc="Initial balance on creation of account."
+                        search={search}
                     />
                 </tbody>
             </table>

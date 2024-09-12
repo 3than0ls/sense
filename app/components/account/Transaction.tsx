@@ -8,16 +8,17 @@ import toCurrencyString from '~/utils/toCurrencyString'
 type TransactionProps = {
     transaction: FullAccountDataType['transactions'][number]
     budgetId: string
+    search: string
 }
 
-const Transaction = ({ transaction, budgetId }: TransactionProps) => {
+const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
     const { setActive, setModalChildren, setModalTitle } = useModal()
 
     const onEdit = () => {
         setModalChildren(
             <TransactionForm
                 budgetId={budgetId}
-                selectedBudgetItem={transaction.budgetItem}
+                defaultBudgetItem={transaction.budgetItem}
                 editTransaction={transaction}
             />
         )
@@ -32,6 +33,7 @@ const Transaction = ({ transaction, budgetId }: TransactionProps) => {
             desc={transaction.description || ''}
             amt={toCurrencyString(transaction.amount)}
             onEdit={onEdit}
+            search={search}
         />
     )
 }
@@ -42,12 +44,14 @@ export const TransactionRow = ({
     desc,
     amt,
     onEdit,
+    search,
 }: {
     date: string
     cat: string
     desc: string
     amt: string
     onEdit?: () => void
+    search: string
 }) => {
     const { theme } = useTheme()
     const themeStyle =
@@ -55,8 +59,21 @@ export const TransactionRow = ({
     const hoverThemeStyle =
         theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
 
+    const searchFilter =
+        search &&
+        !(
+            cat.includes(search) ||
+            desc.includes(search) ||
+            date.includes(search) ||
+            amt.includes(search)
+        )
+
     return (
-        <tr className={`${themeStyle} border-b-2`}>
+        <tr
+            className={`${themeStyle} ${
+                searchFilter ? 'collapse' : ''
+            } border-b-2`}
+        >
             <td className="h-8 flex items-center justify-center">
                 {onEdit && (
                     <button

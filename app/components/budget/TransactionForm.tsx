@@ -159,14 +159,7 @@ const TransactionForm = ({
                     <span className="ml-1 text-lg">From Account:</span>
                     <Dropdown
                         dropdownItems={accountDropdownData}
-                        defaultItem={
-                            editTransaction
-                                ? {
-                                      id: editTransaction.accountId,
-                                      name: editTransaction.account.name,
-                                  }
-                                : undefined
-                        }
+                        defaultItem={defaultDropdownAccount ?? undefined}
                         onChange={(d) => {
                             setSelectedAccount(d)
                         }}

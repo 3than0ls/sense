@@ -73,7 +73,7 @@ const BudgetItemExpanded = ({
         setModalChildren(
             <TransactionForm
                 budgetId={budgetId}
-                selectedBudgetItem={{ name, id }}
+                defaultBudgetItem={{ name, id }}
             />
         )
         setModalTitle('Log Transaction')

@@ -28,7 +28,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
         setModalChildren(
             <TransactionForm
                 budgetId={budgetItem.budgetId}
-                selectedBudgetItem={budgetItem}
+                defaultBudgetItem={budgetItem}
             />
         )
         setModalTitle('Log Transaction')
