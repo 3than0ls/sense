@@ -125,6 +125,7 @@ const AssignmentForm = ({
                         placeholder="0.00"
                         label="Amount"
                         className="flex-grow min-w-96"
+                        isMoney
                     />
                     <button
                         onClick={() => {

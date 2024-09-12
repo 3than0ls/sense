@@ -10,6 +10,7 @@ interface InputProps {
     defaultValue?: string
     type?: React.HTMLInputTypeAttribute | undefined
     textArea?: boolean
+    isMoney?: boolean
 }
 
 const Input = ({
@@ -20,6 +21,7 @@ const Input = ({
     type = 'text',
     defaultValue = '',
     textArea = false,
+    isMoney = false,
 }: InputProps) => {
     const {
         register,
@@ -37,24 +39,31 @@ const Input = ({
         theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
     return (
-        <div className={`flex flex-col text-md gap-0.5 ${className}`}>
+        <div className={`flex flex-col w-full text-md gap-0.5 ${className}`}>
             <label htmlFor={name} className="ml-1 text-xl">
                 {label}
             </label>
             {!textArea ? (
-                <input
-                    {...register(name)}
-                    aria-label={label}
-                    placeholder={placeholder}
-                    type={type}
-                    className={
-                        `${themeStyles} rounded-lg p-2 transition-all duration-100 outline-none outline-offset-2` +
-                        (error
-                            ? ' outline-error outline-[3px]'
-                            : ` ${focusThemeStyles} focus:outline-[3px]`)
-                    }
-                    defaultValue={defaultValue}
-                />
+                <div className="w-full relative">
+                    <input
+                        {...register(name)}
+                        aria-label={label}
+                        placeholder={placeholder}
+                        type={type}
+                        className={
+                            `${themeStyles} w-full rounded-lg p-2 transition-all duration-100 outline-none outline-offset-2` +
+                            (error
+                                ? ' outline-error outline-[3px]'
+                                : ` ${focusThemeStyles} focus:outline-[3px]`)
+                        }
+                        defaultValue={defaultValue}
+                    />
+                    {isMoney && (
+                        <span className="absolute p-2 mr-1 right-0 text-subtle">
+                            ($)
+                        </span>
+                    )}
+                </div>
             ) : (
                 <textarea
                     {...register(name)}

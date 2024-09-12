@@ -194,6 +194,7 @@ const TransactionForm = ({
                 label="Amount"
                 name="amount"
                 defaultValue={editTransaction?.amount.toFixed(2)}
+                isMoney
             />
             <Input
                 placeholder="Optional description..."

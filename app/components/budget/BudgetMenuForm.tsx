@@ -15,7 +15,7 @@ type BudgetMenuProps = {
     schema: z.AnyZodObject
     action?: string
     itemUuid: string
-    isNumber?: boolean
+    isMoney?: boolean
 }
 
 const BudgetMenuForm = ({
@@ -26,7 +26,7 @@ const BudgetMenuForm = ({
     schema,
     action,
     itemUuid,
-    isNumber = false,
+    isMoney = false,
 }: BudgetMenuProps) => {
     // this component is an abomination
     // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
@@ -128,7 +128,7 @@ const BudgetMenuForm = ({
                             }
                         }}
                     />
-                    {isNumber && (
+                    {isMoney && (
                         <span className="absolute p-2 right-0 text-sm text-subtle">
                             ($)
                         </span>

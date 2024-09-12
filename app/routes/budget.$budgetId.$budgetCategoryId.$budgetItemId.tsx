@@ -146,7 +146,7 @@ export default function BudgetItemEditRoute() {
                     schema={itemTargetSchema}
                     action="/api/budItem/retarget"
                     itemUuid={budgetItem.id}
-                    isNumber
+                    isMoney
                 />
             </div>
 

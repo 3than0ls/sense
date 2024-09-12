@@ -94,11 +94,8 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                 name="initialBalance"
                 label="Initial Balance"
                 placeholder="0.00"
-                defaultValue={
-                    editAccount?.initialBalance
-                        ? toCurrencyString(editAccount.initialBalance)
-                        : undefined
-                }
+                defaultValue={editAccount?.initialBalance.toFixed(2)}
+                isMoney
             />
             <div className="mb-4">
                 <span className="text-xl ml-1">Budget</span>

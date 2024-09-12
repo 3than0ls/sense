@@ -29,9 +29,7 @@ Assign money inflow AND outflow (hard)
 
 Add reconciliations in Account (hard)
 
-dollar sign to Input (easy)
-
-modal scrollbar clip (easy)
+finish account topbar (medium) (have to make design decisions)
 
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off
 
@@ -46,3 +44,4 @@ add date to add transaction using https://ui.shadcn.com/docs/components/date-pic
 replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) https://ui.shadcn.com/docs/components/combobox
 replace AccountTransaction's table with shadcn's Resizeable so column widths are draggable (https://ui.shadcn.com/docs/components/resizable). Perhaps some more advanced features to, including searching, filtering, and sorting
 optimistic UI; easily implemented for BudgetMenuForm on budget item's transaction
+clip the modal scrollbar with rounded corners
