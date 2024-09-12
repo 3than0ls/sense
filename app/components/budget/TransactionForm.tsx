@@ -71,8 +71,11 @@ const TransactionForm = ({
         defaultDropdownAccount
     )
 
-    const itemDropdownData =
-        budgetItems ?? mapToDropdownItem(itemFetcher.data as typeof budgetItems)
+    const itemDropdownData = [
+        { id: '', name: 'Free Cash' },
+        ...(budgetItems ??
+            mapToDropdownItem(itemFetcher.data as typeof budgetItems)),
+    ]
     let defaultDropdownItem = null
     if (defaultBudgetItem) {
         defaultDropdownItem = {
@@ -81,8 +84,8 @@ const TransactionForm = ({
         }
     } else if (editTransaction) {
         defaultDropdownItem = {
-            id: editTransaction.budgetItem.id,
-            name: editTransaction.budgetItem.name,
+            id: editTransaction.budgetItem?.id ?? '',
+            name: editTransaction.budgetItem?.name ?? 'Free Cash',
         }
     }
     const [selectedBudgetItem, setSelectedBudgetItem] =
@@ -145,8 +148,10 @@ const TransactionForm = ({
                     <DeleteForm
                         deleteItemName={`${new Date(
                             editTransaction.date
-                        ).toLocaleDateString()} transaction for ${
-                            editTransaction.budgetItem.name
+                        ).toLocaleDateString()} transaction ${
+                            editTransaction.budgetItem === null
+                                ? 'for Free Cash'
+                                : `for ${editTransaction.budgetItem.name}`
                         } of ${toCurrencyString(editTransaction.amount)}`}
                         fetcherAction="/api/transac/delete"
                         fetcherTarget={{ transactionId: editTransaction.id }}

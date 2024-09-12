@@ -22,13 +22,15 @@ Text color change based on budget states (namely red on negative)
 A name for the projecte
 
 NEXT: 
+leading on account topbar number makes it loook not center
+
 Sidebar (medium) (have to make design decisions)
 
 Add reconciliations in Account (hard)  <--- NEXT 4.0
 
 finish account topbar (medium) (have to make design decisions) <--- NEXT 4.1
 
-Make transaction have optional budget item; if it doesn't have a budget item, it just goes into free cash (hard) <---- NEXT 1.0
+Make transaction prisma schema have optional budget item; if it doesn't have a budget item, it just goes into free cash (hard) <---- NEXT 1.0
 - will have to make Free Cash an option for add transaction dropdown
 
 If there's only one option for Dropdown, make it the default option (easy) <---- NEXT 1.1

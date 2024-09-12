@@ -84,12 +84,12 @@ enum Theme {
 }
 
 model Transaction {
-    id           String     @id @unique @default(uuid()) @db.Uuid
-    date         DateTime   @default(now())
+    id           String      @id @unique @default(uuid()) @db.Uuid
+    date         DateTime    @default(now())
     description  String?
     amount       Float
-    accountId    String     @db.Uuid
-    account      Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
-    budgetItemId String     @db.Uuid
-    budgetItem   BudgetItem @relation(fields: [budgetItemId], references: [id], onDelete: Cascade)
+    accountId    String      @db.Uuid
+    account      Account     @relation(fields: [accountId], references: [id], onDelete: Cascade)
+    budgetItemId String?     @db.Uuid
+    budgetItem   BudgetItem? @relation(fields: [budgetItemId], references: [id], onDelete: Cascade)
 }

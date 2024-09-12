@@ -27,7 +27,7 @@ const SidebarDropdown = ({
             <div className="w-full flex">
                 <Link
                     to={`/budget/${budget.id}`}
-                    className="overflow-hidden flex justify-between mb-1 group text-left"
+                    className="overflow-hidden flex justify-between mb-1 group text-left hover:underline"
                     onClick={() => setClosed(false)}
                 >
                     <span className="text-lg truncate font-work-bold group-hover:text-white transition">

@@ -14,11 +14,17 @@ type TransactionProps = {
 const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
     const { setActive, setModalChildren, setModalTitle } = useModal()
 
+    const fromFreeCashText = 'Unassigned Free Cash'
+    const cat =
+        transaction.budgetItem === null
+            ? fromFreeCashText
+            : `${transaction.budgetItem.budgetCategory.name}: ${transaction.budgetItem.name}`
+
     const onEdit = () => {
         setModalChildren(
             <TransactionForm
                 budgetId={budgetId}
-                defaultBudgetItem={transaction.budgetItem}
+                defaultBudgetItem={transaction?.budgetItem ?? undefined}
                 editTransaction={transaction}
             />
         )
@@ -29,7 +35,7 @@ const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
     return (
         <TransactionRow
             date={new Date(transaction.date).toLocaleDateString()}
-            cat={`${transaction.budgetItem.budgetCategory.name}: ${transaction.budgetItem.name}`}
+            cat={cat}
             desc={transaction.description || ''}
             amt={toCurrencyString(transaction.amount)}
             onEdit={onEdit}

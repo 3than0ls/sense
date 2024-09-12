@@ -16,12 +16,15 @@ export async function action({ request }: ActionFunctionArgs) {
                 amount: newTransac.amount,
                 description: newTransac.description,
                 accountId: newTransac.accountId,
-                budgetItemId: newTransac.budgetItemId,
+                // schema states budgetItemId must be a string,
+                // thus free cash is indicated by an empty string and must be set to undefined
+                budgetItemId: newTransac.budgetItemId || undefined,
             },
         })
 
         return json(transaction)
     } catch (e) {
+        console.log(e)
         throw new ServerErrorResponse({
             message: 'Transaction not able to be created.',
             status: 400,

@@ -8,7 +8,7 @@ export const transactionFormSchema = z.object({
 export type TransactionFormSchemaType = z.infer<typeof transactionFormSchema>
 
 export const transactionSchema = transactionFormSchema.extend({
-    budgetItemId: z.string().uuid(),
+    budgetItemId: z.string().uuid().or(z.literal('')),
     accountId: z.string().uuid(),
 })
 
