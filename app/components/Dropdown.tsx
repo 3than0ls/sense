@@ -154,7 +154,7 @@ const Dropdown = ({
                 <div
                     className={`${
                         active ? 'absolute' : 'hidden'
-                    } ${themeClass} w-full flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle shadow-lg`}
+                    } ${themeClass} w-full z-50 flex flex-col rounded-b-lg overflow-x-hidden max-h-64 divide-y-[1px] divide-subtle shadow-lg`}
                 >
                     {Array.from(dropdownItems, (dItem) => (
                         <DropdownItem
