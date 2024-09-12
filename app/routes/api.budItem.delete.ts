@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
+import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'

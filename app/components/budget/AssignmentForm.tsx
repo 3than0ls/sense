@@ -2,16 +2,11 @@ import { BudgetItem } from '@prisma/client'
 import Dropdown from '../Dropdown'
 import { useEffect, useState } from 'react'
 import { useFetcher } from '@remix-run/react'
-import { useTheme } from '~/context/ThemeContext'
-import numberSchema from '~/zodSchemas/number'
 import { action } from '~/routes/api.assign.create'
 import { useModal } from '~/context/ModalContext'
 import { loader } from '~/routes/api.bud.items.$budgetId'
-import Icon from '../icons/Icon'
-import toCurrencyString from '~/utils/toCurrencyString'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import {
-    assignmentSchema,
     AssignmentFormSchemaType,
     assignmentFormSchema,
 } from '~/zodSchemas/assignment'

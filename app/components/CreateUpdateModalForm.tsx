@@ -7,7 +7,6 @@ import DeleteButton from './DeleteButton'
 import Divider from './Divider'
 import Submit from './form/Submit'
 import Icon from './icons/Icon'
-import isEmpty from '~/utils/isEmpty'
 
 type CreateUpdateModalFormProps<FormValues extends FieldValues> = {
     children: React.ReactNode

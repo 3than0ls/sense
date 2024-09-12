@@ -3,10 +3,8 @@ import Dropdown, { mapToDropdownItem } from '../Dropdown'
 import { useEffect, useState } from 'react'
 import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
-import { FieldValues } from 'react-hook-form'
 import useRemixForm from '~/hooks/useRemixForm'
 import Input from '../form/Input'
-import RemixForm from '../RemixForm'
 import {
     transactionFormSchema,
     TransactionFormSchemaType,
@@ -33,7 +31,7 @@ const TransactionForm = ({
     budgetId,
     editTransaction,
 }: TransactionFormProps) => {
-    const { setModalTitle, setModalChildren, setActive } = useModal()
+    const { setActive } = useModal()
 
     // fetch data if not provided
     const accountFetcher = useFetcher()
@@ -126,26 +124,6 @@ const TransactionForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetcher.data, fetcher.state])
 
-    // code only applies if editTransaction object is not undefined
-    const onDelete = () => {
-        if (editTransaction) {
-            setModalTitle('Confirm Deletion')
-            setModalChildren(
-                <DeleteForm
-                    deleteItemName={`${new Date(
-                        editTransaction.date
-                    ).toLocaleDateString()} transaction for ${
-                        editTransaction.budgetItem.name
-                    } of ${toCurrencyString(editTransaction.amount)}`}
-                    fetcherAction="/api/transac/delete"
-                    fetcherTarget={{ transactionId: editTransaction.id }}
-                ></DeleteForm>
-            )
-            setActive(true)
-        }
-        // user is NOT supposed to be here
-    }
-
     return (
         <CreateUpdateModalForm
             methods={methods}
@@ -208,11 +186,7 @@ const TransactionForm = ({
                 placeholder="0.00"
                 label="Amount"
                 name="amount"
-                defaultValue={
-                    editTransaction?.amount
-                        ? toCurrencyString(editTransaction.amount)
-                        : undefined
-                }
+                defaultValue={editTransaction?.amount.toFixed(2)}
             />
             <Input
                 placeholder="Optional description..."

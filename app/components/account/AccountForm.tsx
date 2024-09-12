@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { accountFormSchema, AccountFormSchemaType } from '~/zodSchemas/account'
 import Input from '../form/Input'
 import useRemixForm from '~/hooks/useRemixForm'
-import RemixForm from '../RemixForm'
-import Submit from '../form/Submit'
 import Dropdown, { mapToDropdownItem } from '../Dropdown'
 import { Budget } from '@prisma/client'
-import { useModal } from '~/context/ModalContext'
 import { useNavigate } from '@remix-run/react'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
-import DeleteButton from '../DeleteButton'
-import Divider from '../Divider'
 import DeleteForm from '../DeleteForm'
 import toCurrencyString from '~/utils/toCurrencyString'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
@@ -24,8 +19,6 @@ type AccountFormProps = {
 }
 
 const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
-    const { setActive, setModalChildren, setModalTitle } = useModal()
-
     // may have to use an onChange
     const { methods, fetcher } = useRemixForm<
         AccountFormSchemaType,
@@ -130,63 +123,6 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                 />
             </div>
         </CreateUpdateModalForm>
-        // <RemixForm
-        //     className="min-w-96 flex flex-col gap-2"
-        //     methods={methods}
-        //     fetcher={fetcher}
-        //     onSubmit={onSubmit}
-        //     noAction={true}
-        // >
-        //     <Input
-        //         name="name"
-        //         label="Name"
-        //         placeholder="Account Name"
-        //         defaultValue={editAccount?.name ?? undefined}
-        //     />
-        //     <Input
-        //         name="initialBalance"
-        //         label="Initial Balance"
-        //         placeholder="0.00"
-        //         defaultValue={
-        //             editAccount?.initialBalance
-        //                 ? toCurrencyString(editAccount.initialBalance)
-        //                 : undefined
-        //         }
-        //     />
-        //     <div className="mb-4">
-        //         <span className="text-xl ml-1">Budget</span>
-        //         <Dropdown
-        //             disabled={!!editAccount}
-        //             dropdownItems={dropdownItems}
-        //             defaultItem={
-        //                 editAccount
-        //                     ? {
-        //                           id: editAccount.budgetId,
-        //                           name: editAccount.budget.name,
-        //                       }
-        //                     : undefined
-        //             }
-        //             onChange={(d) => {
-        //                 setSelectedBudget(d.id)
-        //             }}
-        //             onExpand={() => {
-        //                 setDropdownError(false)
-        //             }}
-        //             errorState={dropdownError}
-        //         />
-        //     </div>
-        //     <Submit className="w-full py-2 rounded-xl mt-4">
-        //         {editAccount ? 'Update Account' : 'Create Account'}
-        //     </Submit>
-        //     {editAccount && (
-        //         <div className="w-full mt-4 flex flex-col gap-4">
-        //             <Divider themed />
-        //             <DeleteButton noSubmit onClick={onDeleteClick}>
-        //                 Delete Account
-        //             </DeleteButton>
-        //         </div>
-        //     )}
-        // </RemixForm>
     )
 }
 

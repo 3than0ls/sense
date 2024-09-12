@@ -29,10 +29,14 @@ Assign money inflow AND outflow (hard)
 
 Add reconciliations in Account (hard)
 
+dollar sign to Input (easy)
+
+modal scrollbar clip (easy)
+
 bugs found:
 optimistic UI for BudgetMenuForm for target dollar
 
-you can still click create, even if shown budget, for anything taht uses CrUpModalForm, disabled doesn't prevent onCLick?
+you can still click create, even if shown budget, for anything taht uses CrUpModalForm, disabled doesn't prevent onCLick? causes multiple to be created
 
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off
 

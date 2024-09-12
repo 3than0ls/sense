@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
+import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
@@ -13,7 +13,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        const deleteBudget = await prisma.budget.delete({
+        await prisma.budget.delete({
             where: {
                 id: budgetId,
                 userId: user.id,

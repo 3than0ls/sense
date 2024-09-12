@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
-import { Link, useFetcher } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
 import AccountForm from '../account/AccountForm'
 import { Budget } from '@prisma/client'
@@ -74,8 +74,6 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
             ))}
         </SidebarDropdown>
     ))
-
-    const TEMPFETCHER = useFetcher()
 
     const { setActive, setModalTitle, setModalChildren } = useModal()
 
