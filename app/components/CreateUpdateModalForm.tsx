@@ -66,7 +66,11 @@ export default function CreateUpdateModalForm<FormValues extends FieldValues>({
         >
             {children}
             <Submit
-                disabled={disable || fetcher.state === 'submitting'}
+                disabled={
+                    disable ||
+                    fetcher.state === 'submitting' ||
+                    fetcher.state === 'loading'
+                }
                 className="w-full py-2 rounded-xl"
             >
                 {submitButtonText

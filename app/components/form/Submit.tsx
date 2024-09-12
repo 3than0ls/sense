@@ -13,6 +13,7 @@ const Submit = ({ className, disabled, children }: SubmitProps) => {
 
     return (
         <button
+            disabled={disabled}
             className={`${
                 disabled
                     ? 'bg-opacity-50 hover:cursor-not-allowed'
