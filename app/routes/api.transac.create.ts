@@ -11,22 +11,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         await authenticateUser(request)
 
-        // covered by foreign key constraints
-        // const budgetItem = await prisma.budgetItem.findFirstOrThrow({
-        //     where: {
-        //         id: newTransac.budgetItemId,
-        //         budget: {
-        //             userId: user.id,
-        //         },
-        //     },
-        // })
-
-        // const account = await prisma.account.findFirstOrThrow({
-        //     where: {
-        //         id: newTransac.accountId,
-        //     },
-        // })
-
         const transaction = await prisma.transaction.create({
             data: {
                 amount: newTransac.amount,

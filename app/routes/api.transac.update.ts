@@ -13,21 +13,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        // const budgetItem = await prisma.budgetItem.findFirstOrThrow({
-        //     where: {
-        //         id: updateTransac.budgetItemId,
-        //         budget: {
-        //             userId: user.id,
-        //         },
-        //     },
-        // })
-
-        // const account = await prisma.account.findFirstOrThrow({
-        //     where: {
-        //         id: updateTransac.accountId,
-        //     },
-        // })
-
         const transaction = await prisma.transaction.update({
             where: {
                 id: updateTransac.transactionId,
@@ -38,6 +23,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 },
             },
             data: {
+                accountId: updateTransac.accountId, // debate whether or not updating originating account should be allowed
                 amount: updateTransac.amount,
                 description: updateTransac.description,
                 budgetItemId: updateTransac.budgetItemId,

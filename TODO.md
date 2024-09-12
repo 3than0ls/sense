@@ -30,9 +30,6 @@ Assign money inflow AND outflow (hard)
 Add reconciliations in Account (hard)
 
 bugs found:
-
-MOVING TRANSACTION TO ANOTHER ACCOUNT UPDATE IS FAILING BUG
-
 optimistic UI for BudgetMenuForm for target dollar
 
 you can still click create, even if shown budget, for anything taht uses CrUpModalForm, disabled doesn't prevent onCLick?
