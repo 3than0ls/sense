@@ -24,23 +24,6 @@ const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
     )
 }
 
-// const BudgetMenuLink = ({
-//     children,
-//     href,
-// }: {
-//     children: React.ReactNode
-//     href: string
-// }) => {
-//     return (
-//         <Link
-//             className="w-full bg-primary hover:bg-opacity-60 transition-all duration-400 ease-in-out rounded-lg font-work-bold p-1.5 flex justify-center items-center"
-//             to={href}
-//         >
-//             {children}
-//         </Link>
-//     )
-// }
-
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const totalCash = budgetTotalAccounts(budgetData)
     const assignedCash = budgetTotalAssignments(budgetData)
@@ -51,10 +34,10 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
         setModalChildren(
             <TransactionForm
                 budgetId={budgetData.id}
-                // accounts={budgetData.accounts}
-                // budgetItems={budgetData.budgetCategories.flatMap(
-                //     (cat) => cat.budgetItems
-                // )}
+                accounts={budgetData.accounts}
+                budgetItems={budgetData.budgetCategories.flatMap(
+                    (cat) => cat.budgetItems
+                )}
             />
         )
         setModalTitle('Log Transaction')

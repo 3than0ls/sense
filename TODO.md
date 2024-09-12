@@ -35,6 +35,8 @@ modal scrollbar clip (easy)
 
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off
 
+transaction on budgetmenu base, make it so that if there is a budget item also navigated to, automatically make that the budget item target (easy)
+
 FUTURE NON ESSENTIALS:
 transaction to more than one item
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
