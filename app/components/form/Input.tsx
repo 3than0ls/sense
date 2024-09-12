@@ -37,7 +37,7 @@ const Input = ({
         theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
 
     return (
-        <div className={`flex flex-col gap-1 text-md ${className}`}>
+        <div className={`flex flex-col text-md gap-0.5 ${className}`}>
             <label htmlFor={name} className="ml-1 text-xl">
                 {label}
             </label>
@@ -70,15 +70,13 @@ const Input = ({
                 />
             )}
 
-            <span className="text-sm ml-1">
-                {error ? (
-                    <p className="text-error transition-all duration-100 animate-fade-in">
-                        {error.message}
-                    </p>
-                ) : (
-                    <p>&nbsp;</p>
-                )}
-            </span>
+            <p
+                className={`${
+                    !error && 'invisible'
+                } text-sm ml-1 text-error transition-all duration-100 animate-fade-in`}
+            >
+                {error && error.message}&nbsp;
+            </p>
         </div>
     )
 }

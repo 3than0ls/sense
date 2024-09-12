@@ -140,7 +140,7 @@ export default function BudgetItemEditRoute() {
                 </div>
                 <BudgetMenuForm
                     key={budgetItem.target}
-                    defaultValue={toCurrencyString(budgetItem.target)}
+                    defaultValue={budgetItem.target.toFixed(2)}
                     label="Target"
                     name="target"
                     schema={itemTargetSchema}

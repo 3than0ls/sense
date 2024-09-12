@@ -20,7 +20,7 @@ A decision will be made later; code remains the same
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const data = await request.formData()
-        const { amount, fromBudgetItemId, fromFreeCash, targetBudgetItemId } =
+        const { amount, fromBudgetItemId, fromFreeCash, toBudgetItemId } =
             assignmentSchema.parse(Object.fromEntries(data))
         const { user } = await authenticateUser(request)
 
@@ -29,7 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 budget: {
                     userId: user.id,
                 },
-                id: targetBudgetItemId,
+                id: toBudgetItemId,
             },
         })
         const budget = await prisma.budget.findFirstOrThrow({
@@ -37,7 +37,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 userId: user.id,
                 budgetItems: {
                     some: {
-                        id: targetBudgetItemId,
+                        id: toBudgetItemId,
                     },
                 },
             },
@@ -56,7 +56,9 @@ export async function action({ request }: ActionFunctionArgs) {
             const assigned = totalAssignments(budget.assignments)
             const freeCash = totalCash - assigned
             if (freeCash < amount) {
-                throw new Error('Not enough free cash, amount is too high.')
+                throw new Error('Amount is too high, not enough free cash.', {
+                    cause: 1,
+                })
             }
             await prisma.assignment.create({
                 data: {
@@ -87,7 +89,10 @@ export async function action({ request }: ActionFunctionArgs) {
                 const assigned = totalAssignments(fromBudgetItem.assignments)
                 // assigned - balance = free cash to be able to be moved; assigned money doesn't always mean it can be moved
                 if (assigned - totalTransacs < amount) {
-                    throw new Error('Not enough free cash, amount is too high.')
+                    throw new Error(
+                        `Amount is too high, not enough assigned cash in ${fromBudgetItem.name}.`,
+                        { cause: 1 }
+                    )
                 }
 
                 // take away from fromBudgetItem
@@ -114,10 +119,7 @@ export async function action({ request }: ActionFunctionArgs) {
             reason: '',
         }
     } catch (e) {
-        if (
-            e instanceof Error &&
-            e.message === 'Not enough free cash, amount is too high.'
-        ) {
+        if (e instanceof Error && e.cause === 1) {
             return {
                 success: false,
                 reason: e.message,

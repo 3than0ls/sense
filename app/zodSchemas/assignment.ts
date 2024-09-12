@@ -1,8 +1,13 @@
 import { z } from 'zod'
 import numberSchema from './number'
 
-export const assignmentSchema = z.object({
-    targetBudgetItemId: z.string().uuid(),
+export const assignmentFormSchema = z.object({
+    amount: numberSchema,
+})
+export type AssignmentFormSchemaType = z.infer<typeof assignmentFormSchema>
+
+export const assignmentSchema = assignmentFormSchema.extend({
+    toBudgetItemId: z.string().uuid(),
     fromFreeCash: z.string().transform((value) => {
         if (value === 'true') return true
         if (value === 'false') return false
@@ -11,5 +16,4 @@ export const assignmentSchema = z.object({
         throw new Error('Invalid boolean string')
     }),
     fromBudgetItemId: z.string().uuid().or(z.literal('')),
-    amount: numberSchema,
 })

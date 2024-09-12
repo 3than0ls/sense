@@ -7,6 +7,7 @@ export const budgetSchema = z.object({
         .max(100, 'Budget name too long.'),
     description: z.string().max(500, 'Budget description too long.'),
 })
+export type BudgetSchemaType = z.infer<typeof budgetSchema>
 
 export const updateBudgetSchema = budgetSchema.extend({
     budgetId: z.string().uuid(),

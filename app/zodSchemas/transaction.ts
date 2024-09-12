@@ -5,6 +5,7 @@ export const transactionFormSchema = z.object({
     amount: numberSchema,
     description: z.string().max(500, 'Transaction description too long.'),
 })
+export type TransactionFormSchemaType = z.infer<typeof transactionFormSchema>
 
 export const transactionSchema = transactionFormSchema.extend({
     budgetItemId: z.string().uuid(),

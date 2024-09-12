@@ -43,7 +43,10 @@ import { z } from 'zod'
  *
  *
  */
-export default function useRemixForm<FormValues extends FieldValues>(
+export default function useRemixForm<
+    FormValues extends FieldValues,
+    ActionReturnType
+>(
     zodSchema: z.AnyZodObject,
     reValidateMode?: 'onBlur' | 'onChange' | 'onSubmit'
 ) {
@@ -53,7 +56,7 @@ export default function useRemixForm<FormValues extends FieldValues>(
         mode: reValidateMode,
     })
 
-    const fetcher = useFetcher<FormValues>()
+    const fetcher = useFetcher<ActionReturnType>()
 
     return {
         methods,

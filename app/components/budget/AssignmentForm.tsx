@@ -9,6 +9,15 @@ import { useModal } from '~/context/ModalContext'
 import { loader } from '~/routes/api.bud.items.$budgetId'
 import Icon from '../icons/Icon'
 import toCurrencyString from '~/utils/toCurrencyString'
+import CreateUpdateModalForm from '../CreateUpdateModalForm'
+import {
+    assignmentSchema,
+    AssignmentFormSchemaType,
+    assignmentFormSchema,
+} from '~/zodSchemas/assignment'
+import useRemixForm from '~/hooks/useRemixForm'
+import Input from '../form/Input'
+import { SubmitHandler } from 'react-hook-form'
 
 type AssignmentFormProps = {
     targetBudgetItem: Pick<BudgetItem, 'id' | 'target' | 'budgetId'>
@@ -19,14 +28,13 @@ const AssignmentForm = ({
     targetBudgetItem,
     targetBudgetItemAssigned,
 }: AssignmentFormProps) => {
-    // IGNORE THE MESSINESS BUT IT WORKS!!
+    // dropdown item setting and fetching
     const [dropdownItems, setDropdownItems] = useState([
         {
             name: 'Free Cash',
             id: 'Free Cash',
         },
     ])
-
     const budgetItemFetcher = useFetcher<typeof loader>()
     useEffect(() => {
         if (!budgetItemFetcher.data) {
@@ -36,9 +44,9 @@ const AssignmentForm = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
     useEffect(() => {
         if (budgetItemFetcher.data && budgetItemFetcher.data.length > 0) {
+            console.log('loaded')
             setDropdownItems([
                 {
                     name: 'Free Cash',
@@ -57,53 +65,52 @@ const AssignmentForm = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [budgetItemFetcher.data])
 
-    // dropdown and input states
-    const [from, setFrom] = useState(dropdownItems[0])
-    const [rawAmount, setRawAmount] = useState('')
-    const [amount, setAmount] = useState(0)
-    const [error, setError] = useState('')
-
-    // modal state manager
     const { setActive } = useModal()
 
-    // theme colors
-    const { theme } = useTheme()
-    const themeStyle =
-        theme === 'DARK' ? 'bg-light text-light' : 'bg-white text-light'
-    const focusThemeStyles =
-        theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
+    // dropdown and input states
+    const [from, setFrom] = useState(dropdownItems[0])
 
-    const fetcher = useFetcher<typeof action>()
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault()
+    const { methods, fetcher } = useRemixForm<
+        AssignmentFormSchemaType,
+        typeof action
+    >(assignmentFormSchema, 'onChange')
+
+    const onSubmit: SubmitHandler<AssignmentFormSchemaType> = (d) => {
         const fromFreeCash = from.name === 'Free Cash'
         fetcher.submit(
             {
-                targetBudgetItemId: targetBudgetItem.id,
+                toBudgetItemId: targetBudgetItem.id,
                 fromFreeCash,
                 fromBudgetItemId: fromFreeCash ? '' : from.id,
-                amount,
+                amount: d.amount,
             },
-            {
-                method: 'POST',
-                action: '/api/assign/create',
-            }
+            { action: '/api/assign/create', method: 'POST' }
         )
     }
 
+    // server error catcher
     useEffect(() => {
         if (fetcher.data) {
             if (fetcher.data.success) {
                 setActive(false)
             } else {
-                setError(fetcher.data.reason)
+                methods.setError('amount', { message: fetcher.data.reason })
             }
         }
-    }, [fetcher.data, fetcher.state, setActive])
+    }, [fetcher.data, fetcher.state, setActive, methods])
+
     return (
-        <fetcher.Form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full"
+        <CreateUpdateModalForm
+            methods={methods}
+            fetcher={fetcher}
+            name="Assignment"
+            onSubmit={onSubmit}
+            disable={undefined}
+            type="create"
+            onFetcherLoading={() => {
+                /* I don't want it to do anything */
+            }}
+            submitButtonText="Assign money"
         >
             <div>
                 <span>From:</span>
@@ -117,23 +124,12 @@ const AssignmentForm = ({
                 />
             </div>
             <div className="flex flex-col">
-                <span>Amount:</span>
-                <div className="flex gap-2">
-                    <input
-                        onChange={(e) => {
-                            setRawAmount(e.target.value)
-                            const out = numberSchema.safeParse(e.target.value)
-                            if (out.success) {
-                                setAmount(out.data)
-                                setError('')
-                            } else {
-                                setError(out.error.errors[0].message)
-                            }
-                        }}
-                        placeholder="Enter amount"
-                        value={rawAmount}
-                        type="text"
-                        className={`${themeStyle}  transition-all duration-100 outline-none outline-offset-2 outline-[3px] ${focusThemeStyles} outline-offset-2 w-full p-2 text-left rounded-lg hover:bg-opacity-85 flex justify-between items-center`}
+                <div className="flex gap-2 items-center">
+                    <Input
+                        name="amount"
+                        placeholder="0.00"
+                        label="Amount"
+                        className="flex-grow min-w-96"
                     />
                     <button
                         onClick={() => {
@@ -141,33 +137,24 @@ const AssignmentForm = ({
                             const leftover =
                                 targetBudgetItem.target -
                                 targetBudgetItemAssigned
-                            setRawAmount(toCurrencyString(leftover))
-                            setAmount(leftover)
-                            setError('')
+
+                            // look; I know that it has an error, but zod or react-hook-form are having some discrepancy error
+                            // amount is of numberSchema, which transform string to number
+                            // if you were to set it as a number, however, further validation would error and show error message
+                            // because numberSchema starts off as a string
+                            // however you only get a type error here, which doesn't render on UI in any form
+                            methods.setValue('amount', leftover.toFixed(2))
+                            methods.clearErrors()
                         }}
                         type="button"
-                        className="bg-primary rounded-lg py-2 px-3 text-sm text-nowrap hover:bg-opacity-85 transition"
+                        className="w-fit bg-primary mt-[6px] rounded-lg px-3 text-sm text-nowrap hover:bg-opacity-85 transition h-[40px]"
                     >
                         Reach Target
                     </button>
                 </div>
-                {error && <span className="text-error">{error}</span>}
+                {/* {error && <span className="text-error">{error}</span>} */}
             </div>
-            <button
-                type="submit"
-                disabled={!!error || fetcher.state === 'submitting'}
-                className={`flex justify-center gap-4 hover:cursor-pointer enabled:hover:bg-opacity-85 disabled:hover:cursor-not-allowed disabled:opacity-50 w-full mt-4 transition bg-primary rounded-lg mr-auto px-4 py-2`}
-            >
-                Assign Money
-                {fetcher.state === 'submitting' && (
-                    <Icon
-                        type="spinner"
-                        color="#fff"
-                        className="size-6 animate-spin flex items-center justify-center"
-                    />
-                )}
-            </button>
-        </fetcher.Form>
+        </CreateUpdateModalForm>
     )
 }
 

@@ -67,9 +67,9 @@ const Dropdown = ({
     const [active, setActive] = useState(false)
 
     const focusThemeStyles =
-        theme === 'DARK' ? 'focus:outline-light' : 'focus:outline-dark'
+        theme === 'DARK' ? 'focus:outline-light ' : 'focus:outline-dark '
     const outlineThemeStyles =
-        theme === 'DARK' ? 'outline-light' : 'outline-dark'
+        theme === 'DARK' ? 'outline-light ' : 'outline-dark '
 
     const [current, setCurrent] = useState(defaultItem ?? null)
 
@@ -99,7 +99,7 @@ const Dropdown = ({
     return disabled ? (
         <div
             aria-disabled
-            className={`${className} ${themeStyle} transition min-w-64 rounded-lg p-2 mt-1 brightness-75 hover:cursor-not-allowed`}
+            className={`select-none ${className} ${themeStyle} transition min-w-64 rounded-lg p-2 mt-1 brightness-75 hover:cursor-not-allowed`}
         >
             {current?.name || 'Select'}
         </div>
@@ -119,7 +119,9 @@ const Dropdown = ({
                 <button
                     disabled={disabled}
                     className={`w-full p-2 text-left rounded-lg transition flex justify-between items-center outline outline-[3px] outline-offset-2 
-                        ${focusThemeStyles}  ${active && outlineThemeStyles}`}
+                        ${focusThemeStyles} ${
+                        active ? outlineThemeStyles : 'outline-none'
+                    } transition-all duration-100`}
                     onClick={(e) => {
                         e.preventDefault()
                         if (onExpand) {
@@ -174,11 +176,14 @@ const Dropdown = ({
                     )}
                 </div>
             </div>
-            {errorState && (
-                <span className="ml-1 text-error text-sm">
-                    An item must be selected.
-                </span>
-            )}
+
+            <p
+                className={`${
+                    !errorState && 'invisible'
+                } text-sm mt-0.5 ml-1 text-error transition-all duration-100 animate-fade-in`}
+            >
+                {errorState && 'An item must be selected.'}&nbsp;
+            </p>
         </div>
     )
 }

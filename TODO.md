@@ -27,13 +27,20 @@ Sidebar (medium) (have to make design decisions)
 
 Assign money inflow AND outflow (hard)
 
-budget item expanded dropdown things  (TRANSACTION AND BUSINESS) (medium) < -------- FINISH
-
 Add reconciliations in Account (hard)
 
-create budget modal, rather than the weird shit I have now (hard) (just copy paste budgetInfoForm, modify it to match AccountForm)
-
 even out padding spacings between form labels and items, label text size, etc (Easy)
+
+bugs found:
+ACCOUNT DELETE FORM BUG: redirect doesn't cause a loading state, so the modal doesn't go away, plus sidebar data is not revalidated, resulting in the account link still being there
+
+MOVING TRANSACTION TO ANOTHER ACCOUNT UPDATE IS FAILING BUG
+
+optimistic UI for BudgetMenuForm for target dollar
+
+you can still click create, even if shown budget, for anything taht uses CrUpModalForm, disabled doesn't prevent onCLick?
+
+when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off
 
 FUTURE NON ESSENTIALS:
 transaction to more than one item
