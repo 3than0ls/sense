@@ -71,7 +71,14 @@ const Dropdown = ({
     const outlineThemeStyles =
         theme === 'DARK' ? 'outline-light ' : 'outline-dark '
 
-    const [current, setCurrent] = useState(defaultItem ?? null)
+    const defaultCurrent =
+        defaultItem !== undefined
+            ? defaultItem
+            : dropdownItems.length === 1
+            ? dropdownItems[0]
+            : null
+
+    const [current, setCurrent] = useState(defaultCurrent)
 
     const onItemClick = (dropdownItem: DropdownItem) => {
         // document.removeEventListener('mousedown', handleClickOutside)
