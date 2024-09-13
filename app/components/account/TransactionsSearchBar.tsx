@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import Icon from '../icons/Icon'
-import { useTheme, useThemeClass } from '~/context/ThemeContext'
+import { useTheme } from '~/context/ThemeContext'
 
 type TransactionsSearchBarProps = {
     onChange?: React.ChangeEventHandler<HTMLInputElement>

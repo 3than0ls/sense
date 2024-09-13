@@ -41,7 +41,6 @@ const AssignmentForm = ({
     }, [])
     useEffect(() => {
         if (budgetItemFetcher.data && budgetItemFetcher.data.length > 0) {
-            console.log('loaded')
             setDropdownItems([
                 {
                     name: 'Free Cash',

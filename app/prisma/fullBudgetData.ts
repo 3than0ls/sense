@@ -49,8 +49,6 @@ export default async function fullBudgetData({
         },
     })
 
-    console.log(baseData.accounts)
-
     return baseData
 }
 

@@ -1,4 +1,4 @@
-import { useTheme, useThemeClass } from '~/context/ThemeContext'
+import { useTheme } from '~/context/ThemeContext'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Transaction, { TransactionRow } from './Transaction'
 import toCurrencyString from '~/utils/toCurrencyString'
