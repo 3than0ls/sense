@@ -30,19 +30,11 @@ Add reconciliations in Account (hard)  <--- NEXT 4.0
 
 finish account topbar (medium) (have to make design decisions) <--- NEXT 4.1
 
-Make transaction prisma schema have optional budget item; if it doesn't have a budget item, it just goes into free cash (hard) <---- NEXT 1.0
-- will have to make Free Cash an option for add transaction dropdown
+If there's only one option for Dropdown, make it the default option (easy) <---- NEXT!!!!
 
-If there's only one option for Dropdown, make it the default option (easy) <---- NEXT 1.1
+when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT!!!
 
-Assign money inflow AND outflow (hard) <--- related to 1.0
-- transactions will stay positive (but still subtract), and there will just be an option to click inflow or outflow
-- inflow or outflow option will be in the zod schema, but only determine on server whether to make amount negative or position
-- thus the value will still work in calculations of balance
-
-when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT 2
-
-transaction on budgetmenu base, make it so that if there is a budget item also navigated to, automatically make that the budget item target (easy) <--- NEXT 3
+transaction on budgetmenu base, make it so that if there is a budget item also navigated to, automatically make that the budget item target (easy) <--- NEXT!!
 
 prisma optimization by only fetching what's needed, and then also correct type annotations using Pick
 

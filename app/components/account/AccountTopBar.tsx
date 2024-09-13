@@ -11,11 +11,11 @@ type AccountTopBarProps = {
 
 const BigNumber = ({ number, label }: { number: number; label: string }) => {
     return (
-        <div className="flex flex-col w-fit items-center">
-            <span className="text-2xl leading-snug">
+        <div className="flex flex-col w-fit items-center py-0.5">
+            <span className="text-2xl leading-[1.1]">
                 {toCurrencyString(number)}
             </span>
-            <span className="text-xs leading-none">{label}</span>
+            <span className="text-xs leading-[1.1]">{label}</span>
         </div>
     )
 }

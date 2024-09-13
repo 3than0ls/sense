@@ -37,9 +37,10 @@ const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
             date={new Date(transaction.date).toLocaleDateString()}
             cat={cat}
             desc={transaction.description || ''}
-            amt={toCurrencyString(transaction.amount)}
+            amt={toCurrencyString(transaction.amount, true)}
             onEdit={onEdit}
             search={search}
+            bad={transaction.amount < 0}
         />
     )
 }
@@ -51,6 +52,7 @@ export const TransactionRow = ({
     amt,
     onEdit,
     search,
+    bad = false,
 }: {
     date: string
     cat: string
@@ -58,6 +60,7 @@ export const TransactionRow = ({
     amt: string
     onEdit?: () => void
     search: string
+    bad?: boolean
 }) => {
     const { theme } = useTheme()
     const themeStyle =
@@ -98,7 +101,13 @@ export const TransactionRow = ({
             </td>
             <td className="px-3 h-8 truncate">{cat}</td>
             <td className="px-3 h-8 truncate">{desc}</td>
-            <td className="pl-3 h-8 pr-5 truncate text-right">{amt}</td>
+            <td
+                className={`pl-3 h-8 pr-5 truncate text-right 
+                    ${bad === true && 'text-bad'} 
+                    ${bad === false && 'text-good'}`}
+            >
+                {amt}
+            </td>
         </tr>
     )
 }

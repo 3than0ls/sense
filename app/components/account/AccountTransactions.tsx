@@ -62,7 +62,7 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                         date={new Date(
                             accountData.createdAt
                         ).toLocaleDateString()}
-                        amt={toCurrencyString(accountData.initialBalance)}
+                        amt={toCurrencyString(accountData.initialBalance, true)}
                         cat=""
                         desc="Initial balance on creation of account."
                         search={search}
