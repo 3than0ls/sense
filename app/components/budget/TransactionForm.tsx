@@ -114,6 +114,7 @@ const TransactionForm = ({
                     { action: '/api/transac/create', method: 'POST' }
                 )
             } else {
+                console.log(editTransaction.id)
                 fetcher.submit(
                     {
                         transactionId: editTransaction.id,

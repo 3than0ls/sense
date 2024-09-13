@@ -10,10 +10,7 @@ import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import {
-    totalAssignments,
-    totalBudgetItemTransactions,
-} from '~/utils/budgetValues'
+import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
 import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
 import DeleteButton from '~/components/DeleteButton'
 import Divider from '~/components/Divider'
@@ -39,7 +36,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         })
 
         const assigned = totalAssignments(budgetItem.assignments)
-        const spent = totalBudgetItemTransactions(budgetItem.transactions)
+        const spent = totalTransactions(budgetItem.transactions)
         const balance = assigned - spent
 
         return json({ budgetItem, assigned, balance, spent })

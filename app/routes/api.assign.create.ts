@@ -5,7 +5,7 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import authenticateUser from '~/utils/authenticateUser'
 import {
     totalAssignments,
-    totalBudgetItemTransactions,
+    totalTransactions,
     budgetTotalAccounts,
 } from '~/utils/budgetValues'
 import { assignmentSchema } from '~/zodSchemas/assignment'
@@ -83,7 +83,7 @@ export async function action({ request }: ActionFunctionArgs) {
                         transactions: true,
                     },
                 })
-                const totalTransacs = totalBudgetItemTransactions(
+                const totalTransacs = totalTransactions(
                     fromBudgetItem.transactions
                 )
                 const assigned = totalAssignments(fromBudgetItem.assignments)
