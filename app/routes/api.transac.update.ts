@@ -13,7 +13,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { user } = await authenticateUser(request)
 
-        console.log(updateTransac.transactionId)
+        const sign = updateTransac.transactionFlow === 'inflow' ? 1 : -1
+        console.log(sign)
 
         const transaction = await prisma.transaction.update({
             where: {
@@ -26,7 +27,7 @@ export async function action({ request }: ActionFunctionArgs) {
             },
             data: {
                 accountId: updateTransac.accountId, // debate whether or not updating originating account should be allowed
-                amount: updateTransac.amount,
+                amount: updateTransac.amount * sign,
                 description: updateTransac.description,
                 budgetItemId: updateTransac.budgetItemId || null,
             },
@@ -34,7 +35,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(transaction)
     } catch (e) {
-        console.log(e)
         throw new ServerErrorResponse({
             message: 'Transaction not able to be created.',
             status: 400,

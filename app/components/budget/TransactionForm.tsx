@@ -15,6 +15,7 @@ import toCurrencyString from '~/utils/toCurrencyString'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import { action as transacUpdateAction } from '~/routes/api.transac.update'
 import { action as transacCreateAction } from '~/routes/api.transac.create'
+import TransactionFormFlowButton from './TransactionFormFlowButton'
 
 type TransactionFormProps = {
     defaultAccount?: Pick<Account, 'id' | 'name'>
@@ -91,6 +92,19 @@ const TransactionForm = ({
     const [selectedBudgetItem, setSelectedBudgetItem] =
         useState(defaultDropdownItem)
 
+    const defaultFlow = editTransaction
+        ? editTransaction.amount < 0
+            ? 'outflow'
+            : 'inflow'
+        : 'outflow'
+    const [transacFlow, setTransacFlow] = useState<'inflow' | 'outflow'>(
+        defaultFlow
+    )
+
+    const onSwitch = (side: 'inflow' | 'outflow') => {
+        setTransacFlow(side)
+    }
+
     const { fetcher, methods } = useRemixForm<
         TransactionFormSchemaType,
         typeof transacUpdateAction | typeof transacCreateAction
@@ -109,17 +123,18 @@ const TransactionForm = ({
                     {
                         budgetItemId: selectedBudgetItem?.id,
                         accountId: selectedAccount?.id,
+                        transactionFlow: transacFlow,
                         ...d,
                     },
                     { action: '/api/transac/create', method: 'POST' }
                 )
             } else {
-                console.log(editTransaction.id)
                 fetcher.submit(
                     {
                         transactionId: editTransaction.id,
                         budgetItemId: selectedBudgetItem?.id,
                         accountId: selectedAccount?.id,
+                        transactionFlow: transacFlow,
                         ...d,
                     },
                     { action: '/api/transac/update', method: 'POST' }
@@ -188,13 +203,24 @@ const TransactionForm = ({
                     />
                 </div>
             </div>
-            <Input
-                placeholder="0.00"
-                label="Amount"
-                name="amount"
-                defaultValue={editTransaction?.amount.toFixed(2)}
-                isMoney
-            />
+            <div className="w-full flex items-center gap-2">
+                <Input
+                    placeholder="0.00"
+                    label="Amount"
+                    name="amount"
+                    defaultValue={
+                        editTransaction
+                            ? Math.abs(editTransaction.amount).toFixed(2)
+                            : undefined
+                    }
+                    isMoney
+                />
+                <TransactionFormFlowButton
+                    className="mt-2.5"
+                    onSwitch={onSwitch}
+                    defaultSide={defaultFlow}
+                />
+            </div>
             <Input
                 placeholder="Optional description..."
                 label="Description"

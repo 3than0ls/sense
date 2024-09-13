@@ -39,7 +39,7 @@ const TopBarButton = ({
 
 const AccountTopBar = ({ accountData }: AccountTopBarProps) => {
     const totalTransactions = accountTotalTransactions(accountData)
-    const balance = accountData.initialBalance - totalTransactions
+    const balance = accountData.initialBalance + totalTransactions
 
     const { setActive, setModalChildren, setModalTitle } = useModal()
     const onTransacClick = () => {

@@ -11,9 +11,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
         await authenticateUser(request)
 
+        const sign = newTransac.transactionFlow === 'inflow' ? 1 : -1
+
         const transaction = await prisma.transaction.create({
             data: {
-                amount: newTransac.amount,
+                amount: newTransac.amount * sign,
                 description: newTransac.description,
                 accountId: newTransac.accountId,
                 // schema states budgetItemId must be a string,
@@ -24,7 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(transaction)
     } catch (e) {
-        console.log(e)
         throw new ServerErrorResponse({
             message: 'Transaction not able to be created.',
             status: 400,

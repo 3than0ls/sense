@@ -14,6 +14,8 @@ import Spinner from './Spinner'
 import InformationCircle from './InformationCircle'
 import MagnifyingGlassCircle from './MagnifyingGlassCircle'
 import MagnifyingGlass from './MagnifyingGlass'
+import Plus from './Plus'
+import Minus from './Minus'
 
 type IconProps = {
     color?: string
@@ -32,6 +34,8 @@ type IconProps = {
         | 'information-circle'
         | 'magnifying-glass-circle'
         | 'magnifying-glass'
+        | 'plus'
+        | 'minus'
     className?: string
     interactive?: boolean
 }
@@ -96,6 +100,12 @@ const Icon = ({ color, type, className, interactive = false }: IconProps) => {
             break
         case 'magnifying-glass':
             icon = <MagnifyingGlass className={className} />
+            break
+        case 'plus':
+            icon = <Plus className={className} />
+            break
+        case 'minus':
+            icon = <Minus className={className} />
             break
     }
 

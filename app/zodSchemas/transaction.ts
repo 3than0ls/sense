@@ -10,6 +10,7 @@ export type TransactionFormSchemaType = z.infer<typeof transactionFormSchema>
 export const transactionSchema = transactionFormSchema.extend({
     budgetItemId: z.string().uuid().or(z.literal('')),
     accountId: z.string().uuid(),
+    transactionFlow: z.literal('inflow').or(z.literal('outflow')),
 })
 
 export const updateTransactionSchema = transactionSchema.extend({

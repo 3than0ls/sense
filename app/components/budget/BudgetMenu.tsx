@@ -32,7 +32,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const freeCashTransactions = totalFreeCashTransactions(budgetData)
     const totalAssigned = budgetTotalAssignments(budgetData)
     const totalCash =
-        totalAccounts - budgetItemTransactions - freeCashTransactions
+        totalAccounts + budgetItemTransactions + freeCashTransactions
     const freeCash = totalCash - totalAssigned + budgetItemTransactions
 
     const { setActive, setModalChildren, setModalTitle } = useModal()

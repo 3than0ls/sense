@@ -38,7 +38,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
 
     const transactions = totalTransactions(budgetItem.transactions)
     const assigned = totalAssignments(budgetItem.assignments)
-    const balance = assigned - transactions
+    const balance = assigned + transactions
 
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
