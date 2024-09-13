@@ -1,4 +1,4 @@
-import { Outlet } from '@remix-run/react'
+import { Outlet, useParams } from '@remix-run/react'
 import Icon from '../icons/Icon'
 import {
     budgetTotalAccounts,
@@ -10,6 +10,7 @@ import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
+import { BudgetItem } from '@prisma/client'
 
 type BudgetMenuProps = {
     budgetData: FullBudgetDataType
@@ -35,8 +36,20 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
         totalAccounts + budgetItemTransactions + freeCashTransactions
     const freeCash = totalCash - totalAssigned + budgetItemTransactions
 
+    const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()
     const onTransacClick = () => {
+        let defaultItem: BudgetItem | undefined = undefined
+        if (params['budgetItemId'] !== undefined) {
+            defaultItem = budgetData.budgetCategories
+                .map((bCat) =>
+                    bCat.budgetItems.find(
+                        (bItem) => bItem.id === params.budgetItemId
+                    )
+                )
+                .find((bItem) => bItem !== undefined)
+        }
+
         setModalChildren(
             <TransactionForm
                 budgetId={budgetData.id}
@@ -44,6 +57,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                 budgetItems={budgetData.budgetCategories.flatMap(
                     (cat) => cat.budgetItems
                 )}
+                defaultBudgetItem={defaultItem}
             />
         )
         setModalTitle('Log Transaction')
