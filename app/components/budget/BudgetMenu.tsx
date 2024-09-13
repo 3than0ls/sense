@@ -3,6 +3,7 @@ import Icon from '../icons/Icon'
 import {
     budgetTotalAccounts,
     budgetTotalAssignments,
+    budgetTotalTransactions,
 } from '~/utils/budgetValues'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
@@ -25,9 +26,11 @@ const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    const totalCash = budgetTotalAccounts(budgetData)
-    const assignedCash = budgetTotalAssignments(budgetData)
-    const freeCash = totalCash - assignedCash
+    const totalAccounts = budgetTotalAccounts(budgetData)
+    const totalTransactions = budgetTotalTransactions(budgetData)
+    const totalAssigned = budgetTotalAssignments(budgetData)
+    const totalCash = totalAccounts - totalTransactions
+    const freeCash = totalCash - totalAssigned
 
     const { setActive, setModalChildren, setModalTitle } = useModal()
     const onTransacClick = () => {

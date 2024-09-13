@@ -4,7 +4,10 @@ import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
 import { Link } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
-import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
+import {
+    totalAssignments,
+    totalBudgetItemTransactions,
+} from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
 import { useTheme } from '~/context/ThemeContext'
 import { BudgetItem as BudgetItemT } from '@prisma/client'
@@ -36,7 +39,7 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     const { name, target } = budgetItem
     const [expanded, setExpanded] = useState(false)
 
-    const transactions = totalTransactions(budgetItem.transactions)
+    const transactions = totalBudgetItemTransactions(budgetItem.transactions)
     const assigned = totalAssignments(budgetItem.assignments)
     const balance = assigned - transactions
 

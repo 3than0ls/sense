@@ -37,9 +37,19 @@ export default async function fullBudgetData({
                     order: 'asc',
                 },
             },
-            accounts: true,
+            accounts: {
+                include: {
+                    transactions: {
+                        where: {
+                            budgetItemId: null,
+                        },
+                    },
+                },
+            },
         },
     })
+
+    console.log(baseData.accounts)
 
     return baseData
 }

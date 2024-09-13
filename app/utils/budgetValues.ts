@@ -34,19 +34,30 @@ export function budgetTotalAccounts(budgetData: FullBudgetDataType) {
  * Calculates the total dollar of transactions a budget has, given a budgetData with FullBudgetDataType
  */
 export function budgetTotalTransactions(budgetData: FullBudgetDataType) {
-    return budgetData.budgetCategories.reduce((catAccum, cat) => {
-        return (
-            catAccum +
-            cat.budgetItems.reduce((itemAccum, item) => {
-                return (
-                    itemAccum +
-                    item.transactions.reduce((transacAccum, transac) => {
-                        return transacAccum + transac.amount
-                    }, 0)
-                )
-            }, 0)
-        )
-    }, 0)
+    // all the transactions associated with budgetItems, plus the ones that are not
+    return (
+        budgetData.budgetCategories.reduce((catAccum, cat) => {
+            return (
+                catAccum +
+                cat.budgetItems.reduce((itemAccum, item) => {
+                    return (
+                        itemAccum +
+                        item.transactions.reduce((transacAccum, transac) => {
+                            return transacAccum + transac.amount
+                        }, 0)
+                    )
+                }, 0)
+            )
+        }, 0) +
+        budgetData.accounts.reduce((accountAccum, account) => {
+            return (
+                accountAccum +
+                account.transactions.reduce((transacAccum, transac) => {
+                    return transacAccum + transac.amount
+                }, 0)
+            )
+        }, 0)
+    )
 }
 
 /**
@@ -83,6 +94,6 @@ export function totalAssignments(assignments: Assignment[]) {
  * @param transactions An array of transactions in one singular budget or for one singular budget item
  * @returns The amount transacted from a budget item
  */
-export function totalTransactions(transactions: Transaction[]) {
+export function totalBudgetItemTransactions(transactions: Transaction[]) {
     return _sum_amount(transactions)
 }
