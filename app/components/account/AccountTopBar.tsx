@@ -11,7 +11,7 @@ type AccountTopBarProps = {
 
 const BigNumber = ({ number, label }: { number: number; label: string }) => {
     return (
-        <div className="flex flex-col w-fit items-center py-0.5">
+        <div className="flex flex-col w-fit items-center pb-0.5">
             <span className="text-2xl leading-[1.1]">
                 {toCurrencyString(number)}
             </span>

@@ -22,17 +22,11 @@ Text color change based on budget states (namely red on negative)
 A name for the projecte
 
 NEXT: 
-leading on account topbar number makes it loook not center
-
 Sidebar (medium) (have to make design decisions)
 
 Add reconciliations in Account (hard)  <--- NEXT 4.0
 
-finish account topbar (medium) (have to make design decisions) <--- NEXT 4.1
-
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT!!!
-
-transaction on budgetmenu base, make it so that if there is a budget item also navigated to, automatically make that the budget item target (easy) <--- NEXT!!
 
 prisma optimization by only fetching what's needed, and then also correct type annotations using Pick
 
