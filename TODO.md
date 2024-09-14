@@ -24,9 +24,11 @@ A name for the projecte
 NEXT: 
 Sidebar (medium) (have to make design decisions)
 
-Add reconciliations in Account (hard)  <--- NEXT 4.0
-
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT!!!
+
+CreateUpdate form, don't say create (x), maybe just say add or make (EASY)
+
+Change item assignment completely by possibly removing the Assignment model, just have it as one number that is updated.
 
 prisma optimization by only fetching what's needed, and then also correct type annotations using Pick
 
@@ -38,3 +40,6 @@ replace Dropdown with shadcn's more sophisticated combobox (see dropdown menu) h
 replace AccountTransaction's table with shadcn's Resizeable so column widths are draggable (https://ui.shadcn.com/docs/components/resizable). Perhaps some more advanced features to, including searching, filtering, and sorting
 optimistic UI; easily implemented for BudgetMenuForm on budget item's transaction
 clip the modal scrollbar with rounded corners
+
+KNOWN BUGS:
+In account reconciliation, if you type a exponential number (ex: 4e10), the reconciliation amount preview will display as if valid

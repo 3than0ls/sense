@@ -4,6 +4,7 @@ import toCurrencyString from '~/utils/toCurrencyString'
 import Icon from '../icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from '../budget/TransactionForm'
+import ReconcileForm from './ReconcileForm'
 
 type AccountTopBarProps = {
     accountData: FullAccountDataType
@@ -53,20 +54,19 @@ const AccountTopBar = ({ accountData }: AccountTopBarProps) => {
         setActive(true)
     }
 
+    const onReconcileClick = () => {
+        setModalChildren(
+            <ReconcileForm accountData={accountData} accountBalance={balance} />
+        )
+        setModalTitle('Reconcile Account')
+        setActive(true)
+    }
+
     return (
         <div className="border-y border-subtle w-full flex items-center gap-10 px-4 py-2">
-            {/* <BigNumber
-                number={accountData.initialBalance}
-                label="Initial Balance"
-            />
-            <span className="text-4xl leading-none  text-subtle">
-                {totalTransactions >= 0 ? '-' : '+'}
-            </span>
-            <BigNumber number={totalTransactions} label="Total Transactions" />
-            <span className="text-4xl leading-none  text-subtle">=</span> */}
             <BigNumber number={balance} label="Current Balance" />
             <div className="flex gap-4 ml-auto">
-                <TopBarButton onClick={() => alert('reconcile account')}>
+                <TopBarButton onClick={onReconcileClick}>
                     Reconcile
                     <Icon type="magnifying-glass-circle" className="size-6" />
                 </TopBarButton>
