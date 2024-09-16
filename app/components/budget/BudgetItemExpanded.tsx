@@ -46,10 +46,20 @@ const BudgetItemExpanded = ({
             "You've over-spent on this item! Reassign money to balance it out."
     } else if (target === 0) {
         tip = 'Set a target for this item.'
-    } else if (assigned !== target) {
+    } else if (balance === 0 && target === assigned) {
+        tip =
+            "You've reached your target and spent all the money for this period."
+    } else if (balance === 0 && assigned < target) {
+        tip =
+            "You've spent all the money assigned to this item. Assign more if needed."
+    } else if (assigned < target) {
         tip = `Assign ${toCurrencyString(
             target - assigned
         )} more to reach your target of ${toCurrencyString(target)}.`
+    } else if (assigned > target) {
+        tip = `You've over-assigned your target by ${toCurrencyString(
+            assigned - target
+        )}! Consider adjusting your target.`
     } else if (assigned === target) {
         tip = `You've met your target! You have ${toCurrencyString(
             balance

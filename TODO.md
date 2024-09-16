@@ -22,17 +22,14 @@ Text color change based on budget states (namely red on negative)
 A name for the projecte
 
 NEXT: 
+
 Sidebar (medium) (have to make design decisions)
 
 when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT!!!
 
-CreateUpdate form, don't say create (x), maybe just say add or make (EASY)
+fullBudgetData will also fetch all transactions for that month in calculating spent, thus it also refreshes monthly to zero (MEDIUM)
 
-Reconcile account make the whole text blob a dropdown
-
-- fullBudgetData will also fetch all transactions for that month in calculating spent, thus it also refreshes monthly to zero
-
-VASTLY simplify budgetValues, universally use totalAmount, with few other exceptions, rather than whatever is used now (EASY)
+fetch transactions only of the month to date, allowing balance to refresh monthly
 
 autofocus inputs when clicking on ThreeValues
 

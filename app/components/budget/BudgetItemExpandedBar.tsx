@@ -15,6 +15,18 @@ const bindNumber = (num: number, min: number, max: number) => {
     return Math.min(Math.max(num, min), max)
 }
 
+const indicatorPosition = (num: number) => {
+    const distance = 2
+
+    if (num < 0) {
+        return -distance
+    }
+    if (num > 100) {
+        return 100 + distance
+    }
+    return bindNumber(num, 1, 99)
+}
+
 const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
     const { theme } = useTheme()
 
@@ -28,10 +40,19 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
                 left: `${x}%`,
             }}
         >
+            {(x < 0 || x > 100) && (
+                <hr
+                    className={`absolute 
+                        ${x < 0 && 'left-0'} 
+                        ${x > 100 && 'right-0'}
+                        bottom-2 z-0 w-12 h-[3px] ${themeStyle}`}
+                />
+            )}
+
             <div
                 className={`absolute ${
                     direction === 'up' ? '-top-[30px]' : '-top-[30px] '
-                } flex flex-col items-center`}
+                } z-30 flex flex-col items-center`}
             >
                 <div
                     className={`w-[4px] ${
@@ -39,9 +60,16 @@ const Indicator = ({ label, amount, x, direction }: IndicatorProps) => {
                     }  ${themeStyle}`}
                 ></div>
                 <span
-                    className={`${themeStyle} px-3 py-1 text-xs rounded-full`}
+                    className={`${themeStyle} flex items-center justify-center gap-1 px-3 py-1 text-xs rounded-full`}
                 >
-                    {label}: {toCurrencyString(amount)}
+                    <hr
+                        className={`${
+                            label === 'Balance' ? 'bg-balance' : 'bg-assigned'
+                        } border aspect-square h-2 rounded-full`}
+                    />
+                    <span className={`${amount < 0 && 'text-bad'}`}>
+                        {toCurrencyString(amount)}
+                    </span>
                 </span>
             </div>
         </div>
@@ -59,17 +87,26 @@ const BudgetItemExpandedBar = ({
     target,
     assigned,
 }: BudgetItemExpandedBarProps) => {
-    const assignedWidthUnadjusted = (assigned / (target || 1)) * 100
-    const assignedWidth =
-        assigned >= 0 && assigned <= 100
-            ? bindNumber(assignedWidthUnadjusted, 1, 99)
-            : bindNumber(assignedWidthUnadjusted, 0, 100)
-    const balanceWidthUnadjusted = (balance / (target || 1)) * 100
-    const balanceWidth =
-        balance >= 0 && balance <= 100
-            ? bindNumber(balanceWidthUnadjusted, 1, 99)
-            : bindNumber(balanceWidthUnadjusted, 0, 100)
-    const stacked = Math.abs(balanceWidth - assignedWidth) < 15 && balance !== 0
+    const assignedRatio = (assigned / (target || 1)) * 100
+    const assignedWidth = bindNumber(assignedRatio, 0, 100)
+    const assignedIndicator = indicatorPosition(assignedRatio)
+
+    const balanceRatio = (balance / (target || 1)) * 100
+    const balanceWidth = bindNumber(balanceRatio, 0, 100)
+    const balanceIndicator = indicatorPosition(balanceRatio)
+
+    // const assignedWidthUnadjusted = (assigned / (target || 1)) * 100
+    // const assignedWidth =
+    //     assigned >= 0 && assigned <= 100
+    //         ? bindNumber(assignedWidthUnadjusted, 1, 99)
+    //         : bindNumber(assignedWidthUnadjusted, 0, 100)
+    // const balanceWidthUnadjusted = (balance / (target || 1)) * 100
+    // const balanceWidth =
+    //     balance >= 0 && balance <= 100
+    //         ? bindNumber(balanceWidthUnadjusted, 1, 99)
+    //         : bindNumber(balanceWidthUnadjusted, 0, 100)
+    const stacked =
+        Math.abs(balanceWidth - assignedWidth) < 15 && balance !== assigned
 
     return (
         <div
@@ -78,7 +115,7 @@ const BudgetItemExpandedBar = ({
             } px-20 relative w-full flex flex-col justify-center items-start`}
         >
             <div
-                className={`h-[20px] relative flex justify-end items-center w-full rounded-lg overflow-x-hidden`}
+                className={`h-[20px] z-20 relative flex justify-end items-center w-full rounded-lg overflow-x-hidden`}
             >
                 {/* <span className="mr-2">{target}</span> */}
                 <div className="absolute left-0 bg-target w-full h-full rounded-lg" />
@@ -96,20 +133,20 @@ const BudgetItemExpandedBar = ({
                 />
             </div>
             <div className="relative w-full">
-                <Indicator
-                    label="Assigned"
-                    amount={assigned}
-                    x={assignedWidth}
-                    direction={stacked ? 'up' : 'down'}
-                />
-                {balance !== 0 && (
+                {balance !== assigned && (
                     <Indicator
-                        label="Balance"
-                        amount={balance}
-                        x={balanceWidth}
+                        label="Assigned"
+                        amount={assigned}
+                        x={assignedIndicator}
                         direction="down"
                     />
                 )}
+                <Indicator
+                    label="Balance"
+                    amount={balance}
+                    x={balanceIndicator}
+                    direction={stacked ? 'up' : 'down'}
+                />
             </div>
         </div>
     )
