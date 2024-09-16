@@ -14,7 +14,7 @@ import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
+import { budgetItemTransactionsAmount } from '~/utils/budgetValues'
 import {
     itemAssignedSchema,
     itemNameSchema,
@@ -45,7 +45,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
         const assigned = (await findOrCreateAssignmentForMonth(budgetItem))
             .amount
-        const transactions = totalTransactions(budgetItem.transactions)
+        const transactions = budgetItemTransactionsAmount(budgetItem)
         const balance = assigned + transactions
 
         return json({ budgetItem, assigned, balance })

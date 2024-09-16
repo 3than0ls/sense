@@ -5,9 +5,8 @@ import BudgetItemExpanded from './BudgetItemExpanded'
 import { Link } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import {
-    assignedAmount,
-    totalAssignments,
-    totalTransactions,
+    budgetItemAssignedAmount,
+    budgetItemTransactionsAmount,
 } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
 import { useTheme } from '~/context/ThemeContext'
@@ -40,8 +39,8 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     const { name, target } = budgetItem
     const [expanded, setExpanded] = useState(false)
 
-    const transactions = totalTransactions(budgetItem.transactions)
-    const assigned = assignedAmount(budgetItem)
+    const transactions = budgetItemTransactionsAmount(budgetItem)
+    const assigned = budgetItemAssignedAmount(budgetItem)
     const balance = assigned + transactions
 
     // ideas for the progress bar that will definitely be put in it's own component:

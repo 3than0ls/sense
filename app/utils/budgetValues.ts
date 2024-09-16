@@ -1,5 +1,6 @@
-import { Assignment, BudgetItem, Transaction } from '@prisma/client'
+import { Assignment, Transaction } from '@prisma/client'
 import { FullBudgetDataType } from '../prisma/fullBudgetData'
+import { FullAccountDataType } from '~/prisma/fullAccountData'
 
 /**
  * All of these functions are trusting and assuming the user of the function
@@ -19,11 +20,10 @@ function _sum_amount(x: _GenericType[]) {
     }, 0)
 }
 
-/**
- * Intended to calculate the total amount of cash in a budget, based off it's accounts.
- * @param accounts An array of accounts in one singular budget
- * @returns The total cash of a budget
- */
+// *********************************************************************
+// FUNCTIONS CONCERNING CALCULATING VALUES FROM BUDGET DATA AS A WHOLE
+// *********************************************************************
+
 export function budgetTotalAccounts(budgetData: {
     accounts: {
         initialBalance: number
@@ -34,9 +34,6 @@ export function budgetTotalAccounts(budgetData: {
     }, 0)
 }
 
-/**
- * Calculates the total dollar of transactions a budget has with, given a budgetData with FullBudgetDataType
- */
 export function totalBudgetItemTransactions(budgetData: FullBudgetDataType) {
     // all the transactions associated with budgetItems, plus the ones that are not
     return budgetData.budgetCategories.reduce((catAccum, cat) => {
@@ -54,30 +51,6 @@ export function totalBudgetItemTransactions(budgetData: FullBudgetDataType) {
     }, 0)
 }
 
-/**
- * Calculates the total dollar of assignments a budget has, given a budgetData with FullBudgetDataType
- */
-export function budgetTotalAssignments(budgetData: {
-    budgetCategories: {
-        budgetItems: {
-            assignments: Assignment[]
-        }[]
-    }[]
-}) {
-    return budgetData.budgetCategories.reduce((catAccum, cat) => {
-        return (
-            catAccum +
-            cat.budgetItems.reduce((itemAccum, item) => {
-                return itemAccum + assignedAmount(item)
-                // return itemAccum + totalAssignments(item.assignments)
-            }, 0)
-        )
-    }, 0)
-}
-
-/**
- * Calculates the total dollar of transactions a budget has in transactions without a budgetItemId, given a budgetData with FullBudgetDataType
- */
 export function totalFreeCashTransactions(budgetData: FullBudgetDataType) {
     return budgetData.accounts.reduce((accountAccum, account) => {
         return (
@@ -89,30 +62,35 @@ export function totalFreeCashTransactions(budgetData: FullBudgetDataType) {
     }, 0)
 }
 
-/**
- *  Intended to calculate the total assignments of any sort of list of assignments
- * @param assignments An array of assignments in one singular budget or for one singular budget item
- * @param assignments An array of assignments in one singular budget for one singular budget item
- * @returns The amount assigned to a budget item
- */
-export function totalAssignments(
-    assignments: {
-        amount: number
-    }[]
-) {
-    return _sum_amount(assignments)
+export function budgetTotalTransactions(budgetData: FullBudgetDataType) {
+    return (
+        totalFreeCashTransactions(budgetData) +
+        totalBudgetItemTransactions(budgetData)
+    )
 }
 
-/**
- *  Intended to calculate the total transactions of any sort of list of transactions
- * @param transactions An array of transactions in one singular budget or for one singular budget item
- * @returns The amount transacted from a budget item
- */
-export function totalTransactions(transactions: Transaction[]) {
-    return _sum_amount(transactions)
+export function budgetTotalAssignments(budgetData: FullBudgetDataType) {
+    return budgetData.budgetCategories.reduce((catAccum, cat) => {
+        return (
+            catAccum +
+            cat.budgetItems.reduce((itemAccum, item) => {
+                return itemAccum + budgetItemAssignedAmount(item)
+            }, 0)
+        )
+    }, 0)
 }
 
-export function assignedAmount(budgetItem: {
+// *********************************************************************
+// FUNCTIONS CONCERNING CALCULATING VALUES FOR A SINGULAR BUDGET ITEM
+// *******************************************************************
+
+export function budgetItemTransactionsAmount(budgetItem: {
+    transactions: Pick<Transaction, 'amount'>[]
+}) {
+    return _sum_amount(budgetItem.transactions)
+}
+
+export function budgetItemAssignedAmount(budgetItem: {
     assignments: Pick<Assignment, 'amount'>[]
 }) {
     if (budgetItem.assignments.length === 0) {
@@ -120,4 +98,14 @@ export function assignedAmount(budgetItem: {
     } else {
         return budgetItem.assignments[0].amount
     }
+}
+
+// *********************************************************************
+// FUNCTIONS CONCERNING CALCULATING VALUES FROM AN ACCOUNT AS A WHOLE
+// *******************************************************************
+
+export function accountTotalTransactions(accountData: FullAccountDataType) {
+    return accountData.transactions.reduce((accum, transac) => {
+        return accum + transac.amount
+    }, 0)
 }
