@@ -89,8 +89,12 @@ export default function CreateUpdateModalForm<FormValues extends FieldValues>({
             {type === 'update' && (
                 <div className="w-full mt-6 flex flex-col gap-4">
                     <Divider themed />
-                    <DeleteButton onClick={onDeleteClick}>
+                    <DeleteButton
+                        className="flex gap-4 justify-center"
+                        onClick={onDeleteClick}
+                    >
                         Delete {name}
+                        <Icon type="trash" />
                     </DeleteButton>
                 </div>
             )}

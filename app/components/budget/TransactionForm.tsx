@@ -174,6 +174,9 @@ const TransactionForm = ({
                     />
                 )
             }
+            submitButtonText={
+                editTransaction ? 'Update Transaction' : 'Log Transaction'
+            }
         >
             <div className="w-full flex gap-4">
                 <div className="w-72">
