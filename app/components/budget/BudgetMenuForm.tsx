@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useFetcher, useRevalidator } from '@remix-run/react'
+import { useFetcher } from '@remix-run/react'
 import { BudgetCategory } from '@prisma/client'
 
 type BudgetMenuProps = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
 

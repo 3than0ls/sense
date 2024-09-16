@@ -1,35 +1,12 @@
-TODO list:
---- Backend ---
-API routes (action) for creating (POST) Budget, BudgetCategory, BudgetItem, Account, Transaction
-API routes (action) for editing (POST) Budget, BudgetCategory, BudgetItem, Account, Trnasaction
- - not sure how exactly this will work? should we just send PATCH/update? or do a full PUT/replacement? Tyler's choice
-API routes (loader) for getting (GET) Budget, BudgetCategory, BudgetItem, Account, Transaction
-
---- Middle ---
-OAuth account creation?
-
---- Frontend ---
-Form for: (creating an item creates it with some default values which the user then edits, and the edit menu is ofc auto opened)
-    - Create/Edit Budget
-    - Create/Edit BudgetCategory
-    - Create/Edit BudgetItem
-    - Create/Edit Account
-    - Create/Edit Transaction
-Custom scrollbar
-Text color change based on budget states (namely red on negative)
-
---- Misc. ---
+=-- Misc. --=
 A name for the projecte
 
 NEXT: 
 
 Sidebar (medium) (have to make design decisions)
 
-when money is fully spent, budget item expanded bar looks funny, + tip needs to be fixed when 0 left to spend; styling in general for BIExpandedBar is just off <--- NEXT!!!
-
 fullBudgetData will also fetch all transactions for that month in calculating spent, thus it also refreshes monthly to zero (MEDIUM)
-
-fetch transactions only of the month to date, allowing balance to refresh monthly
+- fetch transactions only of the month to date, allowing balance to refresh monthly =
 
 autofocus inputs when clicking on ThreeValues
 

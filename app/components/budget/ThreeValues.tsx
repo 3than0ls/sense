@@ -59,6 +59,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
             <Link
                 to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
                 className="w-24 flex justify-end items-center gap-2"
+                onClick={onTargetClick}
             >
                 <span className="text-right">
                     {toCurrencyString(budgetItem.target)}
