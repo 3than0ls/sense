@@ -10,3 +10,8 @@ export const itemTargetSchema = z.object({
     target: numberSchema,
     id: z.string().uuid(),
 })
+
+export const itemAssignedSchema = z.object({
+    amount: numberSchema,
+    id: z.string().uuid(),
+})

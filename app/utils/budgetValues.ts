@@ -1,4 +1,4 @@
-import { Assignment, Transaction } from '@prisma/client'
+import { Assignment, BudgetItem, Transaction } from '@prisma/client'
 import { FullBudgetDataType } from '../prisma/fullBudgetData'
 
 /**
@@ -24,7 +24,11 @@ function _sum_amount(x: _GenericType[]) {
  * @param accounts An array of accounts in one singular budget
  * @returns The total cash of a budget
  */
-export function budgetTotalAccounts(budgetData: FullBudgetDataType) {
+export function budgetTotalAccounts(budgetData: {
+    accounts: {
+        initialBalance: number
+    }[]
+}) {
     return budgetData.accounts.reduce((accum, account) => {
         return accum + account.initialBalance
     }, 0)
@@ -53,17 +57,19 @@ export function totalBudgetItemTransactions(budgetData: FullBudgetDataType) {
 /**
  * Calculates the total dollar of assignments a budget has, given a budgetData with FullBudgetDataType
  */
-export function budgetTotalAssignments(budgetData: FullBudgetDataType) {
+export function budgetTotalAssignments(budgetData: {
+    budgetCategories: {
+        budgetItems: {
+            assignments: Assignment[]
+        }[]
+    }[]
+}) {
     return budgetData.budgetCategories.reduce((catAccum, cat) => {
         return (
             catAccum +
             cat.budgetItems.reduce((itemAccum, item) => {
-                return (
-                    itemAccum +
-                    item.assignments.reduce((assignAccum, assign) => {
-                        return assignAccum + assign.amount
-                    }, 0)
-                )
+                return itemAccum + assignedAmount(item)
+                // return itemAccum + totalAssignments(item.assignments)
             }, 0)
         )
     }, 0)
@@ -89,7 +95,11 @@ export function totalFreeCashTransactions(budgetData: FullBudgetDataType) {
  * @param assignments An array of assignments in one singular budget for one singular budget item
  * @returns The amount assigned to a budget item
  */
-export function totalAssignments(assignments: Assignment[]) {
+export function totalAssignments(
+    assignments: {
+        amount: number
+    }[]
+) {
     return _sum_amount(assignments)
 }
 
@@ -100,4 +110,14 @@ export function totalAssignments(assignments: Assignment[]) {
  */
 export function totalTransactions(transactions: Transaction[]) {
     return _sum_amount(transactions)
+}
+
+export function assignedAmount(budgetItem: {
+    assignments: Pick<Assignment, 'amount'>[]
+}) {
+    if (budgetItem.assignments.length === 0) {
+        return 0
+    } else {
+        return budgetItem.assignments[0].amount
+    }
 }

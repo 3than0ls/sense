@@ -1,5 +1,4 @@
 import { useModal } from '~/context/ModalContext'
-import AssignmentForm from './AssignmentForm'
 import { BudgetItem } from '@prisma/client'
 import TransactionForm from './TransactionForm'
 import { Link } from '@remix-run/react'
@@ -14,14 +13,11 @@ type ThreeValuesProps = {
 const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     const { setModalTitle, setModalChildren, setActive } = useModal()
     const onAssignClick = () => {
-        setModalTitle(`Assign Money to ${budgetItem.name}`)
-        setModalChildren(
-            <AssignmentForm
-                targetBudgetItem={budgetItem}
-                targetBudgetItemAssigned={assigned}
-            />
-        )
-        setActive(true)
+        // TODO: set autofocus to Assigned on budget item page
+    }
+
+    const onTargetClick = () => {
+        // TODO: set autofocus to Target on budget item page
     }
 
     const onBalanceClick = () => {

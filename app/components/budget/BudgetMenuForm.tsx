@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
@@ -56,7 +56,6 @@ const BudgetMenuForm = ({
     const inputValue = watch(name)
 
     const fetcher = useFetcher()
-    const validator = useRevalidator()
 
     const { theme } = useTheme()
     const themeStyles =
@@ -79,10 +78,16 @@ const BudgetMenuForm = ({
                 { [name]: getValues(name), id: itemUuid },
                 { method: 'PATCH', action }
             )
-            validator.revalidate()
             inputRef.current?.blur()
         }
     }
+
+    // const validator = useRevalidator()
+    // useEffect(() => {
+    //     if (fetcher.data && fetcher.state === 'idle') {
+    //         validator.revalidate()
+    //     }
+    // }, [fetcher.state, fetcher.data, validator])
 
     // we don't use fetcher.Form because we mainly use fetcher for fetcher.submit
     return (

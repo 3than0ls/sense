@@ -32,9 +32,11 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const budgetItemTransactions = totalBudgetItemTransactions(budgetData)
     const freeCashTransactions = totalFreeCashTransactions(budgetData)
     const totalAssigned = budgetTotalAssignments(budgetData)
+
     const totalCash =
         totalAccounts + budgetItemTransactions + freeCashTransactions
-    const freeCash = totalCash - totalAssigned + budgetItemTransactions
+
+    const freeCash = totalCash - totalAssigned - budgetItemTransactions
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()
@@ -71,10 +73,6 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                 <BudgetMenuCard label="Total Cash" value={totalCash} />
             </div>
             <div className="w-full flex flex-col gap-4">
-                {/* <BudgetMenuLink href="transaction">
-                    <Icon type="currency-dollar" className="size-8 mx-2" />
-                    <span>Add transaction</span>
-                </BudgetMenuLink> */}
                 <button
                     onClick={onTransacClick}
                     className="w-full bg-primary hover:bg-opacity-60 transition-all duration-400 ease-in-out rounded-lg font-work-bold p-1.5 flex justify-center items-center"
@@ -82,10 +80,6 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                     <Icon type="currency-dollar" className="size-8 mx-2" />
                     <span>Add transaction</span>
                 </button>
-                {/* <BudgetMenuLink href="assign">
-                    <Icon type="plus-circle" className="size-8 mx-2" />
-                    <span>Assign free cash</span>
-                </BudgetMenuLink> */}
             </div>
             <Outlet />
         </div>

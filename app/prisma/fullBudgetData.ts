@@ -1,4 +1,5 @@
 import prisma from '~/prisma/client'
+import getStartOfMonth from '~/utils/getStartOfMonth'
 
 /**
  * Given a budget ID and user ID, retrieve ALL of the budget's data, which includes
@@ -21,7 +22,14 @@ export default async function fullBudgetData({
                     budgetItems: {
                         include: {
                             transactions: true,
-                            assignments: true,
+                            assignments: {
+                                where: {
+                                    createdAt: {
+                                        gte: getStartOfMonth(),
+                                    },
+                                },
+                                take: 1,
+                            },
                         },
                         orderBy: [
                             {

@@ -5,7 +5,6 @@ import Icon from '../icons/Icon'
 import Information from '../Information'
 import BudgetItemExpandedTable from './BudgetItemExpandedTable'
 import { useModal } from '~/context/ModalContext'
-import AssignmentForm from './AssignmentForm'
 import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
 
@@ -58,16 +57,6 @@ const BudgetItemExpanded = ({
     }
 
     const { setModalChildren, setModalTitle, setActive } = useModal()
-    const onAssignClick = () => {
-        setModalTitle(`Assign Money to ${name}`)
-        setModalChildren(
-            <AssignmentForm
-                targetBudgetItem={{ id, target, budgetId }}
-                targetBudgetItemAssigned={assigned}
-            />
-        )
-        setActive(true)
-    }
 
     const onTransacClick = () => {
         setModalChildren(
@@ -95,10 +84,6 @@ const BudgetItemExpanded = ({
                     <BudgetItemExpandedButton onClick={onTransacClick}>
                         Add Transaction
                         <Icon type="currency-dollar" />
-                    </BudgetItemExpandedButton>
-                    <BudgetItemExpandedButton onClick={onAssignClick}>
-                        Assign money
-                        <Icon type="plus-circle" />
                     </BudgetItemExpandedButton>
                 </div>
                 <BudgetItemExpandedTable

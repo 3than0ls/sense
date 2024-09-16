@@ -16,7 +16,6 @@ export default async function fullBudgetItemData({
             budget: { userId },
         },
         include: {
-            // assignments: true,
             transactions: {
                 include: {
                     budgetItem: {

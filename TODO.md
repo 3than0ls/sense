@@ -30,7 +30,23 @@ CreateUpdate form, don't say create (x), maybe just say add or make (EASY)
 
 Change item assignment completely by possibly removing the Assignment model, just have it as one number that is updated.
 
+- Assignment model will still exist, however only one will exist per month. 
+- fullBudgetData will fetch the assignment for that month, thus it refreshes monthly to zero
+- this allows it to be just one number that is updated rather than cumulative, and allows us to replace the assignmentForm with just a BudgetMenuForm
+The following files rely on logic that depend on Assignment being a cumulative value:
+- budgetVAlues.ts (totalAssignments), budget.$budgetId.$budgetCategoryId.$budgetItemId.tsx (loader [calculating balance]), api.assign.create.ts (assigned, calculating free cash to subtract from), BudgetItem.tsx (component)
+
+- fullBudgetData will also fetch all transactions for that month in calculating spent, thus it also refreshes monthly to zero
+
+VASTLY simplify budgetValues, universally use totalAmount, with few other exceptions, rather than whatever is used now (EASY)
+
+bug calculating free cash; see test3.1 account
+
+autofocus inputs when clicking on ThreeValues
+
 prisma optimization by only fetching what's needed, and then also correct type annotations using Pick
+
+when clicking log transaction from expanded budget item, the dropdown has one item yet doesnt auto-pick bug
 
 FUTURE NON ESSENTIALS:
 transaction to more than one item

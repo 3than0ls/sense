@@ -1,9 +1,13 @@
 import { BudgetItem } from '@prisma/client'
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
-import { useLoaderData, useNavigate } from '@remix-run/react'
+import {
+    useFetcher,
+    useLoaderData,
+    useNavigate,
+    useRevalidator,
+} from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
-import AssignmentForm from '~/components/budget/AssignmentForm'
 import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
@@ -11,11 +15,16 @@ import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
 import { totalAssignments, totalTransactions } from '~/utils/budgetValues'
-import { itemNameSchema, itemTargetSchema } from '~/zodSchemas/budgetItem'
+import {
+    itemAssignedSchema,
+    itemNameSchema,
+    itemTargetSchema,
+} from '~/zodSchemas/budgetItem'
 import DeleteButton from '~/components/DeleteButton'
 import Divider from '~/components/Divider'
 import DeleteForm from '~/components/DeleteForm'
 import toCurrencyString from '~/utils/toCurrencyString'
+import findOrCreateAssignmentForMonth from '~/prisma/assignmentForMonth'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
@@ -30,16 +39,16 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
                 },
             },
             include: {
-                assignments: true,
                 transactions: true,
             },
         })
 
-        const assigned = totalAssignments(budgetItem.assignments)
-        const spent = totalTransactions(budgetItem.transactions)
-        const balance = assigned - spent
+        const assigned = (await findOrCreateAssignmentForMonth(budgetItem))
+            .amount
+        const transactions = totalTransactions(budgetItem.transactions)
+        const balance = assigned + transactions
 
-        return json({ budgetItem, assigned, balance, spent })
+        return json({ budgetItem, assigned, balance })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -61,15 +70,16 @@ export default function BudgetItemEditRoute() {
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
     const { setActive, setModalTitle, setModalChildren } = useModal()
-    const onAssignClick = () => {
-        setModalTitle(`Assign Money to ${budgetItem.name}`)
-        setModalChildren(
-            <AssignmentForm
-                targetBudgetItem={budgetItem as unknown as BudgetItem}
-                targetBudgetItemAssigned={assigned}
-            />
+
+    const fetcher = useFetcher()
+    const onReachTargetClick = () => {
+        fetcher.submit(
+            { id: budgetItem.id, amount: budgetItem.target },
+            {
+                action: '/api/budItem/reassign',
+                method: 'POST',
+            }
         )
-        setActive(true)
     }
 
     const navigate = useNavigate()
@@ -116,30 +126,49 @@ export default function BudgetItemEditRoute() {
                 </div>
             </div>
             <Divider />
-            <div className="flex flex-col min-w-full gap-1">
-                <div className="mx-1 flex gap-3 items-center text-lg">
+            <div className="flex flex-col min-w-full gap-2 relative">
+                {/* <div className="mx-1 flex gap-3 items-center text-lg">
                     <span>Assigned</span>
                     <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
                     <span className="ml-auto">
                         {toCurrencyString(assigned)}
                     </span>
+                </div> */}
+                <div className="absolute mx-1 inset-0 flex text-lg w-fit h-fit gap-3 items-center">
+                    <span className="invisible">Assigned</span>
+                    <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
                 </div>
+                <BudgetMenuForm
+                    key={'assigned' + assigned.toFixed(2)}
+                    defaultValue={assigned.toFixed(2)}
+                    label="Assigned"
+                    name="amount"
+                    schema={itemAssignedSchema}
+                    action="/api/budItem/reassign"
+                    itemUuid={budgetItem.id}
+                    isMoney
+                />
                 <button
-                    className={`${altThemeStyle} w-full rounded-xl hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
-                    onClick={onAssignClick}
+                    disabled={assigned === budgetItem.target}
+                    className={`${altThemeStyle} disabled:opacity-80 disabled:bg-opacity-80 w-full rounded-lg hover:bg-opacity-80 transition px-4 py-2 flex justify-center gap-2 items-center`}
+                    onClick={onReachTargetClick}
                 >
-                    <span>Assign Money</span>
-                    <Icon type="plus-circle" />
+                    <span className="text-xs">Reach Target</span>
+                    {fetcher.state === 'idle' ? (
+                        <Icon type="plus-circle" className="size-4" />
+                    ) : (
+                        <Icon type="spinner" className="size-4 animate-spin" />
+                    )}
                 </button>
             </div>
             <Divider />
             <div className="flex flex-col w-full justify-center items-center relative">
                 <div className="absolute mx-1 inset-0 flex text-lg w-fit h-fit gap-3 items-center">
-                    <span className="text-transparent">Target</span>
+                    <span className="invisible">Target</span>
                     <hr className="bg-target border-0 aspect-square h-2 rounded-full" />
                 </div>
                 <BudgetMenuForm
-                    key={budgetItem.target}
+                    key={'target' + budgetItem.target.toFixed(2)}
                     defaultValue={budgetItem.target.toFixed(2)}
                     label="Target"
                     name="target"
