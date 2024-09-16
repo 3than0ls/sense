@@ -28,7 +28,7 @@ const LinkWrapper = ({
     return (
         <Link
             className={className}
-            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=name`}
         >
             {children}
         </Link>

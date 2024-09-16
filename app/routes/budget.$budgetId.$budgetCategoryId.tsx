@@ -5,6 +5,7 @@ import {
     useFetcher,
     useLoaderData,
     useMatches,
+    useSearchParams,
 } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
@@ -110,6 +111,9 @@ export default function BudgetCategoryEditRoute() {
         setActive(true)
     }
 
+    const [searchParams] = useSearchParams()
+    const focus = searchParams.get('f')
+
     // if further route matching, only render that
     const matches = useMatches()
     const hasFurtherRoute = matches.some(
@@ -135,6 +139,7 @@ export default function BudgetCategoryEditRoute() {
                     schema={categoryNameSchema}
                     action="/api/budCat/rename"
                     itemUuid={budgetCategory.id}
+                    focus={focus === 'name'}
                 />
             </div>
             <Divider />

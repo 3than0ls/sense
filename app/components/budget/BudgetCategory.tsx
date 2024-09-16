@@ -30,7 +30,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
             { action: '/api/budItem/create', method: 'POST' }
         )
     }
-    const onEditClick = () => navigate(budgetCategory.id)
+    // const onEditClick = () => navigate(budgetCategory.id)
 
     const onDeleteClick = () => {
         navigate(budgetCategory.id)
@@ -74,13 +74,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                         interactive
                     />
                 </button>
-                <button onClick={onEditClick}>
+                <Link to={`${budgetCategory.id}?f=name`}>
                     <Icon
                         type="edit"
                         className={`size-6 stroke-subtle ${themeStyle} transition`}
                         interactive
                     />
-                </button>
+                </Link>
                 <button onClick={onDeleteClick}>
                     <Icon
                         type="trash"

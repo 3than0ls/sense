@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
@@ -16,6 +16,7 @@ type BudgetMenuProps = {
     action?: string
     itemUuid: string
     isMoney?: boolean
+    focus?: boolean
 }
 
 const BudgetMenuForm = ({
@@ -27,6 +28,7 @@ const BudgetMenuForm = ({
     action,
     itemUuid,
     isMoney = false,
+    focus = false,
 }: BudgetMenuProps) => {
     // this component is an abomination
     // in an ideal world, this would not have been necessary, and I would've been able to use RemixForm
@@ -41,6 +43,7 @@ const BudgetMenuForm = ({
         watch,
         formState: { errors },
         handleSubmit,
+        setFocus,
     } = useForm({
         resolver: zodResolver(schema),
         reValidateMode: 'onChange',
@@ -56,6 +59,11 @@ const BudgetMenuForm = ({
     const inputValue = watch(name)
 
     const fetcher = useFetcher()
+
+    useEffect(() => {
+        if (focus)
+            setFocus(Object.keys(schema.shape).find((k) => k !== 'id') || '')
+    }, [])
 
     const { theme } = useTheme()
     const themeStyles =
@@ -81,13 +89,6 @@ const BudgetMenuForm = ({
             inputRef.current?.blur()
         }
     }
-
-    // const validator = useRevalidator()
-    // useEffect(() => {
-    //     if (fetcher.data && fetcher.state === 'idle') {
-    //         validator.revalidate()
-    //     }
-    // }, [fetcher.state, fetcher.data, validator])
 
     // we don't use fetcher.Form because we mainly use fetcher for fetcher.submit
     return (

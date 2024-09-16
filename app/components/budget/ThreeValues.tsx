@@ -47,7 +47,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
-                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=assign`}
                 onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
@@ -57,7 +57,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
-                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=target`}
                 className="w-24 flex justify-end items-center gap-2"
                 onClick={onTargetClick}
             >

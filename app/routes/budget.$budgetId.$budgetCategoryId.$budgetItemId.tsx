@@ -1,5 +1,10 @@
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
-import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
+import {
+    useFetcher,
+    useLoaderData,
+    useNavigate,
+    useSearchParams,
+} from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
 import Icon from '~/components/icons/Icon'
@@ -59,6 +64,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export default function BudgetItemEditRoute() {
     const { budgetItem, balance, assigned } = useLoaderData<typeof loader>()
 
+    const [searchParams] = useSearchParams()
+    const focus = searchParams.get('f')
+
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
@@ -109,6 +117,7 @@ export default function BudgetItemEditRoute() {
                     schema={itemNameSchema}
                     action="/api/budItem/rename"
                     itemUuid={budgetItem.id}
+                    focus={focus === 'name'}
                 />
             </div>
             <Divider />
@@ -121,13 +130,6 @@ export default function BudgetItemEditRoute() {
             </div>
             <Divider />
             <div className="flex flex-col min-w-full gap-2 relative">
-                {/* <div className="mx-1 flex gap-3 items-center text-lg">
-                    <span>Assigned</span>
-                    <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
-                    <span className="ml-auto">
-                        {toCurrencyString(assigned)}
-                    </span>
-                </div> */}
                 <div className="absolute mx-1 inset-0 flex text-lg w-fit h-fit gap-3 items-center">
                     <span className="invisible">Assigned</span>
                     <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
@@ -141,6 +143,7 @@ export default function BudgetItemEditRoute() {
                     action="/api/budItem/reassign"
                     itemUuid={budgetItem.id}
                     isMoney
+                    focus={focus === 'assign'}
                 />
                 <button
                     disabled={assigned === budgetItem.target}
@@ -170,6 +173,7 @@ export default function BudgetItemEditRoute() {
                     action="/api/budItem/retarget"
                     itemUuid={budgetItem.id}
                     isMoney
+                    focus={focus === 'target'}
                 />
             </div>
 
