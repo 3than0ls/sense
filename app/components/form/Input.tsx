@@ -70,7 +70,7 @@ const Input = ({
                     aria-label={label}
                     placeholder={placeholder}
                     className={
-                        `${themeStyles} rounded-lg p-2 h-32 transition-all duration-100 outline-none outline-offset-2` +
+                        `${themeStyles} rounded-lg p-2 h-24 transition-all duration-100 outline-none outline-offset-2` +
                         (error
                             ? ' outline-error outline-[3px]'
                             : ` ${focusThemeStyles} focus:outline-[3px]`)
