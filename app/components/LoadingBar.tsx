@@ -13,7 +13,6 @@ const LoadingBar = () => {
         'start' | 'stop' | 'end' | 'disappear'
     >('disappear')
 
-    // console.log(navigation.state)
     useEffect(() => {
         // may want to refine navigation.state !== 'idle' to just navigation.state === 'loading'
         // this would eliminate the submitting state, thus preventing loading bar when form submitting

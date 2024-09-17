@@ -19,7 +19,6 @@ export async function action({ request }: ActionFunctionArgs) {
         const { amount, id } = itemAssignedSchema.parse(
             Object.fromEntries(data)
         )
-        console.log(amount)
         const { user } = await authenticateUser(request)
 
         // GET BUDGET AND BUDGET ITEM TO FETCH IMPORTANT RELEVANT DATA AND ASSURE EXISTENCE

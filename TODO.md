@@ -24,4 +24,3 @@ instead of truncating numbers, round them into nearest thousandth
 
 KNOWN BUGS:
 In account reconciliation, if you type a exponential number (ex: 4e10), the reconciliation amount preview will display as if valid
-When the page is already up, if clicking on ThreeValues to refocus input focus (searchParams), it doesn't work

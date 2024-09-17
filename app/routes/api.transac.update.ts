@@ -14,7 +14,6 @@ export async function action({ request }: ActionFunctionArgs) {
         const { user } = await authenticateUser(request)
 
         const sign = updateTransac.transactionFlow === 'inflow' ? 1 : -1
-        console.log(sign)
 
         const transaction = await prisma.transaction.update({
             where: {

@@ -1,7 +1,7 @@
 import { useModal } from '~/context/ModalContext'
 import { BudgetItem } from '@prisma/client'
 import TransactionForm from './TransactionForm'
-import { Link } from '@remix-run/react'
+import { Link, useNavigate, useParams } from '@remix-run/react'
 import toCurrencyString from '~/utils/toCurrencyString'
 
 type ThreeValuesProps = {
@@ -12,13 +12,23 @@ type ThreeValuesProps = {
 
 const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     const { setModalTitle, setModalChildren, setActive } = useModal()
-    const onAssignClick = () => {
-        // TODO: set autofocus to Assigned on budget item page
+
+    const params = useParams()
+    const navigate = useNavigate()
+
+    const refocus = (to: string) => {
+        return (e: React.MouseEvent<HTMLAnchorElement>) => {
+            if (params['budgetItemId']) {
+                console.log('here')
+                e.preventDefault()
+                navigate(`?f=${to}`, { replace: true })
+            }
+        }
     }
 
-    const onTargetClick = () => {
-        // TODO: set autofocus to Target on budget item page
-    }
+    const onAssignClick = refocus('assign')
+
+    const onTargetClick = refocus('target')
 
     const onBalanceClick = () => {
         setModalChildren(

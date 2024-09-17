@@ -26,7 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
         return json(transaction)
     } catch (e) {
-        console.log(e)
         throw new ServerErrorResponse({
             message: 'Transaction not able to be created.',
             status: 400,

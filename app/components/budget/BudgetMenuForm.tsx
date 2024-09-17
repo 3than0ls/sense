@@ -61,9 +61,11 @@ const BudgetMenuForm = ({
     const fetcher = useFetcher()
 
     useEffect(() => {
-        if (focus)
+        if (focus) {
             setFocus(Object.keys(schema.shape).find((k) => k !== 'id') || '')
-    }, [])
+            inputRef.current?.scrollIntoView()
+        }
+    }, [focus, setFocus, schema])
 
     const { theme } = useTheme()
     const themeStyles =

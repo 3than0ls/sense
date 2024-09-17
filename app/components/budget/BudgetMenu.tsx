@@ -1,10 +1,6 @@
 import { Outlet, useParams } from '@remix-run/react'
 import Icon from '../icons/Icon'
-import {
-    budgetTotalAccounts,
-    budgetTotalAssignments,
-    budgetValues,
-} from '~/utils/budgetValues'
+import { budgetValues } from '~/utils/budgetValues'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
@@ -29,7 +25,6 @@ const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
 
 const BudgetMenuAlert = ({ children }: { children: React.ReactNode }) => {
     const { theme } = useTheme()
-    const themeStyle = theme === 'DARK' ? 'text-dark' : 'text-light'
     const iconThemeStyle = theme === 'DARK' ? 'fill-dark' : 'fill-light'
     return (
         <div
@@ -48,11 +43,11 @@ const BudgetMenuAlert = ({ children }: { children: React.ReactNode }) => {
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
     const {
-        currentMonthBudgetItemTransactions,
+        // currentMonthBudgetItemTransactions,
         pastMonthBudgetItemTransactions,
         totalAccountInitialBalance,
         totalAssignments,
-        totalBudgetItemTransactions,
+        // totalBudgetItemTransactions,
         totalFreeCashTransactions,
         totalTransactions,
     } = budgetValues(budgetData)
