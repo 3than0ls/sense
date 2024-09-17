@@ -54,11 +54,13 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
 
     const totalCash = totalAccountInitialBalance + totalTransactions
 
-    const freeCash =
+    const freeCash = Math.min(
         totalAccountInitialBalance +
-        totalFreeCashTransactions +
-        pastMonthBudgetItemTransactions -
-        totalAssignments
+            totalFreeCashTransactions +
+            pastMonthBudgetItemTransactions -
+            totalAssignments,
+        totalCash
+    )
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()

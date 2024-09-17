@@ -18,11 +18,14 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
         } else {
-            // return redirect(`/budget/${params.budgetId}`)
-            throw new ServerErrorResponse({
+            return new ServerErrorResponse({
                 message: 'Budget Item not found.',
                 status: 404,
             })
+            // throw new ServerErrorResponse({
+            //     message: 'Budget Item not found.',
+            //     status: 404,
+            // })
         }
     }
 }
