@@ -3,8 +3,7 @@ import Icon from '../icons/Icon'
 import {
     budgetTotalAccounts,
     budgetTotalAssignments,
-    totalBudgetItemTransactions,
-    totalFreeCashTransactions,
+    budgetValues,
 } from '~/utils/budgetValues'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
@@ -48,15 +47,23 @@ const BudgetMenuAlert = ({ children }: { children: React.ReactNode }) => {
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    const totalAccounts = budgetTotalAccounts(budgetData)
-    const budgetItemTransactions = totalBudgetItemTransactions(budgetData)
-    const freeCashTransactions = totalFreeCashTransactions(budgetData)
-    const totalAssigned = budgetTotalAssignments(budgetData)
+    const {
+        currentMonthBudgetItemTransactions,
+        pastMonthBudgetItemTransactions,
+        totalAccountInitialBalance,
+        totalAssignments,
+        totalBudgetItemTransactions,
+        totalFreeCashTransactions,
+        totalTransactions,
+    } = budgetValues(budgetData)
 
-    const totalCash =
-        totalAccounts + budgetItemTransactions + freeCashTransactions
+    const totalCash = totalAccountInitialBalance + totalTransactions
 
-    const freeCash = totalCash - totalAssigned - budgetItemTransactions
+    const freeCash =
+        totalAccountInitialBalance +
+        totalFreeCashTransactions +
+        pastMonthBudgetItemTransactions -
+        totalAssignments
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()

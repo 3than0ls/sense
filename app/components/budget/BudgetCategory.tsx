@@ -5,16 +5,29 @@ import { Link, useFetcher, useNavigate } from '@remix-run/react'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import DeleteForm from '../DeleteForm'
+import { Transaction } from '@prisma/client'
 
 type BudgetCategoryProps = {
     budgetCategory: FullBudgetDataType['budgetCategories'][number]
+    budgetTransactions: Transaction[]
 }
 
-const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
+const BudgetCategory = ({
+    budgetCategory,
+    budgetTransactions,
+}: BudgetCategoryProps) => {
     const budgetItemComponents = Array.from(
         budgetCategory.budgetItems,
         (budgetItem) => {
-            return <BudgetItem budgetItem={budgetItem} key={budgetItem.id} />
+            return (
+                <BudgetItem
+                    budgetItemTransactions={budgetTransactions.filter(
+                        (t) => t.budgetItemId === budgetItem.id
+                    )}
+                    budgetItem={budgetItem}
+                    key={budgetItem.id}
+                />
+            )
         }
     )
 

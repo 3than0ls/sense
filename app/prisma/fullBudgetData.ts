@@ -21,7 +21,6 @@ export default async function fullBudgetData({
                 include: {
                     budgetItems: {
                         include: {
-                            transactions: true,
                             assignments: {
                                 where: {
                                     createdAt: {
@@ -47,11 +46,7 @@ export default async function fullBudgetData({
             },
             accounts: {
                 include: {
-                    transactions: {
-                        where: {
-                            budgetItemId: null,
-                        },
-                    },
+                    transactions: true,
                 },
             },
         },

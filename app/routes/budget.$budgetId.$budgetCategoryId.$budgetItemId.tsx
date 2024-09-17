@@ -11,9 +11,11 @@ import Icon from '~/components/icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import ServerErrorResponse from '~/error'
-import prisma from '~/prisma/client'
 import authenticateUser from '~/utils/authenticateUser'
-import { budgetItemTransactionsAmount } from '~/utils/budgetValues'
+import {
+    budgetItemCurrentMonthAssignedAmount,
+    budgetItemCurrentMonthTransactionAmount,
+} from '~/utils/budgetValues'
 import {
     itemAssignedSchema,
     itemNameSchema,
@@ -23,28 +25,19 @@ import DeleteButton from '~/components/DeleteButton'
 import Divider from '~/components/Divider'
 import DeleteForm from '~/components/DeleteForm'
 import toCurrencyString from '~/utils/toCurrencyString'
-import findOrCreateAssignmentForMonth from '~/prisma/assignmentForMonth'
+import fullBudgetItemData from '~/prisma/fullBudgetItemData'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
-        const budgetItem = await prisma.budgetItem.findFirstOrThrow({
-            where: {
-                id: params.budgetItemId,
-                budgetId: params.budgetId,
-                budget: {
-                    userId: user.id,
-                },
-            },
-            include: {
-                transactions: true,
-            },
+        const budgetItem = await fullBudgetItemData({
+            budgetItemId: params.budgetItemId!,
+            userId: user.id,
         })
 
-        const assigned = (await findOrCreateAssignmentForMonth(budgetItem))
-            .amount
-        const transactions = budgetItemTransactionsAmount(budgetItem)
+        const assigned = budgetItemCurrentMonthAssignedAmount(budgetItem)
+        const transactions = budgetItemCurrentMonthTransactionAmount(budgetItem)
         const balance = assigned + transactions
 
         return json({ budgetItem, assigned, balance })

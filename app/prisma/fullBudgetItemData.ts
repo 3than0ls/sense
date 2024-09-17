@@ -1,3 +1,4 @@
+import getStartOfMonth from '~/utils/getStartOfMonth'
 import prisma from './client'
 
 /**
@@ -16,14 +17,16 @@ export default async function fullBudgetItemData({
             budget: { userId },
         },
         include: {
+            assignments: {
+                where: {
+                    createdAt: {
+                        gte: getStartOfMonth(),
+                    },
+                },
+                take: 1,
+            },
             transactions: {
                 include: {
-                    budgetItem: {
-                        select: {
-                            name: true,
-                            budgetCategory: { select: { name: true } },
-                        },
-                    },
                     account: {
                         select: {
                             name: true,
@@ -32,6 +35,11 @@ export default async function fullBudgetItemData({
                 },
                 orderBy: {
                     date: 'desc',
+                },
+                where: {
+                    date: {
+                        gte: getStartOfMonth(),
+                    },
                 },
             },
         },

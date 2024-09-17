@@ -24,7 +24,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
-        const budgetCategory = await prisma.budgetCategory.findFirst({
+        const budgetCategory = await prisma.budgetCategory.findFirstOrThrow({
             where: {
                 id: params.budgetCategoryId,
                 budgetId: params.budgetId,
@@ -36,10 +36,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
                 budgetItems: true,
             },
         })
-        if (budgetCategory === null) {
-            // could just redirect here but... eh...
-            throw new Error()
-        }
 
         return json(budgetCategory)
     } catch (e) {

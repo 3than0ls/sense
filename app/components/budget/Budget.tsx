@@ -9,18 +9,21 @@ import BudgetForm from './BudgetForm'
 import TopBar from './TopBar'
 import { useRef } from 'react'
 import { useNavigate } from '@remix-run/react'
+import { Transaction } from '@prisma/client'
 
 type BudgetProps = {
     budgetData: FullBudgetDataType
+    budgetTransactions: Transaction[]
 }
 
-const Budget = ({ budgetData }: BudgetProps) => {
+const Budget = ({ budgetData, budgetTransactions }: BudgetProps) => {
     const { description, name, budgetCategories } = budgetData
 
     const budgetCategoryComponents = Array.from(
         budgetCategories,
         (budgetCategory) => (
             <BudgetCategory
+                budgetTransactions={budgetTransactions}
                 budgetCategory={budgetCategory}
                 key={budgetCategory.id}
             />
