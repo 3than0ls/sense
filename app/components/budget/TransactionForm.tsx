@@ -68,9 +68,20 @@ const TransactionForm = ({
             name: editTransaction.account.name,
         }
     }
+
     const [selectedAccount, setSelectedAccount] = useState(
         defaultDropdownAccount
     )
+
+    useEffect(() => {
+        console.log('data update')
+        if (accountFetcher.data) {
+            const fetchedAccounts = (accountFetcher.data as typeof accounts)!
+            if (fetchedAccounts.length === 1) {
+                setSelectedAccount(fetchedAccounts[0])
+            }
+        }
+    }, [accountFetcher.data])
 
     const itemDropdownData = [
         { id: '', name: 'Free Cash' },
@@ -182,6 +193,7 @@ const TransactionForm = ({
                 <div className="w-72">
                     <span className="ml-1 text-lg">From Account:</span>
                     <Dropdown
+                        key={selectedAccount?.id ?? 'smt'}
                         dropdownItems={accountDropdownData}
                         defaultItem={defaultDropdownAccount ?? undefined}
                         onChange={(d) => {

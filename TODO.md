@@ -5,9 +5,6 @@ NEXT:
 
 Sidebar (medium) (have to make design decisions)
 
-fullBudgetData will also fetch all transactions for that month in calculating spent, thus it also refreshes monthly to zero (MEDIUM)
-- fetch transactions only of the month to date, allowing balance to refresh monthly
-
 REDIRECT on missing budgets and etc.
 
 rework/delete order
