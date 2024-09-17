@@ -16,20 +16,6 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     const params = useParams()
     const navigate = useNavigate()
 
-    const refocus = (to: string) => {
-        return (e: React.MouseEvent<HTMLAnchorElement>) => {
-            if (params['budgetItemId']) {
-                console.log('here')
-                e.preventDefault()
-                navigate(`?f=${to}`, { replace: true })
-            }
-        }
-    }
-
-    const onAssignClick = refocus('assign')
-
-    const onTargetClick = refocus('target')
-
     const onBalanceClick = () => {
         setModalChildren(
             <TransactionForm
@@ -58,7 +44,6 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
             </Link>
             <Link
                 to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=assign`}
-                onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
                 <span className={`text-right`}>
@@ -69,7 +54,6 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
             <Link
                 to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=target`}
                 className="w-24 flex justify-end items-center gap-2"
-                onClick={onTargetClick}
             >
                 <span className="text-right">
                     {toCurrencyString(budgetItem.target)}

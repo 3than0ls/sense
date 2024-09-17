@@ -1,6 +1,10 @@
 import { Outlet, useParams } from '@remix-run/react'
 import Icon from '../icons/Icon'
-import { budgetValues } from '~/utils/budgetValues'
+import {
+    adjustedTotalAssignments,
+    budgetValues,
+    combineBudgetItemData,
+} from '~/utils/budgetValues'
 import { FullBudgetDataType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
@@ -46,7 +50,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
         // currentMonthBudgetItemTransactions,
         pastMonthBudgetItemTransactions,
         totalAccountInitialBalance,
-        totalAssignments,
+        assignments,
         // totalBudgetItemTransactions,
         totalFreeCashTransactions,
         totalTransactions,
@@ -58,7 +62,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
         totalAccountInitialBalance +
         totalFreeCashTransactions +
         pastMonthBudgetItemTransactions -
-        totalAssignments
+        assignments
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()

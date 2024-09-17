@@ -74,7 +74,6 @@ const TransactionForm = ({
     )
 
     useEffect(() => {
-        console.log('data update')
         if (accountFetcher.data) {
             const fetchedAccounts = (accountFetcher.data as typeof accounts)!
             if (fetchedAccounts.length === 1) {

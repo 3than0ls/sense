@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
@@ -60,9 +60,11 @@ const BudgetMenuForm = ({
 
     const fetcher = useFetcher()
 
+    const [isFocused, setIsFocused] = useState(false)
+
     useEffect(() => {
         if (focus) {
-            setFocus(Object.keys(schema.shape).find((k) => k !== 'id') || '')
+            inputRef.current?.select()
             inputRef.current?.scrollIntoView()
         }
     }, [focus, setFocus, schema])

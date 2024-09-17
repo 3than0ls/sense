@@ -2,6 +2,7 @@ import { Assignment, Transaction } from '@prisma/client'
 import { FullBudgetDataType } from '../prisma/fullBudgetData'
 import { FullAccountDataType } from '~/prisma/fullAccountData'
 import getStartOfMonth from './getStartOfMonth'
+import { accountFormSchema } from '~/zodSchemas/account'
 
 /**
  * All of these functions are trusting and assuming the user of the function
@@ -33,6 +34,69 @@ export function budgetTotalAccounts(budgetData: {
     return budgetData.accounts.reduce((accum, account) => {
         return accum + account.initialBalance
     }, 0)
+}
+
+export function combineBudgetItemData(budgetData: FullBudgetDataType) {
+    const budgetItemDict: {
+        [budgetItemId: string]: {
+            transactions: FullBudgetDataType['accounts'][number]['transactions']
+            currentMonthAssignment:
+                | FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]['assignments'][number]
+                | null
+        }
+    } = {}
+
+    const defineIfNotExist = (budgetItemId: string) => {
+        if (!(budgetItemId in budgetItemDict)) {
+            budgetItemDict[budgetItemId] = {
+                transactions: [],
+                currentMonthAssignment: null,
+            }
+        }
+        return budgetItemDict[budgetItemId]
+    }
+
+    for (const account of budgetData.accounts) {
+        for (const transaction of account.transactions) {
+            if (
+                transaction.budgetItemId === null ||
+                new Date(transaction.date) < getStartOfMonth()
+            ) {
+                continue
+            }
+
+            defineIfNotExist(transaction.budgetItemId).transactions.push(
+                transaction
+            )
+        }
+    }
+
+    for (const bCat of budgetData.budgetCategories) {
+        for (const bItem of bCat.budgetItems) {
+            defineIfNotExist(bItem.id).currentMonthAssignment =
+                bItem.assignments[0] ?? null
+        }
+    }
+
+    return budgetItemDict
+}
+
+export function adjustedTotalAssignments(budgetData: FullBudgetDataType) {
+    const combined = combineBudgetItemData(budgetData)
+
+    let out = 0
+
+    for (const budgetItemData of Object.values(combined)) {
+        const totalBITransactions = _sum_amount(budgetItemData.transactions)
+        const assign = budgetItemData.currentMonthAssignment?.amount ?? 0
+        if (assign + totalBITransactions < 0) {
+            out += Math.abs(totalBITransactions)
+        } else {
+            out += assign
+        }
+    }
+
+    return out
 }
 
 export function budgetValues(budgetData: FullBudgetDataType) {
@@ -70,7 +134,8 @@ export function budgetValues(budgetData: FullBudgetDataType) {
         totalTransactions,
         currentMonthBudgetItemTransactions,
         pastMonthBudgetItemTransactions,
-        totalAssignments: budgetTotalAssignments(budgetData),
+        // totalAssignments: budgetTotalAssignments(budgetData),
+        assignments: adjustedTotalAssignments(budgetData),
     }
 }
 
