@@ -54,13 +54,11 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
 
     const totalCash = totalAccountInitialBalance + totalTransactions
 
-    const freeCash = Math.min(
+    const freeCash =
         totalAccountInitialBalance +
-            totalFreeCashTransactions +
-            pastMonthBudgetItemTransactions -
-            totalAssignments,
-        totalCash
-    )
+        totalFreeCashTransactions +
+        pastMonthBudgetItemTransactions -
+        totalAssignments
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()
@@ -110,7 +108,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                     <span className="font-work-bold underline">
                         Total cash is less than zero!
                     </span>
-                    <span>
+                    <span className="leading-tight text-base">
                         Check your accounts to see if you have an error.
                     </span>
                 </BudgetMenuAlert>
@@ -120,7 +118,21 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                     <span className="font-work-bold underline">
                         Free cash is less than zero!
                     </span>
-                    <span>You&apos;ve over-assigned your money.</span>
+                    <span className="leading-tight text-base">
+                        You&apos;ve over-assigned your money.
+                    </span>
+                </BudgetMenuAlert>
+            )}
+
+            {freeCash > totalCash && (
+                <BudgetMenuAlert>
+                    <span className="font-work-bold underline">
+                        Free cash is greater than total cash!
+                    </span>
+                    <span className="leading-tight text-base">
+                        You&apos;ve likely over-spent the amount assigned to an
+                        item, and don&apos;t have the cash anywhere to cover it.
+                    </span>
                 </BudgetMenuAlert>
             )}
             <Outlet />
