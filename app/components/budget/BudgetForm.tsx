@@ -4,13 +4,14 @@ import useRemixForm from '~/hooks/useRemixForm'
 import { budgetSchema, BudgetSchemaType } from '~/zodSchemas/budgetInfo'
 import DeleteForm from '../DeleteForm'
 import { useNavigate } from '@remix-run/react'
-import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import { action as budUpdateAction } from '~/routes/api.bud.edit'
 import { action as budCreateAction } from '~/routes/api.bud.create'
+import { useBudgetData } from '~/context/BudgetDataContext'
 
 type BudgetFormProps = {
-    editBudget?: FullBudgetDataType
+    editBudget?: FullBudgetType
 }
 
 const BudgetForm = ({ editBudget }: BudgetFormProps) => {

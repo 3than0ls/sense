@@ -1,11 +1,7 @@
 import { Outlet, useParams } from '@remix-run/react'
 import Icon from '../icons/Icon'
-import {
-    adjustedTotalAssignments,
-    budgetValues,
-    combineBudgetItemData,
-} from '~/utils/budgetValues'
-import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { currentMonthBudgetValues } from '~/utils/budgetValues'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
@@ -13,7 +9,7 @@ import { BudgetItem } from '@prisma/client'
 import { useTheme } from '~/context/ThemeContext'
 
 type BudgetMenuProps = {
-    budgetData: FullBudgetDataType
+    budgetData: FullBudgetType
 }
 
 const BudgetMenuCard = ({ value, label }: { value: number; label: string }) => {
@@ -46,45 +42,22 @@ const BudgetMenuAlert = ({ children }: { children: React.ReactNode }) => {
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    const {
-        // currentMonthBudgetItemTransactions,
-        pastMonthBudgetItemTransactions,
-        totalAccountInitialBalance,
-        assignments,
-        // totalBudgetItemTransactions,
-        totalFreeCashTransactions,
-        totalTransactions,
-    } = budgetValues(budgetData)
-
-    const totalCash = totalAccountInitialBalance + totalTransactions
-
-    const freeCash =
-        totalAccountInitialBalance +
-        totalFreeCashTransactions +
-        pastMonthBudgetItemTransactions -
-        assignments
+    const { totalCash, freeCash } = currentMonthBudgetValues(budgetData)
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()
     const onTransacClick = () => {
-        let defaultItem: BudgetItem | undefined = undefined
+        let defaultItem: FullBudgetType['budgetItems'][number] | undefined =
+            undefined
         if (params['budgetItemId'] !== undefined) {
-            defaultItem = budgetData.budgetCategories
-                .map((bCat) =>
-                    bCat.budgetItems.find(
-                        (bItem) => bItem.id === params.budgetItemId
-                    )
-                )
-                .find((bItem) => bItem !== undefined)
+            defaultItem = budgetData.budgetItems.find(
+                (bItem) => bItem.id === params.budgetItemId
+            )
         }
 
         setModalChildren(
             <TransactionForm
-                budgetId={budgetData.id}
-                accounts={budgetData.accounts}
-                budgetItems={budgetData.budgetCategories.flatMap(
-                    (cat) => cat.budgetItems
-                )}
+                basicBudgetData={budgetData}
                 defaultBudgetItem={defaultItem}
             />
         )
@@ -139,7 +112,7 @@ const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
                     </span>
                 </BudgetMenuAlert>
             )}
-            <Outlet />
+            <Outlet context={budgetData} />
         </div>
     )
 }

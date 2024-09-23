@@ -4,7 +4,10 @@ import { isAuthApiError } from '@supabase/supabase-js'
 import Account from '~/components/account/Account'
 import ServerErrorResponse from '~/error'
 import prisma from '~/prisma/client'
-import fullAccountData, { FullAccountDataType } from '~/prisma/fullAccountData'
+import fullAccountData, {
+    basicBudgetData,
+    FullAccountType,
+} from '~/prisma/fullAccountData'
 import authenticateUser from '~/utils/authenticateUser'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -17,17 +20,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             accountId: params.accountId!,
         })
 
-        const budgetBasicInfo = await prisma.budget.findMany({
-            where: {
-                userId: user.id,
-            },
-            select: {
-                name: true,
-                id: true,
-            },
+        const _basicBudgetData = await basicBudgetData({
+            budgetId: accountData.budgetId,
+            userId: user.id,
         })
 
-        return json({ accountData, budgetBasicInfo })
+        return json({ accountData, _basicBudgetData })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -41,12 +39,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function AccountRoute() {
-    const { accountData, budgetBasicInfo } = useLoaderData<typeof loader>()
+    const { accountData, _basicBudgetData } = useLoaderData<typeof loader>()
 
     return (
-        <Account
-            budgetBasicInfo={budgetBasicInfo}
-            accountData={accountData as unknown as FullAccountDataType}
-        />
+        <Account basicBudgetData={_basicBudgetData} accountData={accountData} />
     )
 }

@@ -10,62 +10,20 @@ import Divider from '../Divider'
 import Icon from '../icons/Icon'
 import { SidebarDataType } from '~/prisma/sidebarData'
 import BudgetForm from '../budget/BudgetForm'
-
-const SidebarDropdown = ({
-    title,
-    budget,
-    children,
-}: {
-    title: string
-    budget: Budget
-    children?: React.ReactNode
-}) => {
-    const [closed, setClosed] = useState(false)
-
-    return (
-        <div className="w-full">
-            <div className="w-full flex">
-                <Link
-                    to={`/budget/${budget.id}`}
-                    className="overflow-hidden flex justify-between mb-1 group text-left hover:underline"
-                    onClick={() => setClosed(false)}
-                >
-                    <span className="text-lg truncate font-work-bold group-hover:text-white transition">
-                        {title}
-                    </span>
-                </Link>
-                <button
-                    className="ml-auto w-fit"
-                    onClick={() => setClosed(!closed)}
-                >
-                    <Icon
-                        type="chevron-down"
-                        className={`group-hover:stroke-white ml-auto transform transition ${
-                            closed && '-rotate-180'
-                        } size-6`}
-                    />
-                </button>
-            </div>
-            {!closed && children}
-            {/* <hr className="border-black border my-2" /> */}
-        </div>
-    )
-}
+import SidebarDropdown from './SidebarDropdown'
 
 type SidebarProps = {
     sidebarData: SidebarDataType
 }
 
 const Sidebar = ({ sidebarData }: SidebarProps) => {
-    // make length adjustable, make it able to close
-
     const [closed, setClosed] = useState(false)
     const sidebarRef = useRef<HTMLDivElement | null>(null)
     const themeStyle = useThemeClass()
 
     const budgetLinks = Array.from(sidebarData, (b) => (
-        <SidebarDropdown budget={b} title={b.name} key={b.id}>
-            {Array.from(b.accounts, (a) => (
+        <SidebarDropdown budget={b} key={b.id}>
+            {b.accounts.map((a) => (
                 <SidebarLink
                     key={a.id}
                     href={`/account/${a.id}`}
@@ -92,15 +50,6 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
                 <span className="font-work-black text-2xl">Budgets</span>
                 {budgetLinks}
                 <Divider className="border-black" />
-
-                {/* <TEMPFETCHER.Form action="/api/bud/create" method="POST">
-                    <button
-                        type="submit"
-                        className="bg-primary text-white border-2 border-black rounded-2xl"
-                    >
-                        create a budget!
-                    </button>
-                </TEMPFETCHER.Form> */}
                 <button
                     onClick={() => {
                         setModalTitle('Create a Budget')
@@ -111,16 +60,20 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
                 >
                     create a budget!
                 </button>
-                <button
+                {/* <button
                     onClick={() => {
                         setModalTitle('Create an Account')
-                        setModalChildren(<AccountForm budgets={sidebarData} />)
+                        setModalChildren(
+                            <AccountForm
+                                budgetData={'ONE SINGUALR BUDGET DATA'}
+                            />
+                        )
                         setActive(true)
                     }}
                     className="bg-primary text-white border-2 border-black rounded-2xl"
                 >
                     create a account!
-                </button>
+                </button> */}
                 <Divider className="border-black" />
             </div>
             <div

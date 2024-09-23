@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import useRemixForm from '~/hooks/useRemixForm'
 import { z } from 'zod'
@@ -11,6 +10,7 @@ import { SubmitHandler } from 'react-hook-form'
 import toCurrencyString from '~/utils/toCurrencyString'
 import Divider from '../Divider'
 import { useTheme } from '~/context/ThemeContext'
+import { FullAccountType } from '~/prisma/fullAccountData'
 
 // a reconciliation is just a special type of Transaction on the frontend; essentially just a transaction on the backend
 
@@ -24,7 +24,7 @@ const reconciliationSchema = z.object({
 type ReconciliationSchemaType = z.infer<typeof reconciliationSchema>
 
 type ReconcileFormProps = {
-    accountData: FullAccountDataType
+    accountData: FullAccountType
     accountBalance: number
 }
 

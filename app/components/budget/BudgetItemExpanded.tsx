@@ -7,9 +7,11 @@ import BudgetItemExpandedTable from './BudgetItemExpandedTable'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
+import { useBudgetData } from '~/context/BudgetDataContext'
 
 type BudgetItemExpandedProps = {
-    budgetItem: BudgetItem
+    budgetItem: FullBudgetType['budgetItems'][number]
     assigned: number
     balance: number
 }
@@ -66,12 +68,14 @@ const BudgetItemExpanded = ({
         )} left to spend.`
     }
 
+    const budgetData = useBudgetData()
+
     const { setModalChildren, setModalTitle, setActive } = useModal()
 
     const onTransacClick = () => {
         setModalChildren(
             <TransactionForm
-                budgetId={budgetId}
+                basicBudgetData={budgetData}
                 defaultBudgetItem={{ name, id }}
             />
         )

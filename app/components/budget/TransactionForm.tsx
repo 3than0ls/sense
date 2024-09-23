@@ -9,54 +9,44 @@ import {
     transactionFormSchema,
     TransactionFormSchemaType,
 } from '~/zodSchemas/transaction'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
 import DeleteForm from '../DeleteForm'
 import toCurrencyString from '~/utils/toCurrencyString'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import { action as transacUpdateAction } from '~/routes/api.transac.update'
 import { action as transacCreateAction } from '~/routes/api.transac.create'
 import TransactionFormFlowButton from './TransactionFormFlowButton'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 
 type TransactionFormProps = {
     defaultAccount?: Pick<Account, 'id' | 'name'>
     defaultBudgetItem?: Pick<BudgetItem, 'id' | 'name'>
-    accounts?: Account[]
-    budgetItems?: BudgetItem[]
-    budgetId: string
-    editTransaction?: FullAccountDataType['transactions'][number]
+    basicBudgetData: BasicBudgetType
+    editTransaction?: FullAccountType['transactions'][number] & {
+        account: {
+            name: string
+        }
+    }
 }
 
 const TransactionForm = ({
     defaultAccount,
     defaultBudgetItem,
-    accounts,
-    budgetItems,
-    budgetId,
     editTransaction,
+    basicBudgetData,
 }: TransactionFormProps) => {
     const { setActive } = useModal()
 
-    // fetch data if not provided
-    const accountFetcher = useFetcher()
-    const itemFetcher = useFetcher()
-    useEffect(() => {
-        if (!accounts) {
-            accountFetcher.load(`/api/bud/accounts/${budgetId}`)
-        }
-        if (!budgetItems) {
-            itemFetcher.load(`/api/bud/items/${budgetId}`)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accounts, budgetItems])
+    const { accounts, budgetItems } = basicBudgetData
 
     // hoops and hurdle to establish dropdown data and defaults
     // fetcher.data forces component rerender, meaning accountDropdownData is updated
     // but variables based off this do not update too.
     // problem: can't use accountDropdownData[0] as default value, because
     // it still thinks accountDropdownData (based on accountFetcher.data) is empty {}
-    const accountDropdownData =
-        accounts ?? mapToDropdownItem(accountFetcher.data as typeof accounts)
-    let defaultDropdownAccount = null // TODO; this, for adding transaction from a account page
+
+    // account related
+    const accountDropdownData = accounts
+    let defaultDropdownAccount = null
     if (defaultAccount) {
         defaultDropdownAccount = {
             id: defaultAccount.id,
@@ -68,25 +58,12 @@ const TransactionForm = ({
             name: editTransaction.account.name,
         }
     }
-
     const [selectedAccount, setSelectedAccount] = useState(
         defaultDropdownAccount
     )
 
-    useEffect(() => {
-        if (accountFetcher.data) {
-            const fetchedAccounts = (accountFetcher.data as typeof accounts)!
-            if (fetchedAccounts.length === 1) {
-                setSelectedAccount(fetchedAccounts[0])
-            }
-        }
-    }, [accountFetcher.data])
-
-    const itemDropdownData = [
-        { id: '', name: 'Free Cash' },
-        ...(budgetItems ??
-            mapToDropdownItem(itemFetcher.data as typeof budgetItems)),
-    ]
+    // budget item related
+    const itemDropdownData = [{ id: '', name: 'Free Cash' }, ...budgetItems]
     let defaultDropdownItem = null
     if (defaultBudgetItem) {
         defaultDropdownItem = {
@@ -102,6 +79,7 @@ const TransactionForm = ({
     const [selectedBudgetItem, setSelectedBudgetItem] =
         useState(defaultDropdownItem)
 
+    // flow related
     const defaultFlow = editTransaction
         ? editTransaction.amount < 0
             ? 'outflow'
@@ -110,7 +88,6 @@ const TransactionForm = ({
     const [transacFlow, setTransacFlow] = useState<'inflow' | 'outflow'>(
         defaultFlow
     )
-
     const onSwitch = (side: 'inflow' | 'outflow') => {
         setTransacFlow(side)
     }
@@ -131,6 +108,7 @@ const TransactionForm = ({
             if (!editTransaction) {
                 fetcher.submit(
                     {
+                        budgetId: basicBudgetData.id,
                         budgetItemId: selectedBudgetItem?.id,
                         accountId: selectedAccount?.id,
                         transactionFlow: transacFlow,
@@ -142,6 +120,7 @@ const TransactionForm = ({
                 fetcher.submit(
                     {
                         transactionId: editTransaction.id,
+                        budgetId: editTransaction.budgetId,
                         budgetItemId: selectedBudgetItem?.id,
                         accountId: selectedAccount?.id,
                         transactionFlow: transacFlow,
@@ -192,7 +171,7 @@ const TransactionForm = ({
                 <div className="w-72">
                     <span className="ml-1 text-lg">From Account:</span>
                     <Dropdown
-                        key={selectedAccount?.id ?? 'smt'}
+                        // key={selectedAccount?.id ?? 'smt'}  <- why did I even have this
                         dropdownItems={accountDropdownData}
                         defaultItem={defaultDropdownAccount ?? undefined}
                         onChange={(d) => {

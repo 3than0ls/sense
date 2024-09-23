@@ -4,7 +4,7 @@ import prisma from './client'
 /**
  * Given a budget item id and user id, get full budget item data
  */
-export default async function fullBudgetItemData({
+export default async function currentMonthBudgetItemData({
     budgetItemId,
     userId,
 }: {
@@ -48,6 +48,18 @@ export default async function fullBudgetItemData({
     return baseData
 }
 
-export type FullBudgetItemDataType = Awaited<
-    ReturnType<typeof fullBudgetItemData>
+export type ServerCurrentMonthBudgetItemType = Awaited<
+    ReturnType<typeof currentMonthBudgetItemData>
 >
+
+type ReplaceDatesWithStrings<T> = {
+    [K in keyof T]: T[K] extends Date
+        ? string
+        : T[K] extends object
+        ? ReplaceDatesWithStrings<T[K]>
+        : T[K]
+}
+
+// also the client one
+export type CurrentMonthBudgetItemType =
+    ReplaceDatesWithStrings<ServerCurrentMonthBudgetItemType>

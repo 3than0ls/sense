@@ -18,10 +18,8 @@ export async function action({ request }: ActionFunctionArgs) {
         const transaction = await prisma.transaction.update({
             where: {
                 id: updateTransac.transactionId,
-                account: {
-                    budget: {
-                        userId: user.id,
-                    },
+                budget: {
+                    userId: user.id,
                 },
             },
             data: {

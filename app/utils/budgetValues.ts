@@ -1,8 +1,10 @@
-import { Assignment, Transaction } from '@prisma/client'
-import { FullBudgetDataType } from '../prisma/fullBudgetData'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
+import { FullAccountType } from '~/prisma/fullAccountData'
+import { FullBudgetType, ServerFullBudgetType } from '../prisma/fullBudgetData'
 import getStartOfMonth from './getStartOfMonth'
-import { accountFormSchema } from '~/zodSchemas/account'
+import {
+    CurrentMonthBudgetItemType,
+    ServerCurrentMonthBudgetItemType,
+} from '~/prisma/fullBudgetItemData'
 
 /**
  * All of these functions are trusting and assuming the user of the function
@@ -26,156 +28,117 @@ function _sum_amount(x: _GenericType[]) {
 // FUNCTIONS CONCERNING CALCULATING VALUES FROM BUDGET DATA AS A WHOLE
 // *********************************************************************
 
-export function budgetTotalAccounts(budgetData: {
-    accounts: {
-        initialBalance: number
-    }[]
-}) {
-    return budgetData.accounts.reduce((accum, account) => {
-        return accum + account.initialBalance
-    }, 0)
-}
-
-export function combineBudgetItemData(budgetData: FullBudgetDataType) {
+export function currentMonthBudgetValues(
+    budgetData: FullBudgetType | ServerFullBudgetType
+) {
+    // make single pass-throughs to calculate a wide variety of data
+    const currentMonth = getStartOfMonth()
     const budgetItemDict: {
-        [budgetItemId: string]: {
-            transactions: FullBudgetDataType['accounts'][number]['transactions']
-            currentMonthAssignment:
-                | FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]['assignments'][number]
-                | null
+        [bItemId: string]: {
+            assignedAmount: number
+            transactionsAmount: number
         }
     } = {}
-
     const defineIfNotExist = (budgetItemId: string) => {
         if (!(budgetItemId in budgetItemDict)) {
             budgetItemDict[budgetItemId] = {
-                transactions: [],
-                currentMonthAssignment: null,
+                transactionsAmount: 0,
+                assignedAmount: 0,
             }
         }
         return budgetItemDict[budgetItemId]
     }
 
-    for (const account of budgetData.accounts) {
-        for (const transaction of account.transactions) {
-            if (
-                transaction.budgetItemId === null ||
-                new Date(transaction.date) < getStartOfMonth()
-            ) {
-                continue
-            }
-
-            defineIfNotExist(transaction.budgetItemId).transactions.push(
-                transaction
-            )
-        }
-    }
-
-    for (const bCat of budgetData.budgetCategories) {
-        for (const bItem of bCat.budgetItems) {
-            defineIfNotExist(bItem.id).currentMonthAssignment =
-                bItem.assignments[0] ?? null
-        }
-    }
-
-    return budgetItemDict
-}
-
-export function adjustedTotalAssignments(budgetData: FullBudgetDataType) {
-    const combined = combineBudgetItemData(budgetData)
-
-    let out = 0
-
-    for (const budgetItemData of Object.values(combined)) {
-        const totalBITransactions = _sum_amount(budgetItemData.transactions)
-        const assign = budgetItemData.currentMonthAssignment?.amount ?? 0
-        if (assign + totalBITransactions < 0) {
-            out += Math.abs(totalBITransactions)
-        } else {
-            out += assign
-        }
-    }
-
-    return out
-}
-
-export function budgetValues(budgetData: FullBudgetDataType) {
-    let totalAccountInitialBalance = 0
-    let totalBudgetItemTransactions = 0
-    let totalFreeCashTransactions = 0
-    let totalTransactions = 0
+    let allAccountInitialBalance = 0
+    let allTransactions = 0
+    let toCurrentMonthBudgetItemTransactions = 0
     let currentMonthBudgetItemTransactions = 0
-    let pastMonthBudgetItemTransactions = 0
-
-    const currentMonth = getStartOfMonth()
+    let allFreeCashTransactions = 0
 
     for (const account of budgetData.accounts) {
-        totalAccountInitialBalance += account.initialBalance
-        for (const transaction of account.transactions) {
-            if (transaction.budgetItemId === null) {
-                totalFreeCashTransactions += transaction.amount
+        allAccountInitialBalance += account.initialBalance
+    }
+
+    for (const transac of budgetData.transactions) {
+        if (transac.budgetItemId === null) {
+            allFreeCashTransactions += transac.amount
+        } else {
+            defineIfNotExist(transac.budgetItemId).transactionsAmount +=
+                transac.amount
+
+            if (new Date(transac.date) < currentMonth) {
+                currentMonthBudgetItemTransactions += transac.amount
             } else {
-                totalBudgetItemTransactions += transaction.amount
-                if (new Date(transaction.date) > currentMonth) {
-                    currentMonthBudgetItemTransactions += transaction.amount
-                } else {
-                    pastMonthBudgetItemTransactions += transaction.amount
-                }
+                toCurrentMonthBudgetItemTransactions += transac.amount
             }
         }
     }
 
-    totalTransactions = totalFreeCashTransactions + totalBudgetItemTransactions
+    for (const assign of budgetData.assignments) {
+        defineIfNotExist(assign.budgetItemId).assignedAmount = assign.amount
+    }
+
+    let adjustedTotalAssignments = 0
+
+    for (const budgetItemData of Object.values(budgetItemDict)) {
+        const { assignedAmount, transactionsAmount } = budgetItemData
+        // TODO: MAY HAVE TO CHECK MATH AND REPLACE Math.abs(...) with -... IF TRANSACTION AMOUNT NET IS POSITIVE
+        adjustedTotalAssignments += Math.max(
+            Math.abs(transactionsAmount),
+            assignedAmount
+        )
+        // if (assignedAmount + transactionsAmount < 0) {
+        //     adjustedTotalAssignments += Math.abs(transactionsAmount)
+        // } else {
+        //     adjustedTotalAssignments += assignedAmount
+        // }
+    }
+
+    allTransactions =
+        allFreeCashTransactions +
+        toCurrentMonthBudgetItemTransactions +
+        currentMonthBudgetItemTransactions
 
     return {
-        totalAccountInitialBalance,
-        totalBudgetItemTransactions,
-        totalFreeCashTransactions,
-        totalTransactions,
-        currentMonthBudgetItemTransactions,
-        pastMonthBudgetItemTransactions,
-        // totalAssignments: budgetTotalAssignments(budgetData),
-        assignments: adjustedTotalAssignments(budgetData),
+        totalCash: allAccountInitialBalance + allTransactions,
+        freeCash:
+            allAccountInitialBalance +
+            allFreeCashTransactions +
+            toCurrentMonthBudgetItemTransactions -
+            adjustedTotalAssignments,
     }
-}
-
-export function flattenTransactions(budgetData: FullBudgetDataType) {
-    return budgetData.accounts.flatMap((account) => account.transactions)
-}
-
-export function budgetTotalAssignments(budgetData: FullBudgetDataType) {
-    return budgetData.budgetCategories.reduce((catAccum, cat) => {
-        return (
-            catAccum +
-            cat.budgetItems.reduce((itemAccum, item) => {
-                return itemAccum + budgetItemCurrentMonthAssignedAmount(item)
-            }, 0)
-        )
-    }, 0)
 }
 
 // *********************************************************************
 // FUNCTIONS CONCERNING CALCULATING VALUES FOR A SINGULAR BUDGET ITEM
 // *******************************************************************
 
-export function budgetItemCurrentMonthTransactionAmount(budgetItem: {
-    transactions: Pick<Transaction, 'amount' | 'date'>[]
-}) {
+export function budgetItemCurrentMonthTransactionAmount(
+    transactions:
+        | FullBudgetType['transactions']
+        | ServerFullBudgetType['transactions']
+        | CurrentMonthBudgetItemType['transactions']
+        | ServerCurrentMonthBudgetItemType['transactions']
+) {
     const start = getStartOfMonth()
     return _sum_amount(
-        budgetItem.transactions.filter((t) => {
-            return new Date(t.date) > start
+        transactions.filter((t) => {
+            return (t.date instanceof Date ? t.date : new Date(t.date)) > start
         })
     )
 }
 
-export function budgetItemCurrentMonthAssignedAmount(budgetItem: {
-    assignments: Pick<Assignment, 'amount'>[]
-}) {
-    if (budgetItem.assignments.length === 0) {
+export function budgetItemCurrentMonthAssignedAmount(
+    assignments:
+        | FullBudgetType['assignments']
+        | ServerFullBudgetType['assignments']
+        | CurrentMonthBudgetItemType['assignments']
+        | ServerCurrentMonthBudgetItemType['assignments']
+) {
+    if (assignments.length === 0) {
         return 0
     } else {
-        return budgetItem.assignments[0].amount
+        return assignments[0].amount
     }
 }
 
@@ -183,7 +146,7 @@ export function budgetItemCurrentMonthAssignedAmount(budgetItem: {
 // FUNCTIONS CONCERNING CALCULATING VALUES FROM AN ACCOUNT AS A WHOLE
 // *******************************************************************
 
-export function accountTotalTransactions(accountData: FullAccountDataType) {
+export function accountTotalTransactions(accountData: FullAccountType) {
     return accountData.transactions.reduce((accum, transac) => {
         return accum + transac.amount
     }, 0)

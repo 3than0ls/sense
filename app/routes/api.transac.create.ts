@@ -21,6 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
                 // schema states budgetItemId must be a string,
                 // thus free cash is indicated by an empty string and must be set to undefined
                 budgetItemId: newTransac.budgetItemId || undefined,
+                budgetId: newTransac.budgetId,
             },
         })
 

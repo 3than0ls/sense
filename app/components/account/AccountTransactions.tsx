@@ -1,15 +1,23 @@
 import { useTheme } from '~/context/ThemeContext'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
 import Transaction, { TransactionRow } from './Transaction'
 import toCurrencyString from '~/utils/toCurrencyString'
 import TransactionsSearchBar from './TransactionsSearchBar'
 import { useState } from 'react'
+import {
+    basicBudgetData,
+    BasicBudgetType,
+    FullAccountType,
+} from '~/prisma/fullAccountData'
 
 type AccountTransactionProps = {
-    accountData: FullAccountDataType
+    accountData: FullAccountType
+    basicBudgetData: BasicBudgetType
 }
 
-const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
+const AccountTransactions = ({
+    accountData,
+    basicBudgetData,
+}: AccountTransactionProps) => {
     const { theme } = useTheme()
     const themeStyle =
         theme === 'DARK'
@@ -52,7 +60,8 @@ const AccountTransactions = ({ accountData }: AccountTransactionProps) => {
                 <tbody className="border-t border-subtle">
                     {Array.from(accountData.transactions, (t) => (
                         <Transaction
-                            budgetId={accountData.budgetId}
+                            basicBudgetData={basicBudgetData}
+                            accountData={accountData}
                             transaction={t}
                             key={t.id}
                             search={search}

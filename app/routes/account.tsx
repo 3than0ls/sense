@@ -30,7 +30,7 @@ export default function View() {
     // thus the sidebarData as never, and a few other type castings seen throughout codebase
     return (
         <div className="flex h-full">
-            <Sidebar sidebarData={sidebarData as never} />
+            <Sidebar sidebarData={sidebarData} />
 
             <Outlet />
         </div>

@@ -1,35 +1,33 @@
 import BudgetItem from './BudgetItem'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
-import { Link, useFetcher, useNavigate } from '@remix-run/react'
-import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import {
+    Link,
+    useFetcher,
+    useNavigate,
+    useSearchParams,
+} from '@remix-run/react'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import DeleteForm from '../DeleteForm'
-import { Transaction } from '@prisma/client'
+import { useFindRelation } from '~/context/BudgetDataContext'
+import { useEffect } from 'react'
+import { useBudgetUX } from '~/context/BudgetUXContext'
 
 type BudgetCategoryProps = {
-    budgetCategory: FullBudgetDataType['budgetCategories'][number]
-    budgetTransactions: Transaction[]
+    budgetCategory: FullBudgetType['budgetCategories'][number]
 }
 
-const BudgetCategory = ({
-    budgetCategory,
-    budgetTransactions,
-}: BudgetCategoryProps) => {
-    const budgetItemComponents = Array.from(
-        budgetCategory.budgetItems,
-        (budgetItem) => {
-            return (
-                <BudgetItem
-                    budgetItemTransactions={budgetTransactions.filter(
-                        (t) => t.budgetItemId === budgetItem.id
-                    )}
-                    budgetItem={budgetItem}
-                    key={budgetItem.id}
-                />
-            )
-        }
+const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
+    const budgetItems = useFindRelation(
+        'budgetItems',
+        'budgetCategoryId',
+        budgetCategory.id
     )
+
+    const budgetItemComponents = budgetItems.map((budgetItem) => {
+        return <BudgetItem budgetItem={budgetItem} key={budgetItem.id} />
+    })
 
     const fetcher = useFetcher()
     const navigate = useNavigate()
@@ -43,7 +41,6 @@ const BudgetCategory = ({
             { action: '/api/budItem/create', method: 'POST' }
         )
     }
-    // const onEditClick = () => navigate(budgetCategory.id)
 
     const onDeleteClick = () => {
         navigate(budgetCategory.id)
@@ -53,10 +50,12 @@ const BudgetCategory = ({
                 deleteItemName={budgetCategory.name}
                 fetcherAction="/api/budCat/delete"
                 fetcherTarget={{ budgetCategoryId: budgetCategory.id }}
-                // onSubmitLoad={() => navigate(`/budget/${budgetItem.budgetId}`)} //  <-- doesn't matter since auto-navigates back anyway
+                onSubmitLoad={() =>
+                    navigate(`/budget/${budgetCategory.budgetId}`)
+                } //  <-- doesn't matter since auto-navigates back anyway
             >
                 <span>
-                    All budget items (and transactions to and form) under this
+                    All budget items (and transactions to and from) under this
                     category will also be deleted.
                 </span>
             </DeleteForm>
@@ -69,13 +68,23 @@ const BudgetCategory = ({
         theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
+    const link = `/budget/${budgetCategory.budgetId}/c/${budgetCategory.id}`
+
+    const { budgetUX, updateBudgetUX } = useBudgetUX()
+
+    const onEditClick = () => {
+        updateBudgetUX({
+            focus: 'catname',
+        })
+    }
+
     return (
         <>
             <div
                 className={`px-3 flex justify-end items-center gap-2 min-h-10 border-collapse group overflow-y-hidden ${altThemeStyle}`}
             >
                 <Link
-                    to={budgetCategory.id}
+                    to={link}
                     className="font-work-bold text-xl mr-auto hover:cursor-pointer"
                 >
                     {budgetCategory.name}
@@ -87,7 +96,7 @@ const BudgetCategory = ({
                         interactive
                     />
                 </button>
-                <Link to={`${budgetCategory.id}?f=name`}>
+                <Link to={link} onClick={onEditClick}>
                     <Icon
                         type="edit"
                         className={`size-6 stroke-subtle ${themeStyle} transition`}
@@ -107,7 +116,7 @@ const BudgetCategory = ({
                     {...budgetItemComponents}
                 </div>
             ) : (
-                <div className="w-full h-2" />
+                <div className="w-full min-h-2" />
             )}
         </>
     )

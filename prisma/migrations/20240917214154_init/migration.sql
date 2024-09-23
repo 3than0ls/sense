@@ -18,7 +18,7 @@ CREATE TABLE "Account" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "initialBalance" DOUBLE PRECISION NOT NULL,
-    "budgetId" UUID,
+    "budgetId" UUID NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
@@ -28,7 +28,6 @@ CREATE TABLE "BudgetCategory" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "budgetId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
 
@@ -40,7 +39,6 @@ CREATE TABLE "BudgetItem" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "target" DOUBLE PRECISION NOT NULL,
     "budgetCategoryId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
@@ -78,8 +76,9 @@ CREATE TABLE "Transaction" (
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "description" TEXT,
     "amount" DOUBLE PRECISION NOT NULL,
+    "budgetId" UUID NOT NULL,
     "accountId" UUID NOT NULL,
-    "budgetItemId" UUID NOT NULL,
+    "budgetItemId" UUID,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
@@ -125,6 +124,9 @@ ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_budgetId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_budgetItemId_fkey" FOREIGN KEY ("budgetItemId") REFERENCES "BudgetItem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;

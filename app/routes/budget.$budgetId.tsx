@@ -1,11 +1,16 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { ShouldRevalidateFunction, useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
 import ServerErrorResponse from '~/error'
 import authenticateUser from '~/utils/authenticateUser'
 import fullBudgetData from '~/prisma/fullBudgetData'
-import { flattenTransactions } from '~/utils/budgetValues'
+import { BudgetDataProvider } from '~/context/BudgetDataContext'
+import { useMemo } from 'react'
+import stopRevalidate from '~/utils/stopRevalidation'
+import { BudgetUXProvider } from '~/context/BudgetUXContext'
+
+let ticker = 0
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     // THE PERFECT LOADER SAMPLE:
@@ -18,9 +23,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             budgetId: params.budgetId!,
         })
 
-        const budgetTransactions = flattenTransactions(budgetData)
+        console.log('refetching budget data for the x time:', ticker)
+        ticker++
 
-        return json({ budgetData, budgetTransactions })
+        return json({ budgetData })
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
@@ -33,16 +39,21 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }
 }
 
+export const shouldRevalidate = stopRevalidate
+
 export default function BudgetRoute() {
-    const { budgetData, budgetTransactions } = useLoaderData<typeof loader>()
+    const { budgetData } = useLoaderData<typeof loader>()
+
+    // const budgetDataMemo = useMemo(() => budgetData, [budgetData])
 
     // there are typescript issues due to Date objects being converted to strings when being sent from loader to component
     // hence why the "as never"; however we MUST reconstruct dates everytime we want to use them
     // in components, otherwise severe error
     return (
-        <Budget
-            budgetData={budgetData as never}
-            budgetTransactions={budgetTransactions as never}
-        />
+        <BudgetDataProvider budgetData={budgetData}>
+            <BudgetUXProvider>
+                <Budget />
+            </BudgetUXProvider>
+        </BudgetDataProvider>
     )
 }

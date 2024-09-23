@@ -1,75 +1,50 @@
-import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import {
-    useFetcher,
     useLoaderData,
-    useNavigate,
     useSearchParams,
+    useFetcher,
+    useNavigate,
 } from '@remix-run/react'
-import { isAuthApiError } from '@supabase/supabase-js'
-import BudgetMenuForm from '~/components/budget/BudgetMenuForm'
-import Icon from '~/components/icons/Icon'
+import React, { useEffect, useState } from 'react'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
-import ServerErrorResponse from '~/error'
-import authenticateUser from '~/utils/authenticateUser'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
+import { loader } from '~/root'
+import toCurrencyString from '~/utils/toCurrencyString'
+import {
+    itemNameSchema,
+    itemAssignedSchema,
+    itemTargetSchema,
+} from '~/zodSchemas/budgetItem'
+import DeleteButton from '../DeleteButton'
+import DeleteForm from '../DeleteForm'
+import Divider from '../Divider'
+import Icon from '../icons/Icon'
+import BudgetMenuForm from './BudgetMenuForm'
 import {
     budgetItemCurrentMonthAssignedAmount,
     budgetItemCurrentMonthTransactionAmount,
 } from '~/utils/budgetValues'
-import {
-    itemAssignedSchema,
-    itemNameSchema,
-    itemTargetSchema,
-} from '~/zodSchemas/budgetItem'
-import DeleteButton from '~/components/DeleteButton'
-import Divider from '~/components/Divider'
-import DeleteForm from '~/components/DeleteForm'
-import toCurrencyString from '~/utils/toCurrencyString'
-import currentMonthBudgetItemData from '~/prisma/fullBudgetItemData'
+import { useFindRelation } from '~/context/BudgetDataContext'
+import { useBudgetUX } from '~/context/BudgetUXContext'
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
-    try {
-        const { user } = await authenticateUser(request)
-
-        const budgetItem = await currentMonthBudgetItemData({
-            budgetItemId: params.budgetItemId!,
-            userId: user.id,
-        })
-
-        const assigned = budgetItemCurrentMonthAssignedAmount(
-            budgetItem.assignments
-        )
-        const transactions = budgetItemCurrentMonthTransactionAmount(
-            budgetItem.transactions
-        )
-        const balance = assigned + transactions
-
-        return json({ budgetItem, assigned, balance })
-    } catch (e) {
-        if (isAuthApiError(e)) {
-            throw new ServerErrorResponse(e)
-        } else {
-            return redirect(`/budget/${params.budgetId}`)
-            // throw new ServerErrorResponse({
-            //     message: 'Budget Item not found.',
-            //     status: 404,
-            // })
-        }
-    }
+type BudgetItemMenuProps = {
+    budgetItem: FullBudgetType['budgetItems'][number]
 }
 
-export default function BudgetItemEditRoute() {
-    const { budgetItem, balance, assigned } = useLoaderData<typeof loader>()
-
-    const [searchParams] = useSearchParams()
-    const focus = searchParams.get('f')
+const BudgetItemMenu = ({ budgetItem }: BudgetItemMenuProps) => {
+    const assigned = budgetItemCurrentMonthAssignedAmount(
+        useFindRelation('assignments', 'budgetItemId', budgetItem.id)
+    )
+    const transactions = budgetItemCurrentMonthTransactionAmount(
+        useFindRelation('transactions', 'budgetItemId', budgetItem.id)
+    )
+    const balance = assigned - transactions
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'
     const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
 
     const { setActive, setModalTitle, setModalChildren } = useModal()
-
     const fetcher = useFetcher()
     const onReachTargetClick = () => {
         fetcher.submit(
@@ -101,8 +76,11 @@ export default function BudgetItemEditRoute() {
         setActive(true)
     }
 
+    const focus = useBudgetUX().budgetUX.focus
+
     return (
         <div
+            key={budgetItem.id}
             className={`flex flex-col gap-4 size-full p-4 text-sm ${themeStyle} rounded-xl min-w-full h-fit`}
         >
             <div className="flex flex-col w-full justify-center items-center">
@@ -114,7 +92,7 @@ export default function BudgetItemEditRoute() {
                     schema={itemNameSchema}
                     action="/api/budItem/rename"
                     itemUuid={budgetItem.id}
-                    focus={focus === 'name'}
+                    focus={focus === 'itname'}
                 />
             </div>
             <Divider />
@@ -185,3 +163,5 @@ export default function BudgetItemEditRoute() {
         </div>
     )
 }
+
+export default BudgetItemMenu

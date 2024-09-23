@@ -17,42 +17,39 @@ export default async function fullBudgetData({
             userId: userId,
         },
         include: {
+            budgetItems: {
+                orderBy: { createdAt: 'desc' },
+            },
             budgetCategories: {
-                include: {
-                    budgetItems: {
-                        include: {
-                            assignments: {
-                                where: {
-                                    createdAt: {
-                                        gte: getStartOfMonth(),
-                                    },
-                                },
-                                take: 1,
-                            },
-                        },
-                        orderBy: [
-                            {
-                                order: 'asc',
-                            },
-                            {
-                                createdAt: 'desc',
-                            },
-                        ],
-                    },
-                },
-                orderBy: {
-                    order: 'asc',
-                },
+                orderBy: { createdAt: 'desc' },
             },
             accounts: {
-                include: {
-                    transactions: true,
-                },
+                orderBy: { createdAt: 'desc' },
             },
+            assignments: {
+                where: {
+                    createdAt: {
+                        gte: getStartOfMonth(),
+                    },
+                },
+                orderBy: { createdAt: 'desc' },
+            },
+            transactions: true,
         },
     })
 
     return baseData
 }
 
-export type FullBudgetDataType = Awaited<ReturnType<typeof fullBudgetData>>
+export type ServerFullBudgetType = Awaited<ReturnType<typeof fullBudgetData>>
+
+export type ReplaceDatesWithStrings<T> = {
+    [K in keyof T]: T[K] extends Date
+        ? string
+        : T[K] extends object
+        ? ReplaceDatesWithStrings<T[K]>
+        : T[K]
+}
+
+// also the client one
+export type FullBudgetType = ReplaceDatesWithStrings<ServerFullBudgetType>

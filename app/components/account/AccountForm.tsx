@@ -6,57 +6,45 @@ import useRemixForm from '~/hooks/useRemixForm'
 import Dropdown, { mapToDropdownItem } from '../Dropdown'
 import { Budget } from '@prisma/client'
 import { useNavigate } from '@remix-run/react'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 import DeleteForm from '../DeleteForm'
 import CreateUpdateModalForm from '../CreateUpdateModalForm'
 import { action as accountUpdateAction } from '~/routes/api.account.update'
 import { action as accountCreateAction } from '~/routes/api.account.create'
+import { useTheme } from '~/context/ThemeContext'
 
 type AccountFormProps = {
-    budgets: Pick<Budget, 'id' | 'name'>[]
-    editAccount?: FullAccountDataType
+    budgetData: Pick<Budget, 'id' | 'name'>
+    editAccount?: FullAccountType
 }
 
-const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
+const AccountForm = ({ budgetData, editAccount }: AccountFormProps) => {
     // may have to use an onChange
     const { methods, fetcher } = useRemixForm<
         AccountFormSchemaType,
         typeof accountUpdateAction | typeof accountCreateAction
     >(accountFormSchema, 'onChange')
 
-    const dropdownItems = mapToDropdownItem(budgets)
-
-    const [dropdownError, setDropdownError] = useState(false)
-
-    const [selectedBudget, setSelectedBudget] = useState<string | null>(
-        editAccount?.budgetId ?? null
-    )
-
     const onSubmit: SubmitHandler<AccountFormSchemaType> = (data) => {
-        if (selectedBudget !== null) {
-            const submitTarget = new FormData()
-            for (const [key, value] of Object.entries(data)) {
-                submitTarget.append(key, value.toString())
-            }
-            submitTarget.append(
-                'budgetId',
-                editAccount?.budgetId ?? selectedBudget
-            )
-            if (editAccount) {
-                submitTarget.append('accountId', editAccount.id)
-            }
-            fetcher.submit(submitTarget, {
-                action: editAccount
-                    ? '/api/account/update'
-                    : '/api/account/create',
-                method: 'POST',
-            })
-        } else {
-            setDropdownError(true)
+        const submitTarget = new FormData()
+        for (const [key, value] of Object.entries(data)) {
+            submitTarget.append(key, value.toString())
         }
+        submitTarget.append('budgetId', editAccount?.budgetId ?? budgetData.id)
+        if (editAccount) {
+            submitTarget.append('accountId', editAccount.id)
+        }
+        fetcher.submit(submitTarget, {
+            action: editAccount ? '/api/account/update' : '/api/account/create',
+            method: 'POST',
+        })
     }
 
     const navigate = useNavigate()
+
+    const { theme } = useTheme()
+    const themeStyles =
+        theme === 'DARK' ? 'text-light bg-light' : 'text-light bg-white'
 
     return (
         <CreateUpdateModalForm
@@ -83,6 +71,19 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                 )
             }
         >
+            {/* <div className="4">
+                <span className="text-xl ml-1">
+                    For budget {budgetData.name}
+                </span>
+            </div> */}
+            <div className="mb-4 flex-col">
+                <span className="ml-1 text-xl">For Budget</span>
+                <div
+                    className={`${themeStyles} select-none brightness-75 hover:cursor-not-allowed w-full rounded-lg p-2 transition-all duration-100 outline-none`}
+                >
+                    {budgetData.name}
+                </div>
+            </div>
             <Input
                 name="name"
                 label="Name"
@@ -96,28 +97,6 @@ const AccountForm = ({ budgets, editAccount }: AccountFormProps) => {
                 defaultValue={editAccount?.initialBalance.toFixed(2)}
                 isMoney
             />
-            <div className="mb-4">
-                <span className="text-xl ml-1">Budget</span>
-                <Dropdown
-                    disabled={!!editAccount}
-                    dropdownItems={dropdownItems}
-                    defaultItem={
-                        editAccount
-                            ? {
-                                  id: editAccount.budgetId,
-                                  name: editAccount.budget.name,
-                              }
-                            : undefined
-                    }
-                    onChange={(d) => {
-                        setSelectedBudget(d.id)
-                    }}
-                    onExpand={() => {
-                        setDropdownError(false)
-                    }}
-                    errorState={dropdownError}
-                />
-            </div>
         </CreateUpdateModalForm>
     )
 }

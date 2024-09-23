@@ -1,17 +1,23 @@
 import { useTheme } from '~/context/ThemeContext'
-import { FullAccountDataType } from '~/prisma/fullAccountData'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 import Icon from '../icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from '../budget/TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
 
 type TransactionProps = {
-    transaction: FullAccountDataType['transactions'][number]
-    budgetId: string
+    accountData: FullAccountType
+    transaction: FullAccountType['transactions'][number]
+    basicBudgetData: BasicBudgetType
     search: string
 }
 
-const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
+const Transaction = ({
+    accountData,
+    transaction,
+    basicBudgetData,
+    search,
+}: TransactionProps) => {
     const { setActive, setModalChildren, setModalTitle } = useModal()
 
     const fromFreeCashText = 'Unassigned Free Cash'
@@ -23,9 +29,14 @@ const Transaction = ({ transaction, budgetId, search }: TransactionProps) => {
     const onEdit = () => {
         setModalChildren(
             <TransactionForm
-                budgetId={budgetId}
+                basicBudgetData={basicBudgetData}
                 defaultBudgetItem={transaction?.budgetItem ?? undefined}
-                editTransaction={transaction}
+                editTransaction={{
+                    account: {
+                        name: accountData.name,
+                    },
+                    ...transaction,
+                }}
             />
         )
         setModalTitle('Edit Transaction')

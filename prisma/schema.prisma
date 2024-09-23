@@ -19,6 +19,7 @@ model Budget {
     budgetItems      BudgetItem[]
     accounts         Account[]
     assignments      Assignment[]
+    transactions     Transaction[]
 }
 
 model Account {
@@ -88,6 +89,8 @@ model Transaction {
     date         DateTime    @default(now())
     description  String?
     amount       Float
+    budgetId     String      @db.Uuid
+    budget       Budget      @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     accountId    String      @db.Uuid
     account      Account     @relation(fields: [accountId], references: [id], onDelete: Cascade)
     budgetItemId String?     @db.Uuid

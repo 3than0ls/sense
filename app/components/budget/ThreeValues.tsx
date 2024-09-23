@@ -1,30 +1,39 @@
 import { useModal } from '~/context/ModalContext'
-import { BudgetItem } from '@prisma/client'
 import TransactionForm from './TransactionForm'
-import { Link, useNavigate, useParams } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import toCurrencyString from '~/utils/toCurrencyString'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
+import { useBudgetData } from '~/context/BudgetDataContext'
+import { useBudgetUX } from '~/context/BudgetUXContext'
 
 type ThreeValuesProps = {
     balance: number
     assigned: number
-    budgetItem: BudgetItem
+    budgetItem: FullBudgetType['budgetItems'][number]
 }
 
 const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     const { setModalTitle, setModalChildren, setActive } = useModal()
+    const budgetData = useBudgetData()
 
-    const params = useParams()
-    const navigate = useNavigate()
+    const { updateBudgetUX } = useBudgetUX()
 
     const onBalanceClick = () => {
+        updateBudgetUX({ focus: null })
         setModalChildren(
             <TransactionForm
-                budgetId={budgetItem.budgetId}
+                basicBudgetData={budgetData}
                 defaultBudgetItem={budgetItem}
             />
         )
         setModalTitle('Log Transaction')
         setActive(true)
+    }
+    const onTargetClick = () => {
+        updateBudgetUX({ focus: 'target' })
+    }
+    const onAssignClick = () => {
+        updateBudgetUX({ focus: 'assign' })
     }
 
     const balanceError = balance < 0
@@ -33,7 +42,7 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
     return (
         <div className="flex items-center gap-4 min-h-10">
             <Link
-                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}`}
+                to={`/budget/${budgetItem.budgetId}/i/${budgetItem.id}`}
                 onClick={onBalanceClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
@@ -43,7 +52,8 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 <hr className="bg-balance border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
-                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=assign`}
+                to={`/budget/${budgetItem.budgetId}/i/${budgetItem.id}`}
+                onClick={onAssignClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
                 <span className={`text-right`}>
@@ -52,7 +62,8 @@ const ThreeValues = ({ balance, assigned, budgetItem }: ThreeValuesProps) => {
                 <hr className="bg-assigned border-0 aspect-square h-2 rounded-full" />
             </Link>
             <Link
-                to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=target`}
+                to={`/budget/${budgetItem.budgetId}/i/${budgetItem.id}`}
+                onClick={onTargetClick}
                 className="w-24 flex justify-end items-center gap-2"
             >
                 <span className="text-right">

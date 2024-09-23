@@ -1,4 +1,5 @@
 import prisma from '~/prisma/client'
+import { ReplaceDatesWithStrings } from './fullBudgetData'
 
 /**
  * Given a budget ID and user ID, retrieve ALL of the budget's data, which includes
@@ -32,7 +33,6 @@ export default async function fullAccountData({
                             },
                         },
                     },
-                    account: { select: { name: true } }, // I know I know but fk this
                 },
             },
         },
@@ -41,4 +41,43 @@ export default async function fullAccountData({
     return baseData
 }
 
-export type FullAccountDataType = Awaited<ReturnType<typeof fullAccountData>>
+export type ServerFullAccountType = Awaited<ReturnType<typeof fullAccountData>>
+
+export type FullAccountType = ReplaceDatesWithStrings<ServerFullAccountType>
+
+export async function basicBudgetData({
+    budgetId,
+    userId,
+}: {
+    budgetId: string
+    userId: string
+}) {
+    const basicBudgetData = await prisma.budget.findFirstOrThrow({
+        where: {
+            id: budgetId,
+            userId,
+        },
+        select: {
+            name: true,
+            id: true,
+            budgetItems: {
+                select: {
+                    name: true,
+                    id: true,
+                },
+            },
+            accounts: {
+                select: {
+                    name: true,
+                    id: true,
+                },
+            },
+        },
+    })
+
+    return basicBudgetData
+}
+
+export type ServerBasicBudgetType = Awaited<ReturnType<typeof basicBudgetData>>
+
+export type BasicBudgetType = ReplaceDatesWithStrings<ServerBasicBudgetType>

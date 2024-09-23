@@ -22,9 +22,7 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        return redirect(
-            `/budget/${deleteItem.budgetId}/${deleteItem.budgetCategoryId}`
-        )
+        return redirect(`/budget/${deleteItem.budgetId}`)
     } catch (e) {
         throw new ServerErrorResponse({
             message: 'Budget Item unable to be deleted.',

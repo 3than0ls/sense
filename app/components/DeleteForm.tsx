@@ -1,9 +1,10 @@
 import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Exclamation from './Exclamation'
 import DeleteButton from './DeleteButton'
 import Icon from './icons/Icon'
+import useCloseModalWhenDone from '~/hooks/useCloseModalWhenDone'
 
 type DeleteFormProps = {
     fetcherAction: string
@@ -45,15 +46,7 @@ const DeleteForm = ({
         }
     }
 
-    useEffect(() => {
-        if (fetcher.state === 'loading') {
-            if (onSubmitLoad) {
-                onSubmitLoad(fetcher.data)
-            }
-            setActive(false)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetcher.state, fetcher.data])
+    useCloseModalWhenDone(fetcher, onSubmitLoad)
 
     return (
         <div className="flex flex-col gap-3 w-96">
@@ -75,7 +68,7 @@ const DeleteForm = ({
                 onClick={onDelete}
             >
                 {deleteButtonText ?? 'Confirm Deletion'}
-                {fetcher.state === 'submitting' && (
+                {fetcher.state !== 'idle' && (
                     <Icon
                         type="spinner"
                         color="#fff"

@@ -1,13 +1,14 @@
-import { FullAccountDataType } from '~/prisma/fullAccountData'
 import toCurrencyString from '~/utils/toCurrencyString'
 import Icon from '../icons/Icon'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from '../budget/TransactionForm'
 import ReconcileForm from './ReconcileForm'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 import { accountTotalTransactions } from '~/utils/budgetValues'
 
 type AccountTopBarProps = {
-    accountData: FullAccountDataType
+    accountData: FullAccountType
+    basicBudgetData: BasicBudgetType
 }
 
 const BigNumber = ({ number, label }: { number: number; label: string }) => {
@@ -38,7 +39,10 @@ const TopBarButton = ({
     )
 }
 
-const AccountTopBar = ({ accountData }: AccountTopBarProps) => {
+const AccountTopBar = ({
+    basicBudgetData,
+    accountData,
+}: AccountTopBarProps) => {
     const totalTransactions = accountTotalTransactions(accountData)
     const balance = accountData.initialBalance + totalTransactions
 
@@ -46,7 +50,7 @@ const AccountTopBar = ({ accountData }: AccountTopBarProps) => {
     const onTransacClick = () => {
         setModalChildren(
             <TransactionForm
-                budgetId={accountData.budgetId}
+                basicBudgetData={basicBudgetData}
                 defaultAccount={accountData}
             />
         )

@@ -34,7 +34,7 @@ export async function action({ request }: ActionFunctionArgs) {
         })
 
         return redirect(
-            `/budget/${budgetCategory.budgetId}/${budgetCategory.id}`
+            `/budget/${budgetCategory.budgetId}/c/${budgetCategory.id}?f=catname`
         )
     } catch (e) {
         throw new ServerErrorResponse()

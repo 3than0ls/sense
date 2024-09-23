@@ -3,18 +3,18 @@ import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
 import { Link } from '@remix-run/react'
-import { FullBudgetDataType } from '~/prisma/fullBudgetData'
+import { FullBudgetType } from '~/prisma/fullBudgetData'
 import {
     budgetItemCurrentMonthAssignedAmount,
     budgetItemCurrentMonthTransactionAmount,
 } from '~/utils/budgetValues'
 import ThreeValues from './ThreeValues'
 import { useTheme } from '~/context/ThemeContext'
-import { BudgetItem as BudgetItemT, Transaction } from '@prisma/client'
+import { useFindRelation } from '~/context/BudgetDataContext'
+import { useBudgetUX } from '~/context/BudgetUXContext'
 
 type BudgetItemProps = {
-    budgetItem: FullBudgetDataType['budgetCategories'][number]['budgetItems'][number]
-    budgetItemTransactions: Transaction[]
+    budgetItem: FullBudgetType['budgetItems'][number]
 }
 
 const LinkWrapper = ({
@@ -23,32 +23,46 @@ const LinkWrapper = ({
     className,
 }: {
     children: React.ReactNode
-    budgetItem: Pick<BudgetItemT, 'budgetCategoryId' | 'id'>
+    budgetItem: FullBudgetType['budgetItems'][number]
     className?: string
+    searchParams?: string
 }) => {
+    const { updateBudgetUX } = useBudgetUX()
+
+    const onClick = () => {
+        updateBudgetUX({
+            focus: 'itname',
+        })
+    }
+    const link = `/budget/${budgetItem.budgetId}/i/${budgetItem.id}`
     return (
-        <Link
-            className={className}
-            to={`${budgetItem.budgetCategoryId}/${budgetItem.id}?f=name`}
-        >
+        <Link className={className} onClick={onClick} to={link}>
             {children}
         </Link>
     )
 }
 
-const BudgetItem = ({
-    budgetItem,
-    budgetItemTransactions,
-}: BudgetItemProps) => {
+const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
     const { name, target } = budgetItem
     const [expanded, setExpanded] = useState(false)
 
-    // a little hack needed because this didn't work out how I wanted them to
-    const transactions = budgetItemCurrentMonthTransactionAmount({
-        transactions: budgetItemTransactions,
-    })
-    const assigned = budgetItemCurrentMonthAssignedAmount(budgetItem)
-    const balance = assigned + transactions
+    const transactions = useFindRelation(
+        'transactions',
+        'budgetItemId',
+        budgetItem.id
+    )
+    const assignments = useFindRelation(
+        'assignments',
+        'budgetItemId',
+        budgetItem.id
+    )
+
+    const currentMonthTransactions =
+        budgetItemCurrentMonthTransactionAmount(transactions)
+    const currentMonthAssignment =
+        budgetItemCurrentMonthAssignedAmount(assignments)
+    const currentMonthBalance =
+        currentMonthAssignment + currentMonthTransactions
 
     // ideas for the progress bar that will definitely be put in it's own component:
     // drag the assigned and balance ends to automatically set assigned and balance categories
@@ -103,23 +117,23 @@ const BudgetItem = ({
                     >
                         <BudgetItemBar
                             expanded={expanded}
-                            balance={balance}
+                            balance={currentMonthBalance}
                             target={target}
-                            assigned={assigned}
+                            assigned={currentMonthAssignment}
                         />
                     </button>
                 </LinkWrapper>
                 <ThreeValues
-                    balance={balance}
-                    assigned={assigned}
+                    balance={currentMonthBalance}
+                    assigned={currentMonthAssignment}
                     budgetItem={budgetItem}
                 />
             </div>
             {expanded && (
                 <BudgetItemExpanded
                     budgetItem={budgetItem}
-                    assigned={assigned}
-                    balance={balance}
+                    assigned={currentMonthAssignment}
+                    balance={currentMonthBalance}
                 />
             )}
         </div>

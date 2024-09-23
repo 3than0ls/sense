@@ -1,4 +1,4 @@
-import { FullAccountDataType } from '~/prisma/fullAccountData'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 import Icon from '../icons/Icon'
 import { Link } from '@remix-run/react'
 import { useTheme } from '~/context/ThemeContext'
@@ -9,11 +9,11 @@ import AccountForm from './AccountForm'
 import { Budget } from '@prisma/client'
 
 type AccountProps = {
-    accountData: FullAccountDataType
-    budgetBasicInfo: Pick<Budget, 'id' | 'name'>[]
+    accountData: FullAccountType
+    basicBudgetData: BasicBudgetType
 }
 
-const Account = ({ accountData, budgetBasicInfo }: AccountProps) => {
+const Account = ({ accountData, basicBudgetData }: AccountProps) => {
     const { theme } = useTheme()
     const hoverThemeStyle =
         theme === 'DARK'
@@ -24,7 +24,10 @@ const Account = ({ accountData, budgetBasicInfo }: AccountProps) => {
     const onEditClick = () => {
         setModalTitle('Edit Account Info')
         setModalChildren(
-            <AccountForm budgets={budgetBasicInfo} editAccount={accountData} />
+            <AccountForm
+                budgetData={basicBudgetData}
+                editAccount={accountData}
+            />
         )
         setActive(true)
     }
@@ -56,8 +59,14 @@ const Account = ({ accountData, budgetBasicInfo }: AccountProps) => {
                     .
                 </p>
             </div>
-            <AccountTopBar accountData={accountData} />
-            <AccountTransactions accountData={accountData} />
+            <AccountTopBar
+                basicBudgetData={basicBudgetData}
+                accountData={accountData}
+            />
+            <AccountTransactions
+                basicBudgetData={basicBudgetData}
+                accountData={accountData}
+            />
         </div>
     )
 }

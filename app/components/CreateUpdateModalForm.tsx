@@ -7,6 +7,7 @@ import DeleteButton from './DeleteButton'
 import Divider from './Divider'
 import Submit from './form/Submit'
 import Icon from './icons/Icon'
+import useCloseModalWhenDone from '~/hooks/useCloseModalWhenDone'
 
 type CreateUpdateModalFormProps<FormValues extends FieldValues> = {
     children: React.ReactNode
@@ -17,7 +18,6 @@ type CreateUpdateModalFormProps<FormValues extends FieldValues> = {
     type: 'create' | 'update'
     onSubmit: SubmitHandler<FormValues>
     disable?: boolean
-    onFetcherLoading?: () => void
     className?: string
     submitButtonText?: string
 }
@@ -31,22 +31,12 @@ export default function CreateUpdateModalForm<FormValues extends FieldValues>({
     type,
     onSubmit,
     disable,
-    onFetcherLoading,
     className,
     submitButtonText,
 }: CreateUpdateModalFormProps<FormValues>) {
     const { setModalTitle, setModalChildren, setActive } = useModal()
 
-    // when fetcher has submitted and is now loading response, close modal
-    useEffect(() => {
-        if (onFetcherLoading === undefined) {
-            if (fetcher.state === 'loading') {
-                setActive(false)
-            }
-        } else {
-            onFetcherLoading()
-        }
-    }, [onFetcherLoading, fetcher, setActive])
+    useCloseModalWhenDone(fetcher)
 
     const onDeleteClick = () => {
         if (type === 'update') {
@@ -66,11 +56,7 @@ export default function CreateUpdateModalForm<FormValues extends FieldValues>({
         >
             {children}
             <Submit
-                disabled={
-                    disable ||
-                    fetcher.state === 'submitting' ||
-                    fetcher.state === 'loading'
-                }
+                disabled={disable || fetcher.state !== 'idle'}
                 className="w-full py-2 rounded-xl"
             >
                 {submitButtonText
@@ -78,7 +64,7 @@ export default function CreateUpdateModalForm<FormValues extends FieldValues>({
                     : type === 'update'
                     ? `Update ${name}`
                     : `Create ${name}`}
-                {fetcher.state === 'submitting' && (
+                {fetcher.state !== 'idle' && (
                     <Icon
                         type="spinner"
                         color="#fff"

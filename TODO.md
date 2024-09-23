@@ -1,13 +1,25 @@
-=-- Misc. --=
-A name for the projecte
-
-NEXT: 
+# TODO
 
 Sidebar (medium) (have to make design decisions)
 
 REDIRECT on missing budgets and etc.
 
-rework/delete order
+rework/delete order (NEXT)
+
+optimistic UI and the BudgetContext
+
+THE OPTIMISTIC UI REWORK:
+All client data is completely managed by BudgetContext, all shown data on client side originates from BudgetContext
+Preceding EVERY single API call, call setBudgetData and change/update the appropriate values
+Refactor `budget.$budgetId.$budgetCategoryId.$budgetItemId.tsx` and `budget.$budgetId.$budgetCategoryId.tsx` to just `/i` and `/c`, and more importantly removing their loaders and simply just useBudgetData(). This will give a more instant response to clicks.
+Refactor `accounts.$accountId.tsx` to `budget.$budgetId.a.$accountId` so they too can access budgetData context
+Will likely have to rework BudgetMenuForm a bit.
+
+
+NEXT: Put expensive computations in useMemo (<https://react.dev/reference/react/useMemo#usememo>)
+
+NEXT: find a way to prevent loader spammingm, specifically for main budget loader
+
 
 FUTURE NON ESSENTIALS:
 transaction to more than one item
