@@ -7,6 +7,7 @@ import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
 import { BudgetItem } from '@prisma/client'
 import { useTheme } from '~/context/ThemeContext'
+import { useMemo } from 'react'
 
 type BudgetMenuProps = {
     budgetData: FullBudgetType
@@ -42,7 +43,10 @@ const BudgetMenuAlert = ({ children }: { children: React.ReactNode }) => {
 }
 
 const BudgetMenu = ({ budgetData }: BudgetMenuProps) => {
-    const { totalCash, freeCash } = currentMonthBudgetValues(budgetData)
+    const { totalCash, freeCash } = useMemo(
+        () => currentMonthBudgetValues(budgetData),
+        [budgetData]
+    )
 
     const params = useParams()
     const { setActive, setModalChildren, setModalTitle } = useModal()

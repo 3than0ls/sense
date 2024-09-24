@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import BudgetItemBar from './BudgetItemBar'
 import Icon from '../icons/Icon'
 import BudgetItemExpanded from './BudgetItemExpanded'
@@ -57,10 +57,14 @@ const BudgetItem = ({ budgetItem }: BudgetItemProps) => {
         budgetItem.id
     )
 
-    const currentMonthTransactions =
-        budgetItemCurrentMonthTransactionAmount(transactions)
-    const currentMonthAssignment =
-        budgetItemCurrentMonthAssignedAmount(assignments)
+    const currentMonthTransactions = useMemo(
+        () => budgetItemCurrentMonthTransactionAmount(transactions),
+        [transactions]
+    )
+    const currentMonthAssignment = useMemo(
+        () => budgetItemCurrentMonthAssignedAmount(assignments),
+        [assignments]
+    )
     const currentMonthBalance =
         currentMonthAssignment + currentMonthTransactions
 

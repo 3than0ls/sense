@@ -4,7 +4,7 @@ import {
     useFetcher,
     useNavigate,
 } from '@remix-run/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import { FullBudgetType } from '~/prisma/fullBudgetData'
@@ -35,10 +35,16 @@ const BudgetItemMenu = ({ budgetItem }: BudgetItemMenuProps) => {
     const assigned = budgetItemCurrentMonthAssignedAmount(
         useFindRelation('assignments', 'budgetItemId', budgetItem.id)
     )
-    const transactions = budgetItemCurrentMonthTransactionAmount(
-        useFindRelation('transactions', 'budgetItemId', budgetItem.id)
+    const transactions = useFindRelation(
+        'transactions',
+        'budgetItemId',
+        budgetItem.id
     )
-    const balance = assigned - transactions
+    const currentMonthTransactions = useMemo(
+        () => budgetItemCurrentMonthTransactionAmount(transactions),
+        [transactions]
+    )
+    const balance = assigned - currentMonthTransactions
 
     const { theme } = useTheme()
     const themeStyle = theme === 'DARK' ? 'bg-black' : 'bg-white'

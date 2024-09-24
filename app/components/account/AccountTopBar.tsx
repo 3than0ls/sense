@@ -5,6 +5,7 @@ import TransactionForm from '../budget/TransactionForm'
 import ReconcileForm from './ReconcileForm'
 import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 import { accountTotalTransactions } from '~/utils/budgetValues'
+import { useMemo } from 'react'
 
 type AccountTopBarProps = {
     accountData: FullAccountType
@@ -43,7 +44,10 @@ const AccountTopBar = ({
     basicBudgetData,
     accountData,
 }: AccountTopBarProps) => {
-    const totalTransactions = accountTotalTransactions(accountData)
+    const totalTransactions = useMemo(
+        () => accountTotalTransactions(accountData),
+        [accountData]
+    )
     const balance = accountData.initialBalance + totalTransactions
 
     const { setActive, setModalChildren, setModalTitle } = useModal()
