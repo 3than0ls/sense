@@ -1,4 +1,4 @@
-import { useFetcher, Link, useSearchParams } from '@remix-run/react'
+import { useFetcher, Link } from '@remix-run/react'
 import React from 'react'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'

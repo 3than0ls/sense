@@ -5,7 +5,6 @@ import { FullBudgetType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import TransactionForm from './TransactionForm'
 import toCurrencyString from '~/utils/toCurrencyString'
-import { BudgetItem } from '@prisma/client'
 import { useTheme } from '~/context/ThemeContext'
 import { useMemo } from 'react'
 

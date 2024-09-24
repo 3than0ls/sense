@@ -3,11 +3,7 @@ import { json, useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Account from '~/components/account/Account'
 import ServerErrorResponse from '~/error'
-import prisma from '~/prisma/client'
-import fullAccountData, {
-    basicBudgetData,
-    FullAccountType,
-} from '~/prisma/fullAccountData'
+import fullAccountData, { basicBudgetData } from '~/prisma/fullAccountData'
 import authenticateUser from '~/utils/authenticateUser'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

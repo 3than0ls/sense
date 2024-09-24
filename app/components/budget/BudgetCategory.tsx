@@ -1,17 +1,11 @@
 import BudgetItem from './BudgetItem'
 import Icon from '../icons/Icon'
 import { useTheme } from '~/context/ThemeContext'
-import {
-    Link,
-    useFetcher,
-    useNavigate,
-    useSearchParams,
-} from '@remix-run/react'
+import { Link, useFetcher, useNavigate } from '@remix-run/react'
 import { FullBudgetType } from '~/prisma/fullBudgetData'
 import { useModal } from '~/context/ModalContext'
 import DeleteForm from '../DeleteForm'
 import { useFindRelation } from '~/context/BudgetDataContext'
-import { useEffect } from 'react'
 import { useBudgetUX } from '~/context/BudgetUXContext'
 
 type BudgetCategoryProps = {
@@ -70,7 +64,7 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
 
     const link = `/budget/${budgetCategory.budgetId}/c/${budgetCategory.id}`
 
-    const { budgetUX, updateBudgetUX } = useBudgetUX()
+    const { updateBudgetUX } = useBudgetUX()
 
     const onEditClick = () => {
         updateBudgetUX({

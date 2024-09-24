@@ -1,7 +1,6 @@
 import { Account, BudgetItem } from '@prisma/client'
-import Dropdown, { mapToDropdownItem } from '../Dropdown'
+import Dropdown from '../Dropdown'
 import { useEffect, useState } from 'react'
-import { useFetcher } from '@remix-run/react'
 import { useModal } from '~/context/ModalContext'
 import useRemixForm from '~/hooks/useRemixForm'
 import Input from '../form/Input'

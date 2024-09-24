@@ -1,11 +1,5 @@
-import {
-    ShouldRevalidateFunction,
-    useNavigate,
-    useOutletContext,
-    useParams,
-} from '@remix-run/react'
+import { useNavigate, useOutletContext, useParams } from '@remix-run/react'
 import { useEffect } from 'react'
-import Budget from '~/components/budget/Budget'
 import BudgetItemMenu from '~/components/budget/BudgetItemMenu'
 import { useFindRelation } from '~/context/BudgetDataContext'
 import { FullBudgetType } from '~/prisma/fullBudgetData'

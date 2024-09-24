@@ -6,9 +6,9 @@ import EmptyBudget from './EmptyBudget'
 import { useModal } from '~/context/ModalContext'
 import BudgetForm from './BudgetForm'
 import TopBar from './TopBar'
-import { useRef, useState } from 'react'
-import { Link, useNavigate } from '@remix-run/react'
-import { useBudgetData, useFindRelation } from '~/context/BudgetDataContext'
+import { useRef } from 'react'
+import { Link } from '@remix-run/react'
+import { useBudgetData } from '~/context/BudgetDataContext'
 import usePreventLinkSpan from '~/hooks/usePreventLinkSpam'
 
 const Budget = () => {
@@ -23,7 +23,6 @@ const Budget = () => {
             : 'group-hover:stroke-dark'
 
     const backRef = useRef<HTMLDivElement>(null)
-    const navigate = useNavigate()
 
     const { setModalChildren, setActive, setModalTitle } = useModal()
 

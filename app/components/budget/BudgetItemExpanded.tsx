@@ -1,4 +1,3 @@
-import { BudgetItem } from '@prisma/client'
 import BudgetItemExpandedBar from './BudgetItemExpandedBar'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
@@ -38,7 +37,7 @@ const BudgetItemExpandedButton = ({
 }
 
 const BudgetItemExpanded = ({
-    budgetItem: { target, id, name, budgetId },
+    budgetItem: { target, id, name },
     assigned,
     balance,
 }: BudgetItemExpandedProps) => {

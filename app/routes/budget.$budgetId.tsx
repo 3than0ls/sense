@@ -1,12 +1,11 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { ShouldRevalidateFunction, useLoaderData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
 import ServerErrorResponse from '~/error'
 import authenticateUser from '~/utils/authenticateUser'
 import fullBudgetData from '~/prisma/fullBudgetData'
 import { BudgetDataProvider } from '~/context/BudgetDataContext'
-import { useMemo } from 'react'
 import stopRevalidate from '~/utils/stopRevalidation'
 import { BudgetUXProvider } from '~/context/BudgetUXContext'
 

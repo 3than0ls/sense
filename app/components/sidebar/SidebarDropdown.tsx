@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { useModal } from '~/context/ModalContext'
 import AccountForm from '../account/AccountForm'
 import Icon from '../icons/Icon'
-import SidebarLink from './SidebarLink'
-import Divider from '../Divider'
 
 const SidebarDropdown = ({
     budget,

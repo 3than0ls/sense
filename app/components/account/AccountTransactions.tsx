@@ -3,11 +3,7 @@ import Transaction, { TransactionRow } from './Transaction'
 import toCurrencyString from '~/utils/toCurrencyString'
 import TransactionsSearchBar from './TransactionsSearchBar'
 import { useState } from 'react'
-import {
-    basicBudgetData,
-    BasicBudgetType,
-    FullAccountType,
-} from '~/prisma/fullAccountData'
+import { BasicBudgetType, FullAccountType } from '~/prisma/fullAccountData'
 
 type AccountTransactionProps = {
     accountData: FullAccountType

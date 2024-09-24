@@ -1,14 +1,8 @@
-import {
-    useLoaderData,
-    useSearchParams,
-    useFetcher,
-    useNavigate,
-} from '@remix-run/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useFetcher, useNavigate } from '@remix-run/react'
+import { useMemo } from 'react'
 import { useModal } from '~/context/ModalContext'
 import { useTheme } from '~/context/ThemeContext'
 import { FullBudgetType } from '~/prisma/fullBudgetData'
-import { loader } from '~/root'
 import toCurrencyString from '~/utils/toCurrencyString'
 import {
     itemNameSchema,

@@ -1,6 +1,5 @@
 import { useFetcher } from '@remix-run/react'
-import { useModal } from '~/context/ModalContext'
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import Exclamation from './Exclamation'
 import DeleteButton from './DeleteButton'
 import Icon from './icons/Icon'
@@ -31,8 +30,6 @@ const DeleteForm = ({
     children,
 }: DeleteFormProps) => {
     const fetcher = useFetcher()
-
-    const { setActive } = useModal()
 
     const onDelete = () => {
         if (fetcher.state !== 'submitting') {

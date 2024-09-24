@@ -6,7 +6,6 @@ import AccountTopBar from './AccountTopBar'
 import AccountTransactions from './AccountTransactions'
 import { useModal } from '~/context/ModalContext'
 import AccountForm from './AccountForm'
-import { Budget } from '@prisma/client'
 
 type AccountProps = {
     accountData: FullAccountType

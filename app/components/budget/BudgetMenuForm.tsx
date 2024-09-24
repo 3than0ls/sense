@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
