@@ -34,15 +34,12 @@ export async function action({ request }: ActionFunctionArgs) {
             },
         })
 
-        const order = budgetCategory._count.budgetItems + 1
-
         const budgetItem = await prisma.budgetItem.create({
             data: {
                 name: 'New Item',
                 target: 0,
                 budgetId: budgetCategory.budgetId,
                 budgetCategoryId: budgetCategory.id,
-                order: order,
             },
         })
 

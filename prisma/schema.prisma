@@ -40,7 +40,6 @@ model BudgetCategory {
     budgetItems BudgetItem[]
     budgetId    String       @db.Uuid
     budget      Budget       @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-    order       Int // the order in which this category appears in the budget
 }
 
 model BudgetItem {
@@ -52,7 +51,6 @@ model BudgetItem {
     // assigned         Float  Would just be sum of assignments
     budgetCategoryId String         @db.Uuid
     budgetCategory   BudgetCategory @relation(fields: [budgetCategoryId], references: [id], onDelete: Cascade)
-    order            Int // the order in which this item appears in the category
     budgetId         String         @db.Uuid
     budget           Budget         @relation(fields: [budgetId], references: [id], onDelete: Cascade)
     transactions     Transaction[]

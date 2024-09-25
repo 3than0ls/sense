@@ -27,6 +27,21 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     const navigate = useNavigate()
     const { setActive, setModalChildren, setModalTitle } = useModal()
 
+    const { theme } = useTheme()
+    const themeStyle =
+        theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
+    const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
+
+    const link = `/budget/${budgetCategory.budgetId}/c/${budgetCategory.id}`
+
+    const { updateBudgetUX } = useBudgetUX()
+
+    const onEditClick = () => {
+        updateBudgetUX({
+            focus: 'catname',
+        })
+    }
+
     const onAddClick = () => {
         fetcher.submit(
             {
@@ -37,7 +52,6 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
     }
 
     const onDeleteClick = () => {
-        navigate(budgetCategory.id)
         setModalTitle('Confirm Deletion')
         setModalChildren(
             <DeleteForm
@@ -55,21 +69,6 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
             </DeleteForm>
         )
         setActive(true)
-    }
-
-    const { theme } = useTheme()
-    const themeStyle =
-        theme === 'DARK' ? 'hover:stroke-light' : 'hover:stroke-dark'
-    const altThemeStyle = theme === 'DARK' ? 'bg-dark' : 'bg-light'
-
-    const link = `/budget/${budgetCategory.budgetId}/c/${budgetCategory.id}`
-
-    const { updateBudgetUX } = useBudgetUX()
-
-    const onEditClick = () => {
-        updateBudgetUX({
-            focus: 'catname',
-        })
     }
 
     return (
@@ -97,13 +96,13 @@ const BudgetCategory = ({ budgetCategory }: BudgetCategoryProps) => {
                         interactive
                     />
                 </Link>
-                <button onClick={onDeleteClick}>
+                <Link to={link} onClick={onDeleteClick}>
                     <Icon
                         type="trash"
                         className={`size-6 stroke-subtle ${themeStyle} transition`}
                         interactive
                     />
-                </button>
+                </Link>
             </div>
             {budgetItemComponents.length > 0 ? (
                 <div className="divide-y divide-subtle">

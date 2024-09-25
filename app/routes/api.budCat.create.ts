@@ -18,17 +18,11 @@ export async function action({ request }: ActionFunctionArgs) {
                 userId: user.id,
                 id: budgetId,
             },
-            include: {
-                _count: {
-                    select: { budgetCategories: true },
-                },
-            },
         })
 
         const budgetCategory = await prisma.budgetCategory.create({
             data: {
                 name: 'New Category',
-                order: budget._count.budgetCategories + 1,
                 budgetId: budget.id,
             },
         })

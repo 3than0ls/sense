@@ -1,12 +1,6 @@
 # TODO
 
-Sidebar (medium) (have to make design decisions)
-
 REDIRECT on missing budgets and etc.
-
-rework/delete order (NEXT)
-
-optimistic UI and the BudgetContext
 
 THE OPTIMISTIC UI REWORK:
 All client data is completely managed by BudgetContext, all shown data on client side originates from BudgetContext
@@ -16,9 +10,9 @@ Refactor `accounts.$accountId.tsx` to `budget.$budgetId.a.$accountId` so they to
 Will likely have to rework BudgetMenuForm a bit.
 
 
-NEXT: Put expensive computations in useMemo (<https://react.dev/reference/react/useMemo#usememo>)
+NEXT: Put expensive computations in useMemo (<https://react.dev/reference/react/useMemo#usememo>) [test this]
 
-NEXT: find a way to prevent loader spammingm, specifically for main budget loader
+NEXT: SIDEBAR CREATE BUDEGET BUTTON
 
 
 FUTURE NON ESSENTIALS:
