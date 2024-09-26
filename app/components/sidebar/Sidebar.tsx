@@ -7,6 +7,7 @@ import Divider from '../Divider'
 import { SidebarDataType } from '~/prisma/sidebarData'
 import BudgetForm from '../budget/BudgetForm'
 import SidebarDropdown from './SidebarDropdown'
+import AddBudgetButton from './AddBudgetButton'
 
 type SidebarProps = {
     sidebarData: SidebarDataType
@@ -45,32 +46,9 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
             >
                 <span className="font-work-black text-2xl">Budgets</span>
                 {budgetLinks}
-                <Divider className="border-black" />
-                <button
-                    onClick={() => {
-                        setModalTitle('Create a Budget')
-                        setModalChildren(<BudgetForm />)
-                        setActive(true)
-                    }}
-                    className="bg-primary text-white border-2 border-black rounded-2xl"
-                >
-                    create a budget!
-                </button>
-                {/* <button
-                    onClick={() => {
-                        setModalTitle('Create an Account')
-                        setModalChildren(
-                            <AccountForm
-                                budgetData={'ONE SINGUALR BUDGET DATA'}
-                            />
-                        )
-                        setActive(true)
-                    }}
-                    className="bg-primary text-white border-2 border-black rounded-2xl"
-                >
-                    create a account!
-                </button> */}
-                <Divider className="border-black" />
+                <Divider className="border-white" />
+                <AddBudgetButton />
+                {/* <Divider className="border-white" /> */}
             </div>
             <div
                 className={`${!closed && 'hidden'} absolute h-full w-64 z-10`}
