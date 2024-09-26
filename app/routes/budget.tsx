@@ -1,19 +1,24 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData, useOutlet } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
+import { useEffect } from 'react'
 import EmptyContent from '~/components/budget/EmptyContent'
 import Sidebar from '~/components/sidebar/Sidebar'
 import ServerErrorResponse from '~/error'
 import getSidebarData from '~/prisma/sidebarData'
 import authenticateUser from '~/utils/authenticateUser'
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
     try {
         const { user } = await authenticateUser(request)
 
         const sidebarData = await getSidebarData({ userId: user.id })
 
-        return json(sidebarData)
+        if (sidebarData.length > 0 && params.budgetId === undefined) {
+            return redirect(`/budget/${sidebarData[0].id}`)
+        } else {
+            return json(sidebarData)
+        }
     } catch (e) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)

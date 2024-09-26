@@ -42,7 +42,7 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
             >
                 <span className="font-work-black text-2xl">Budgets</span>
                 {budgetLinks}
-                <Divider className="border-white" />
+                <Divider className="border-white my-2" />
                 <AddBudgetButton />
                 {/* <Divider className="border-white" /> */}
             </div>

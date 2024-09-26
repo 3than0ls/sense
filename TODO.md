@@ -12,10 +12,10 @@ Will likely have to rework BudgetMenuForm a bit.
 
 NEXT: Put expensive computations in useMemo (<https://react.dev/reference/react/useMemo#usememo>) [test this]
 
-NEXT: SIDEBAR CREATE BUDEGET BUTTON
-
 
 FUTURE NON ESSENTIALS:
+standardize outline theme
+have an updatedAt field (see https://stackoverflow.com/a/70806772) for budgets and auto navigate to that on /budget
 transaction to more than one item
 single generic DeleteForm component that also handles loading state before closing, then apply it to transaction deletion (cuz I didnt do that)
 add date to add transaction using https://ui.shadcn.com/docs/components/date-picker
