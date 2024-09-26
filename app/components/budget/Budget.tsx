@@ -2,7 +2,6 @@ import BudgetCategory from './BudgetCategory'
 import Icon from '../icons/Icon'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
 import BudgetMenu from './BudgetMenu'
-import EmptyBudget from './EmptyBudget'
 import { useModal } from '~/context/ModalContext'
 import BudgetForm from './BudgetForm'
 import TopBar from './TopBar'
@@ -10,6 +9,7 @@ import { useRef } from 'react'
 import { Link } from '@remix-run/react'
 import { useBudgetData } from '~/context/BudgetDataContext'
 import usePreventLinkSpan from '~/hooks/usePreventLinkSpam'
+import EmptyContent from './EmptyContent'
 
 const Budget = () => {
     const budgetData = useBudgetData()
@@ -74,7 +74,9 @@ const Budget = () => {
                         {budgetCategoryComponents.length > 0 ? (
                             budgetCategoryComponents
                         ) : (
-                            <EmptyBudget />
+                            <EmptyContent>
+                                It appears you have nothing in your budget...
+                            </EmptyContent>
                         )}
                         <Link
                             to={`/budget/${budgetData.id}`}

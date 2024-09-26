@@ -1,4 +1,4 @@
-const EmptyBudget = () => {
+const EmptyContent = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="w-full h-full flex flex-col gap-4 justify-center items-center border-t-0 text-subtle pb-4">
             <img
@@ -6,9 +6,9 @@ const EmptyBudget = () => {
                 alt="piggy"
                 className="opacity-75 aspect-square w-60"
             />
-            It appears you have nothing in your budget...
+            {children}
         </div>
     )
 }
 
-export default EmptyBudget
+export default EmptyContent
