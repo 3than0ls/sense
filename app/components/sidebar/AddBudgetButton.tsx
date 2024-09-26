@@ -1,7 +1,6 @@
-import React from 'react'
 import { useModal } from '~/context/ModalContext'
 import BudgetForm from '../budget/BudgetForm'
-import { useTheme, useThemeClass } from '~/context/ThemeContext'
+import { useTheme } from '~/context/ThemeContext'
 import Icon from '../icons/Icon'
 
 const AddBudgetButton = () => {

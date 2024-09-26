@@ -1,5 +1,5 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { Outlet, useLoaderData, useOutlet } from '@remix-run/react'
+import { useLoaderData, useOutlet } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import EmptyContent from '~/components/budget/EmptyContent'
 import Sidebar from '~/components/sidebar/Sidebar'

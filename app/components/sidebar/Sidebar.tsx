@@ -2,10 +2,8 @@ import { useRef, useState } from 'react'
 import SidebarCloseButton from './SidebarCloseButton'
 import SidebarLink from './SidebarLink'
 import { useThemeClass } from '~/context/ThemeContext'
-import { useModal } from '~/context/ModalContext'
 import Divider from '../Divider'
 import { SidebarDataType } from '~/prisma/sidebarData'
-import BudgetForm from '../budget/BudgetForm'
 import SidebarDropdown from './SidebarDropdown'
 import AddBudgetButton from './AddBudgetButton'
 
@@ -29,8 +27,6 @@ const Sidebar = ({ sidebarData }: SidebarProps) => {
             ))}
         </SidebarDropdown>
     ))
-
-    const { setActive, setModalTitle, setModalChildren } = useModal()
 
     return (
         <div
