@@ -1,7 +1,6 @@
 import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData, useOutlet } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
-import { useEffect } from 'react'
 import EmptyContent from '~/components/budget/EmptyContent'
 import Sidebar from '~/components/sidebar/Sidebar'
 import ServerErrorResponse from '~/error'

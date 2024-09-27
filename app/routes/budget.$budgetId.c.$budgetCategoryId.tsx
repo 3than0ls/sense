@@ -1,5 +1,5 @@
 import { useNavigate, useOutletContext, useParams } from '@remix-run/react'
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import BudgetCategoryMenu from '~/components/budget/BudgetCategoryMenu'
 import { useFindRelation } from '~/context/BudgetDataContext'
 import { FullBudgetType } from '~/prisma/fullBudgetData'
@@ -18,7 +18,7 @@ export default function BudgetCategoryRoute() {
         params.budgetCategoryId!
     )[0]
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (budgetCategory === undefined) {
             navigate(`/budget/${budgetData.id}`)
         }
