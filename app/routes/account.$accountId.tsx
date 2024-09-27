@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { json, useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Account from '~/components/account/Account'
@@ -26,10 +26,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
         } else {
-            throw new ServerErrorResponse({
-                message: 'Account not found.',
-                status: 404,
-            })
+            return redirect('/')
+            // throw new ServerErrorResponse({
+            //     message: 'Account not found.',
+            //     status: 404,
+            // })
         }
     }
 }

@@ -17,6 +17,7 @@ import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
 import ModalProvider from './context/ModalContext'
 import LoadingBar from './components/LoadingBar'
+import Error from './components/Error'
 
 // export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
 
@@ -79,18 +80,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function ErrorBoundary() {
     const error = useRouteError()
     if (isRouteErrorResponse(error)) {
-        console.log(error.data)
+        console.error(error.data)
     } else {
         console.log('Non-route error occured:')
         console.error(error)
     }
 
-    return (
-        <div>
-            An error occured: see console. In future, this will never be seen,
-            as an outlet will always be represented over it
-        </div>
-    )
+    return <Error />
 }
 
 export default function App() {

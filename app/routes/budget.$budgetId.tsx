@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { isAuthApiError } from '@supabase/supabase-js'
 import Budget from '~/components/budget/Budget'
@@ -30,10 +30,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         if (isAuthApiError(e)) {
             throw new ServerErrorResponse(e)
         } else {
-            throw new ServerErrorResponse({
-                message: 'Budget not found.',
-                status: 404,
-            })
+            return redirect('/budget')
+            // throw new ServerErrorResponse({
+            //     message: 'Budget not found.',
+            //     status: 404,
+            // })
         }
     }
 }
