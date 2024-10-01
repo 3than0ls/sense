@@ -1,5 +1,5 @@
-import { Theme } from '@prisma/client'
 import React, { useContext, createContext, useState } from 'react'
+import { theme, Theme } from '~/prisma/theme'
 
 type ThemeProviderProps = {
     initialTheme: Theme
@@ -12,7 +12,7 @@ type ThemeContextType = {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-    theme: Theme.DARK,
+    theme: theme.DARK,
     setTheme: undefined,
 })
 

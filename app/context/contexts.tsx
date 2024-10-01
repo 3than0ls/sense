@@ -3,7 +3,7 @@ import AuthProvider from './AuthContext'
 import SupabaseProvider from './SupabaseContext'
 import ThemeProvider from './ThemeContext'
 import { User } from '@supabase/supabase-js'
-import { Theme } from '@prisma/client'
+import { Theme } from '~/prisma/theme'
 
 export type ContextsProviderProps = {
     supabase: {

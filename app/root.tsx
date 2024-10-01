@@ -9,17 +9,14 @@ import {
     useRouteError,
 } from '@remix-run/react'
 import type { ActionFunctionArgs } from '@remix-run/node'
-// import stylesheet from '~/tailwind.css?url'
 import '~/tailwind.css'
 import { createClient } from './supabase/server'
-import { Theme } from '@prisma/client'
 import prisma from './prisma/client'
 import ContextsProvider from './context/contexts'
 import ModalProvider from './context/ModalContext'
 import LoadingBar from './components/LoadingBar'
 import Error from './components/Error'
-
-// export const links = () => [{ rel: 'stylesheet', href: stylesheet }]
+import { theme, Theme } from './prisma/theme'
 
 export async function loader({ request }: ActionFunctionArgs) {
     const { supabase } = await createClient(request)
@@ -28,12 +25,12 @@ export async function loader({ request }: ActionFunctionArgs) {
     } = await supabase.auth.getUser()
 
     // TODO: store theme in local storage for users that don't have an account, but still change theme
-    let initialTheme: Theme = Theme.LIGHT
+    let initialTheme: Theme = theme.LIGHT
     if (user) {
         const userData = await prisma.user.findFirst({
             where: { id: user.id },
         })
-        initialTheme = userData?.theme ?? Theme.DARK
+        initialTheme = userData?.theme ?? theme.DARK
     }
 
     return {
