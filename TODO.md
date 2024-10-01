@@ -1,8 +1,7 @@
 # TODO
 
 Write a README
-Change GitHub repo name
-
+Find out how to deploy build version of app
 
 FUTURE NON ESSENTIALS:
 Add Navbar to signin and signup pages
@@ -17,4 +16,5 @@ clip the modal scrollbar with rounded corners
 instead of truncating numbers, round them into nearest thousandth
 
 KNOWN BUGS:
+When making a transaction with BudgetItemExpandedTable open, the transaction does not reflect on recent transactions.
 In account reconciliation, if you type a exponential number (ex: 4e10), the reconciliation amount preview will display as if valid
