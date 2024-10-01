@@ -88,7 +88,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function SignUp() {
-    const { fetcher, methods } = useRemixForm<SignUpFormData>(schema)
+    const { fetcher, methods } = useRemixForm<SignUpFormData, never>(schema)
 
     useEffect(() => {
         // https://github.com/remix-run/react-router/discussions/10686 (DON'T USE useActionData when using fetcher)

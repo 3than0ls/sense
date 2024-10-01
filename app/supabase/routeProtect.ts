@@ -21,7 +21,7 @@ export async function protectRouteAgainstAuthUsers(request: Request) {
 
 /**
  * Redirects an unauthorized user back to `request.url`, intended for route protection.
- * Example: unauthorized users shouldn't be able to navigate to /signout, or other authorized pages.
+ * Example: unauthorized users shouldn't be able to navigate to /signin, or other authorized pages.
  *
  * @param supabase Supabase server client
  * @param request Request with URL
