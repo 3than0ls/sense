@@ -4,6 +4,7 @@ Write a README
 Find out how to deploy build version of app
 
 FUTURE NON ESSENTIALS:
+Add another blob to landing page near the pig
 Add Navbar to signin and signup pages
 Add About pages
 standardize outline theme
