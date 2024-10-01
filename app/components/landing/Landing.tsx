@@ -114,24 +114,13 @@ const Landing = ({ userData }: LandingProps) => {
                         )}
                     </div>
                 </div>
-                <div className="relative w-2/5 max-w-[500px] h-full p-12 flex justify-center items-center">
+                <div className="relative w-2/5 max-w-[500px] h-full p-12 mt-36 flex justify-center items-center">
                     <img
                         src="/piggy.svg"
                         alt="piggy"
                         className="stroke-black aspect-square w-full relative z-10"
                     />
                     <div className="absolute left-0 top-24 rounded-t-full w-full h-full bg-opacity-40 bg-primary"></div>
-                    {/* vertical rectangle with rounded corner covering pig here */}
-                    {/* <svg
-                        className="absolute inset-0 fill-primary opacity-50 z-0 transform scale-150"
-                        viewBox="0 0 200 200"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M46.2,-46.9C61.5,-42.2,76.6,-29.2,81.9,-12.5C87.1,4.2,82.4,24.5,71.3,38.7C60.2,53,42.7,61,24.5,67.8C6.4,74.6,-12.4,80.1,-21.2,71.2C-30,62.4,-28.8,39.2,-32.4,23.4C-36,7.6,-44.3,-0.9,-48.8,-14.4C-53.3,-27.9,-53.9,-46.5,-45.2,-52.3C-36.4,-58.1,-18.2,-51,-1.4,-49.4C15.5,-47.8,30.9,-51.5,46.2,-46.9Z"
-                            transform="translate(100 100)"
-                        />
-                    </svg> */}
                 </div>
             </div>
             <div

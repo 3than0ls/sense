@@ -1,7 +1,8 @@
 # TODO
 
-Create and add logo (Sense with a $)
-Deploy
+Write a README
+Change GitHub repo name
+
 
 FUTURE NON ESSENTIALS:
 Add Navbar to signin and signup pages
