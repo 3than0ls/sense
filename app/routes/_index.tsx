@@ -1,15 +1,6 @@
-import { User } from '@prisma/client'
-import type {
-    MetaFunction,
-    LoaderFunctionArgs,
-    ActionFunctionArgs,
-} from '@remix-run/node'
-import { json, Link, useLoaderData, useRevalidator } from '@remix-run/react'
-import { z } from 'zod'
+import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
+import { json, useLoaderData } from '@remix-run/react'
 import Landing from '~/components/landing/Landing'
-import { useSupabase } from '~/context/SupabaseContext'
-import prisma from '~/prisma/client'
-import { ReplaceDatesWithStrings } from '~/prisma/fullBudgetData'
 import getUserData from '~/prisma/userData'
 import { createClient } from '~/supabase/server'
 

@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { Link, useRevalidator } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import { z } from 'zod'
 import Background from '~/components/Background'
 import Divider from '~/components/Divider'
@@ -21,8 +21,6 @@ const schema = z.object({
 type SignInFormData = z.infer<typeof schema>
 
 export default function SignIn() {
-    const revalidator = useRevalidator()
-
     const { fetcher, methods } = useRemixForm<SignInFormData, never>(schema)
 
     // const methods = useForm({

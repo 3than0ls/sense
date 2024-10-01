@@ -1,8 +1,5 @@
-import { Budget, User } from '@prisma/client'
 import { Link } from '@remix-run/react'
-import React, { useEffect, useState } from 'react'
 import { useTheme } from '~/context/ThemeContext'
-import { ReplaceDatesWithStrings } from '~/prisma/fullBudgetData'
 import { UserDataType } from '~/prisma/userData'
 
 type NavBarLinkProps = {
@@ -30,8 +27,6 @@ type NavBarProps = {
 }
 
 const NavBar = ({ userData }: NavBarProps) => {
-    const [budgetData, setBudgetData] = useState()
-
     return (
         <div className="absolute z-30 w-full py-5 px-24 bg-primary flex justify-end items-center gap-12">
             <NavBarLink to="/" className={'mr-auto'}>

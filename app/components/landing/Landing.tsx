@@ -1,16 +1,9 @@
-import { Budget, User } from '@prisma/client'
 import { Link, useRevalidator } from '@remix-run/react'
 import React from 'react'
-import { useAuth } from '~/context/AuthContext'
 import { useTheme } from '~/context/ThemeContext'
-import { ReplaceDatesWithStrings } from '~/prisma/fullBudgetData'
-import TopBar from '../budget/TopBar'
 import NavBar from './NavBar'
 import { UserDataType } from '~/prisma/userData'
 import { useSupabase } from '~/context/SupabaseContext'
-import { sign } from 'crypto'
-
-type Props = {}
 
 const LandingButton = ({
     to,

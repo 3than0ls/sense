@@ -1,8 +1,6 @@
 import React, { useContext, createContext, useState, useEffect } from 'react'
 import { User } from '@supabase/supabase-js'
 import { useSupabase } from './SupabaseContext'
-import { useRevalidator } from '@remix-run/react'
-import { useTheme } from './ThemeContext'
 
 type AuthProviderProps = {
     initialUser: User | null
