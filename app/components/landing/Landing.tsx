@@ -1,5 +1,5 @@
 import { Budget, User } from '@prisma/client'
-import { Link } from '@remix-run/react'
+import { Link, useRevalidator } from '@remix-run/react'
 import React from 'react'
 import { useAuth } from '~/context/AuthContext'
 import { useTheme } from '~/context/ThemeContext'
@@ -7,15 +7,19 @@ import { ReplaceDatesWithStrings } from '~/prisma/fullBudgetData'
 import TopBar from '../budget/TopBar'
 import NavBar from './NavBar'
 import { UserDataType } from '~/prisma/userData'
+import { useSupabase } from '~/context/SupabaseContext'
+import { sign } from 'crypto'
 
 type Props = {}
 
 const LandingButton = ({
     to,
+    onClick,
     children,
 }: {
-    to: string
+    to?: string
     children: React.ReactNode
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>
 }) => {
     const { theme } = useTheme()
 
@@ -32,7 +36,8 @@ const LandingButton = ({
                 {children}
             </span>
             <Link
-                to={to}
+                onClick={onClick}
+                to={to ?? '/'}
                 className={`top-0 left-0 absolute peer z-10 shadow-2xl rounded-full px-6 py-3 border ${themeClass}`}
             >
                 {children}
@@ -55,6 +60,15 @@ const Landing = ({ userData }: LandingProps) => {
 
     const themeClass =
         theme === 'DARK' ? 'text-light bg-black' : 'text-dark bg-white'
+
+    const revalidator = useRevalidator()
+    const supabase = useSupabase()
+
+    const signOut: React.MouseEventHandler<HTMLAnchorElement> = async (e) => {
+        e.preventDefault()
+        await supabase.auth.signOut()
+        revalidator.revalidate()
+    }
 
     return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -100,7 +114,7 @@ const Landing = ({ userData }: LandingProps) => {
                                 <LandingButton to="/budget">
                                     View Budget Dashboard
                                 </LandingButton>
-                                <LandingButton to="/signout">
+                                <LandingButton onClick={signOut}>
                                     Sign Out
                                 </LandingButton>
                             </>

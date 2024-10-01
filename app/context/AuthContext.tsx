@@ -1,6 +1,8 @@
 import React, { useContext, createContext, useState, useEffect } from 'react'
 import { User } from '@supabase/supabase-js'
 import { useSupabase } from './SupabaseContext'
+import { useRevalidator } from '@remix-run/react'
+import { useTheme } from './ThemeContext'
 
 type AuthProviderProps = {
     initialUser: User | null
@@ -23,7 +25,10 @@ const AuthProvider = ({ initialUser, children }: AuthProviderProps) => {
     useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
-                // console.log('auth state changed!', session?.user ?? null)
+                console.log(event)
+                if (event === 'SIGNED_OUT') {
+                    window.location.reload()
+                }
                 setUser(session?.user ?? null)
             }
         )

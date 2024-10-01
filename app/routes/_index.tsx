@@ -31,13 +31,5 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
     const userData = useLoaderData<typeof loader>()
-    const revalidator = useRevalidator()
-
-    const supabase = useSupabase()
-    const signOut = async () => {
-        await supabase.auth.signOut()
-        revalidator.revalidate()
-    }
-
     return <Landing userData={userData} />
 }

@@ -23,7 +23,7 @@ type SignInFormData = z.infer<typeof schema>
 export default function SignIn() {
     const revalidator = useRevalidator()
 
-    const { fetcher, methods } = useRemixForm<SignInFormData>(schema)
+    const { fetcher, methods } = useRemixForm<SignInFormData, never>(schema)
 
     // const methods = useForm({
     //     resolver: zodResolver(schema),
@@ -36,7 +36,7 @@ export default function SignIn() {
             methods.setError('email', { message: error.message })
             methods.setError('password', { message: error.message })
         } else {
-            revalidator.revalidate()
+            window.location.reload()
         }
     }
 
