@@ -1,15 +1,15 @@
 import { useFetcher } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
 import { useTheme, useThemeClass } from '~/context/ThemeContext'
-import { FullBudgetItemDataType } from '~/prisma/fullBudgetItemData'
 import Icon from '../icons/Icon'
 import toCurrencyString from '~/utils/toCurrencyString'
+import { CurrentMonthBudgetItemType } from '~/prisma/fullBudgetItemData'
 
 const BIETRow = ({
     transaction,
     collapsed,
 }: {
-    transaction: FullBudgetItemDataType['transactions'][number]
+    transaction: CurrentMonthBudgetItemType['transactions'][number]
     collapsed: boolean
 }) => {
     return (
@@ -39,9 +39,8 @@ const BudgetItemExpandedTable = ({
 }) => {
     const fetcher = useFetcher()
 
-    const [budgetItem, setBudgetItem] = useState<FullBudgetItemDataType | null>(
-        null
-    )
+    const [budgetItem, setBudgetItem] =
+        useState<CurrentMonthBudgetItemType | null>(null)
 
     const fetchStarted = useRef(false)
 
@@ -59,7 +58,7 @@ const BudgetItemExpandedTable = ({
             Object.keys(fetcher.data).length > 0 &&
             budgetItem === null
         ) {
-            setBudgetItem(fetcher.data as FullBudgetItemDataType)
+            setBudgetItem(fetcher.data as CurrentMonthBudgetItemType)
         }
     }, [fetcher.data, budgetItem])
 
