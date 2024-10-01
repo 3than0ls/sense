@@ -1,10 +1,11 @@
 # TODO
 
-Landing page (THIS!!!)
-
-^^ accompish then release to 1.0
+Create and add logo (Sense with a $)
+Deploy
 
 FUTURE NON ESSENTIALS:
+Add Navbar to signin and signup pages
+Add About pages
 standardize outline theme
 have an updatedAt field (see https://stackoverflow.com/a/70806772) for budgets and auto navigate to that on /budget
 transaction to more than one item

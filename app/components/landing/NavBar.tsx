@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react'
 import { useTheme } from '~/context/ThemeContext'
 import { UserDataType } from '~/prisma/userData'
+import Logo from '../Logo'
 
 type NavBarLinkProps = {
     children?: React.ReactNode
@@ -30,7 +31,7 @@ const NavBar = ({ userData }: NavBarProps) => {
     return (
         <div className="absolute z-30 w-full py-5 px-24 bg-primary flex justify-end items-center gap-12">
             <NavBarLink to="/" className={'mr-auto'}>
-                Home
+                <Logo />
             </NavBarLink>
             <NavBarLink to="/">About</NavBarLink>
             {userData === null ? (
