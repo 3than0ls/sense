@@ -9,8 +9,6 @@ import { BudgetDataProvider } from '~/context/BudgetDataContext'
 import stopRevalidate from '~/utils/stopRevalidation'
 import { BudgetUXProvider } from '~/context/BudgetUXContext'
 
-let ticker = 0
-
 export async function loader({ request, params }: LoaderFunctionArgs) {
     // THE PERFECT LOADER SAMPLE:
     // do literally every route loader now.
@@ -21,9 +19,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             userId: user.id,
             budgetId: params.budgetId!,
         })
-
-        console.log('refetching budget data for the x time:', ticker)
-        ticker++
 
         return json({ budgetData })
     } catch (e) {

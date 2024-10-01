@@ -23,7 +23,6 @@ const AuthProvider = ({ initialUser, children }: AuthProviderProps) => {
     useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
-                console.log(event)
                 if (event === 'SIGNED_OUT') {
                     window.location.reload()
                 }
